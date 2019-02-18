@@ -1,22 +1,18 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
-
 /**
- * Generated class for the ProfilePage page.
+ * Generated class for the EditDjProfilePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
-  selector: 'page-profile',
-  templateUrl: 'profile.html',
+  selector: 'page-edit-dj-profile',
+  templateUrl: 'edit-dj-profile.html',
 })
-export class ProfilePage {
-
+export class EditDjProfilePage implements OnInit{
   name;
   email;
   surname;
@@ -34,7 +30,13 @@ export class ProfilePage {
   role
   img
   stagename
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
+  downloadurl
+  EditProfileArr=[];
+  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase: DatabaseProvider) {
+  }
+
+
+  ngOnInit(){
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
@@ -58,21 +60,22 @@ export class ProfilePage {
       }
     })
   }
-
-
-
-
-
-  nextpage(page: string) {
-    this.navCtrl.push(page);
-
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad EditDjProfilePage');
   }
-  logout() {
-    this.PulsedbDatabase.logout().then(() => {
-      this.navCtrl.push('LoginPage');
-    }, (error) => {
-      console.log(error.message);
-    })
-  }
+
+  // uploadPicture() {
+  //     this.PulsedbDatabase.uploadProfilePic(this.downloadurl, this.name).then(data => {
+  //       console.log('added to db');
+  //       this.PulsedbDatabase.update(this.name, this.email, this.contact, this.bio, this.downloadurl).then((data) => {
+  //         this.EditProfileArr.push(data);
+  //       })
+  //       this.navCtrl.pop();
+  //     },
+  //       Error => {
+  //         console.log(Error)
+  //       })
+    
+  // }
 
 }
