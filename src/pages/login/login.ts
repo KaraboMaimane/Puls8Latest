@@ -68,7 +68,7 @@ export class LoginPage {
             });
             alert.present();
           }
-          this.navCtrl.setRoot(ProfilePage);
+          this.navCtrl.setRoot('ProfilePage');
         }
       }).catch((error) => {
         const alert = this.alertCtrl.create({

@@ -25,15 +25,32 @@ export class ProfilePage {
   profileArr = new Array();
   trackarray = [];
   bio;
+  city
+  fullname
+  gender
+  genre
+  payment
+  price
+  role
+  img
+  stagename
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
-    this.PulsedbDatabase.getProfile().then((data:any) => {
+    this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
-      this.profileArr=data
+      this.profileArr = data
       console.log(this.profileArr)
-    this.bio = this.profileArr[0].bio
-  console.log(this.bio)
-
-
+      this.bio = this.profileArr[0].bio
+      this.city= this.profileArr[0].city,
+      this.email= this.profileArr[0].email,
+      this.fullname= this.profileArr[0].fullname,
+      this.gender=this.profileArr[0].gender,
+      this.genre= this.profileArr[0].genre,
+      this.payment= this.profileArr[0].payment,
+      this.price=this.profileArr[0].price,
+      this.role= this.profileArr[0].role,
+      this.img=this.profileArr[0].img,
+      this.stagename=this.profileArr[0].stagename,
+      console.log(this.fullname)
     })
   }
 
