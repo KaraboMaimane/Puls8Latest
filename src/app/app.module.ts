@@ -10,11 +10,15 @@ import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { DatabaseProvider } from '../providers/database/database';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
+import { ViewprofilePage } from '../pages/viewprofile/viewprofile';
+import { ChatboxComponent } from '../components/chatbox/chatbox';
 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,ProfilePage
+    LoginPage,ProfilePage,
+    ViewprofilePage,
+    ChatboxComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,9 @@ import { ProfilePage } from '../pages/profile/profile';
   entryComponents: [
     MyApp,
     LoginPage,
-    ProfilePage
+    ProfilePage,
+    ViewprofilePage,
+    ChatboxComponent
   ],
   providers: [
     StatusBar,
