@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ViewprofilePage } from '../viewprofile/viewprofile';
+
 
 /**
  * Generated class for the SplashPage page.
@@ -18,7 +18,7 @@ export class SplashPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     let timer = setInterval(()=>{
-      this.navCtrl.setRoot('ViewProfilePage');clearInterval(timer)
+      this.navCtrl.setRoot('CategoriesPage');clearInterval(timer)
     }, 5000);
   }
 

@@ -14,12 +14,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'view-profile.html',
 })
 export class ViewProfilePage {
-
+  profile;
+  messagestate: string;
+  userstatus: any;
+  DjProfile;
+  djName;
+  djGenre;
+  djBio;
+  djStagename;
+  djEmail;
+  djImage;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewProfilePage');
+    console.log('ionViewDidLoad ViewprofilePage');
+    this.profile = this.navParams.get("Djkey")
+    console.log(this.profile)
+    this.DjProfile = this.profile
+
+    this.djName = this.DjProfile.fullname;
+    this.djBio = this.DjProfile.bio;
+    this.djGenre = this.DjProfile.genre;
+    this.djEmail = this.DjProfile.email;
+    this.djImage = this.DjProfile.img;
+    this.djStagename = this.DjProfile.stagename;
+    console.log(this.djName)
+      
+    
   }
 
 }

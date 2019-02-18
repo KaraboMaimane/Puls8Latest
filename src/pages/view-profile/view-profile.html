@@ -7,12 +7,12 @@
             </div>
             <div class="hero__herobanner__herotagcontainer">
                 <div class="hero__herobanner__herotagcontainer__headingcontainer">
-                  <!-- {{fullname | slice:0:20}} -->
-                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">Mjojos Gamede</h1>
+                  
+                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">{{djName | slice:0:20}}</h1>
                 </div>
                 <div class="hero__herobanner__herotagcontainer__tagcontainer">
-                  <!-- {{genre}} -->
-                    <ion-badge outline class="hero__herobanner__herotagcontainer--tag">Amapiano</ion-badge>
+                  
+                    <ion-badge outline class="hero__herobanner__herotagcontainer--tag">{{djGenre}}</ion-badge>
                 </div>
                 <!-- <div class="hero__herobanner__herotagcontainer__tagcontainer__reviews">
                 </div> -->
@@ -62,7 +62,7 @@
             <div no-lines class="segcontainer__seg__bio">
                 <div class="segcontainer__seg__bio__userProfile">
                     <h2 class="segcontainer__seg__bio__userProfile--bioheading">Bio</h2>
-                    <p class="segcontainer__seg__bio__userProfile--biotext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid sint fuga molestiae doloribus blanditiis, deserunt perferendis ipsum cupiditate necessitatibus dolore adipisci quia natus quam fugiat minima, accusamus debitis, distinctio tempora?</p>
+                    <p class="segcontainer__seg__bio__userProfile--biotext">{{djBio}}</p>
                 </div>
                 <div class="nocontent1" *ngIf="bio == '' || bio == undefined">
                     <div class="nocontent1__contents">
@@ -77,7 +77,7 @@
                     <!-- *ngIf="stagename != undefined || stagename != stagename"  -->
                     <p class="segcontainer__seg__profilecontainer__profile--information">
                         <ion-icon name="contact"></ion-icon>
-                        <span class="infotext">Dj Mjojos</span>
+                        <span class="infotext">{{djStagename}}</span>
                     </p>
                     <p *ngIf="city != undefined || city != city" class="segcontainer__seg__profilecontainer__profile--information">
                         <ion-icon name="locate"></ion-icon>
@@ -115,10 +115,10 @@
                 </div> -->
             </div>
 
-            <button ion-button icon-only *ngIf="messagestate != 'sending' && userStatus == false" class="comment" (click)="messagestate = 'sending'">
+            <!-- <button ion-button icon-only *ngIf="messagestate != 'sending' && userStatus == false" class="comment" (click)="messagestate = 'sending'">
                 <ion-icon name="chatbubbles"></ion-icon>
             </button>
-            <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox>
+            <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox> -->
         </ion-list>
     </div>
 </ion-content>

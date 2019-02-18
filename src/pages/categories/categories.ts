@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import { ViewprofilePage } from '../viewprofile/viewprofile';
+// import { ViewprofilePage } from '../viewprofile/viewprofile';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -34,7 +34,7 @@ export class CategoriesPage {
     console.log(i)
     let dj = i;
     console.log(dj)
-    this.navCtrl.push(ViewprofilePage, {Djkey: dj})
+    this.navCtrl.push('ViewProfilePage', {Djkey: dj})
   }
 
 
