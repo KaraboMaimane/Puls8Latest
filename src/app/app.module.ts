@@ -8,10 +8,13 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 import { DatabaseProvider } from '../providers/database/database';
+import { LoginPage } from '../pages/login/login';
+import { ProfilePage } from '../pages/profile/profile';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    LoginPage,ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -20,7 +23,9 @@ import { DatabaseProvider } from '../providers/database/database';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    LoginPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,
