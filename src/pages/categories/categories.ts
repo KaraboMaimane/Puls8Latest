@@ -29,5 +29,12 @@ export class CategoriesPage {
     console.log('ionViewDidLoad CategoriesPage');
   }
 
+  ViewProfile(i){
+    console.log(i)
+    let dj = i;
+    console.log(dj)
+    // this.navCtrl.push()
+  }
+
 
 }
