@@ -2,85 +2,162 @@ page-categories {
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
         background-size: cover !important;
-    }
-    .iconblock{
-        width: 100vw;
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        margin-top: .5rem;
-        &__iconcontainer{
-            flex: 0 0 auto;
-            &:not(:last-child){
-                margin-right: 1rem;
-            }
-            &:first-child{
-                margin-left: 1rem;
-            }
-            &__icon{
-                &--image{
-                    width: 6rem;
-                    height: 6rem;
-                    display: block;
-                    margin: 0 auto;
-                    border-radius: 50%;
-                }
-                &--text{
-                    color: $color-primary-light;
-                    text-align: center;
-                    padding: 0; 
-                    margin: 0;
-                    text-transform: capitalize;
-
-                }
-                &:nth-child(even){
-                    background: linear-gradient(rgba($color-primary-dark, .9), rgba($color-primary-dark, .9))
-                }
-            }
-        }
+        animation: 1s ease fadeIn;
     }
 
+    .dropdown{
+        background: rgba($color-grey-light, .1) !important;
+        border-radius: 5rem;
+        height: 2rem;
+        color: $color-primary-light;
+        width: 95%;
+        margin: .5rem auto;
+    }
+
+    .heading{
+        font-size: 3rem;
+        letter-spacing: .2rem;
+        color: $color-grey-light;
+        text-transform: uppercase;
+        font-weight: 300;
+        text-align: center;
+        text-shadow: .2rem .3rem .5rem rgba($color-grey-light,.4);
+    }
+
+    .filtercontainer{
+        display:flex;
+    }
+
+    .refresh{
+        border-radius: 50%;
+        flex: auto 0 0 ;
+        width: 4.5rem;
+        height: 4.5rem;
+    }
+ 
     .card-heading{
         color: $color-primary-light;
+        text-transform: capitalize;
     }
-
+ 
     ion-item{
+        height:7rem;
+        &:nth-child(even){
+            background: rgba($color-grey-light, .1) !important;
+            animation: moveInLeft .8s ease;
+        }
+        &:nth-child(odd){
+            animation: moveInRight .5s ease;
+        }
         background: transparent !important;
     }
 
-    .list{
-        overflow: scroll !important;
-        height: 95vh;
+    ion-thumbnail{
+        margin-right: 0 !important;
+        img{
+            border-radius: 50% !important;
+            width: 6rem !important;
+            height: 6rem !important;
+            margin-top: 1rem;
+        }
     }
+ 
+    // .list{
+    //     overflow: scroll !important;
+    //     min-height: 85%;
+    //     background: yellow;
+    // }
     
-    .fab-md-light{
-        height: 5rem;
-        width: 5rem;
+    @media (max-height: 568px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 79.5%;
+        }
+    }
+ 
+    @media (min-height: 640px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 81.8%;
+        }
     }
 
-    .navbar{
-        height: 8vh;
-        display: flex;
-        align-items: center;
-        button{
-            border: none;
-            font-size: 3rem;
-            margin-left: 1rem;
+    @media (min-height: 731px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 84.1%;
         }
-        
-        .input-wrapper{
-            background: rgba($color-grey-light, .1);
-            border-radius: 10rem;
-            color: $color-grey-light;
-            font-size: 1.5rem;
-            padding-left: 2.5rem;
-            ion-input{
-                font-size: 2rem;
+    }
+
+    @media (min-height: 823px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 85.9%;
+        }
+    }
+
+    @media (min-height: 667px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 82.6%;
+        }
+    }
+
+    @media (min-height: 667px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 84%;
+        }
+    }
+
+    @media (min-height: 812px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 85.5%;
+        }
+    }
+
+    @media (min-height: 1024px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 88.5%;
+        }
+    }
+
+    @media (min-height: 1366px) {
+        .list{
+            overflow: scroll !important;
+            min-height: 91.5%;
+        }
+    }
+
+    // @media (min-height: 823px) {
+    //     .list{
+    //         overflow: scroll !important;
+    //         min-height: 85.9%;
+    //         background: yellow;
+    //     }
+    // }
+
+
+    .nocontent{
+        animation: fade 1s ease;
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+        height: 100%;
+        align-items: center;
+        opacity: .5;
+        &__contents{
+            &--image{
+                width: 15rem;
+                height: 15rem;
+                margin: 0 auto;
+                display: block;
+            }
+            &--text{
+                font-size: 2.5rem;
             }
         }
-    }
-
-    .item-input-has-focus{
-        animation: pulseate 1s ease infinite, .3s ease grow;
     }
 }

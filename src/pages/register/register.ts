@@ -50,19 +50,6 @@ export class RegisterPage implements OnInit{
         email: form.value.email,
         phone: form.value.phone
       };
-      firebase.database().ref("Registration/" + userID).set(registrationObj);
-      loading.dismiss();
-      const alert = this.alertCtrl.create({
-        title: 'Success!',
-        subTitle: `${form.value.email} has successfully been registered!`,
-        buttons: [{
-          text: 'Okay',
-          handler: ()=>{
-            this.navCtrl.push('StartPage');//where we are navigating to
-          }
-        }]
-      })
-      alert.present();
     }).catch((error)=>{
       console.log(error);
       loading.dismiss();
