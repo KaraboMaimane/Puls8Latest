@@ -149,33 +149,33 @@ export class EditPage {
     }
   }
 
-  submit() {
-    console.log(this.name + " " + this.surname + " " + this.email);
+  // submit() {
+  //   console.log(this.name + " " + this.surname + " " + this.email);
 
-    let obj = {
-      name: this.name,
-      surname: this.surname,
-      email: this.email
-    };
+  //   let obj = {
+  //     name: this.name,
+  //     surname: this.surname,
+  //     email: this.email
+  //   };
 
-    this.arrProfile.push(obj);
+  //   this.arrProfile.push(obj);
 
-    let userID = firebase.auth().currentUser.uid;
+  //   let userID = firebase.auth().currentUser.uid;
 
-    this.db.update(userID, obj);
+  //   this.db.update(userID, obj);
 
-    //firebase.database().ref('Registration/'+userID).update(obj);
+  //   //firebase.database().ref('Registration/'+userID).update(obj);
 
-    let user = firebase.auth().currentUser;
-    user
-      .updateEmail(obj.email)
-      .then(() => {
-        // Update successful.
-        console.log();
-      })
-      .catch(function(error) {
-        // An error happened.
-        console.log(error);
-      });
-  }
+  //   let user = firebase.auth().currentUser;
+  //   user
+  //     .updateEmail(obj.email)
+  //     .then(() => {
+  //       // Update successful.
+  //       console.log();
+  //     })
+  //     .catch(function(error) {
+  //       // An error happened.
+  //       console.log(error);
+  //     });
+  // }
 }

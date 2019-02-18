@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { DatabaseProvider } from '../../providers/database/database';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -17,8 +17,12 @@ export class CategoriesPage {
   gender;
   genre;
   city;
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  getprofileArr=[];
+  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase:DatabaseProvider) {
+   this.PulsedbDatabase.getAllDjs().then((data:any)=>{
+    this.getprofileArr =data
+     console.log(this.getprofileArr);
+   })
   }
 
   ionViewDidLoad() {
