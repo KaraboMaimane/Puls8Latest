@@ -49,30 +49,18 @@ export class CategoriesPage {
         })
         
         swalWithBootstrapButtons.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          type: 'warning',
+          title: 'Login Required?',
+          text: "You cant access your profile without logging in!",
+          type: 'info',
           showCancelButton: true,
-          confirmButtonText: 'Yes, delete it!',
-          cancelButtonText: 'No, cancel!',
+          confirmButtonText: 'Yes, Login',
           reverseButtons: true
         }).then((result) => {
           if (result.value) {
-            swalWithBootstrapButtons.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          } else if (
-            // Read more about handling dismissals
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            swalWithBootstrapButtons.fire(
-              'Cancelled',
-              'Your imaginary file is safe :)',
-              'error'
-            )
-          }
+        this.navCtrl.push('LoginPage');
+          }else{
+
+          } 
         })
       } else {
         this.navCtrl.push('ProfilePage');

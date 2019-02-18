@@ -10,7 +10,6 @@ import { NgForm } from "@angular/forms";
 import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
-import { ProfilePage } from "../profile/profile";
 import swal from 'sweetalert2';
 
 /**
