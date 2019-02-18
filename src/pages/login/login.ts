@@ -10,7 +10,7 @@ import { NgForm } from "@angular/forms";
 import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
-import { CategoriesPage } from "../categories/categories";
+
 
 /**
 * Generated class for the LoginPage page.
@@ -33,55 +33,55 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController,
-    private db: DatabaseProvider,
+    private PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController
   ) {}
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
-
   login(form: NgForm) {
-    this.navCtrl.push(CategoriesPage)
-    // const loading = this.loadingCtrl.create({
-    //   content: `Logging in ${form.value.email}...`
-    // });
-    // loading.present();
-    // this.db
-    //   .login(form.value.email, form.value.password)
-    //   .then(data => {
-    //     let userID = firebase.auth().currentUser.uid;
-    //     loading.dismiss();
-    //     const alert = this.alertCtrl.create({
-    //       title: "Success",
-    //       subTitle: "You have successfully logged in!!!",
-    //       buttons: [
-    //         {
-    //           text: "Ok",
-    //           handler: () => {
-    //             console.log(data);
-    //             this.navCtrl.push('ProfilePage');
-    //           }
-    //         }
-    //       ]
-    //     });
-    //     alert.present();
-    //   })
-    //   .catch(error => {
-    //     loading.dismiss();
-    //     const alert = this.alertCtrl.create({
-    //       title: error.code,
-    //       subTitle: error.message,
-    //       buttons: [
-    //         {
-    //           text: "Ok",
-    //           handler: () => {
-    //           }
-    //         }
-    //       ]
-    //     });
-    //     alert.present();
-    //   });
+    if(form.valid){
+      this.PulsedbDatabase.loginx(form.value.email, form.value.password).then((user) => {
+        console.log(user);
+        if (user.user.emailVerified == true) {
+          if (form.value.email == undefined
+            || form.value.password == undefined) {
+            const alert = this.alertCtrl.create({
+              // title: "Oh no! ",
+              subTitle: "Please enter your valid email and password to login.",
+              buttons: ['OK'],
+            });
+          } else if (this.email == "") {
+            const alert = this.alertCtrl.create({
+              // title: "No Email",
+              subTitle: "Your email can't be blank.",
+              buttons: ['OK'],
+            });
+            alert.present();
+          }
+          else if (form.value.password  == "") {
+            const alert = this.alertCtrl.create({
+              // title: "No Password",
+              subTitle: "Your password can't be blank",
+              buttons: ['OK'],
+            });
+            alert.present();
+          }
+          this.navCtrl.setRoot('ProfilePage');
+        }
+      }).catch((error) => {
+        const alert = this.alertCtrl.create({
+          // title: "No Password",
+          subTitle: error.message,
+          buttons: ['OK'],
+        });
+        alert.present();
+      })
+    }else{
+      console.log('error');
+    }
+
   }
 
   // resetPassword() {
@@ -130,8 +130,4 @@ export class LoginPage {
   //   });
   //   prompt.present();
   // }
-
-  signup() {
-    this.navCtrl.setRoot('RegisterPage');
-  }
 }
