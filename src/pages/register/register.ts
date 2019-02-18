@@ -35,6 +35,8 @@ export class RegisterPage implements OnInit{
     }else{
       console.log('nothing here')
     }
+
+    
   }
 
   register(form: NgForm) {

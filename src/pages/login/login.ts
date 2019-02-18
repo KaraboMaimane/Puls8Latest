@@ -1,5 +1,5 @@
 
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   IonicPage,
   NavController,
@@ -26,9 +26,14 @@ import swal from 'sweetalert2';
   selector: "page-login",
   templateUrl: "login.html"
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
   email;
   password;
+  logloader: string;
+  logwarn: string;
+  logfail: string;
+  logsucc: string;
+  message: string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -38,51 +43,33 @@ export class LoginPage {
     public loadingCtrl: LoadingController
   ) {}
 
+  ngOnInit(){
+    this.logloader = 'false';
+    this.logwarn = 'false';
+    this.logfail = 'false';
+    this.logsucc = 'false';
+    this.message = 'false';
+  }
+
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
     // swal.fire('Karabo');
   }
   login(form: NgForm) {
+    this.logloader = 'true';
     console.log('yellow')
     if(form.valid){
       this.PulsedbDatabase.loginx(form.value.email, form.value.password).then((user) => {
         console.log(user);
-        if (user.user.emailVerified == true) {
-          if (form.value.email == undefined
-            || form.value.password == undefined) {
-            const alert = this.alertCtrl.create({
-              // title: "Oh no! ",
-              subTitle: "Please enter your valid email and password to login.",
-              buttons: ['OK'],
-            });
-          } else if (this.email == "") {
-            const alert = this.alertCtrl.create({
-              // title: "No Email",
-              subTitle: "Your email can't be blank.",
-              buttons: ['OK'],
-            });
-            alert.present();
-          }
-          else if (form.value.password  == "") {
-            const alert = this.alertCtrl.create({
-              // title: "No Password",
-              subTitle: "Your password can't be blank",
-              buttons: ['OK'],
-            });
-            alert.present();
-          }
-          this.navCtrl.setRoot('ProfilePage');
-        }
+        this.logloader = 'false';
+        this.logsucc = 'true';
       }).catch((error) => {
-        const alert = this.alertCtrl.create({
-          // title: "No Password",
-          subTitle: error.message,
-          buttons: ['OK'],
-        });
-        alert.present();
+        this.message = error.message;
+        this.logloader = 'false';
+        this.logfail = 'true';
       })
     }else{
-      console.log('error');
+      this.logwarn;
     }
 
   }

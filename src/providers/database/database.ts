@@ -70,12 +70,12 @@ export class DatabaseProvider {
     })
   }
   loginx(email, password) {
-    let loading = this.loadingCtrl.create({
-      spinner: 'bubbles',
-      content: 'Sign in....',
-      duration: 1000
-    });
-    loading.present();
+    // let loading = this.loadingCtrl.create({
+    //   spinner: 'bubbles',
+    //   content: 'Sign in....',
+    //   duration: 1000
+    // });
+    // loading.present();
     return firebase.auth().signInWithEmailAndPassword(email, password);
   } 
 
@@ -130,33 +130,39 @@ export class DatabaseProvider {
           firebase.database().ref(y).on('value', (data2: any) => {
             this.allDjSArray.length =0;
             var djInfomation = data2.val();
-            var keys2: any = Object.keys(djInfomation);
-            console.log(djInfomation)
-            console.log(keys2)
-            for (var j = 0; j < keys2.length; j++) {
-              var k = keys2[j];
-              console.log(k)
-              let obj = {
-                bio: djInfomation[k].bio, 
-                city: djInfomation[k].city,
-                email: djInfomation[k].email,
-                fullname: djInfomation[k].fullname,
-                gender: djInfomation[k].gender,
-                genre: djInfomation[k].genre, 
-                payment: djInfomation[k].payment,
-                price: djInfomation[k].price,
-                role: djInfomation[k].role,
-                img: djInfomation[k].img,
-                stagename: djInfomation[k].stagename,
-                key: k
+            if(data2.val() != null || data2.val() != undefined){
+              var keys2: any = Object.keys(djInfomation);
+              console.log(djInfomation)
+              console.log(keys2)
+              for (var j = 0; j < keys2.length; j++) {
+                var k = keys2[j];
+                console.log(k)
+                let obj = {
+                  bio: djInfomation[k].bio, 
+                  city: djInfomation[k].city,
+                  email: djInfomation[k].email,
+                  fullname: djInfomation[k].fullname,
+                  gender: djInfomation[k].gender,
+                  genre: djInfomation[k].genre, 
+                  payment: djInfomation[k].payment,
+                  price: djInfomation[k].price,
+                  role: djInfomation[k].role,
+                  img: djInfomation[k].img,
+                  stagename: djInfomation[k].stagename,
+                  key: k
+                }
+  
+                if (obj.role == "Dj") {
+                  this.allDjSArray.push(obj);
+                  console.log(obj)
+                }
+  
               }
-
-              if (obj.role == "Dj") {
-                this.allDjSArray.push(obj);
-                console.log(obj)
-              }
-
-            }  
+            }else{
+              this.allDjSArray = null;
+              console.log(null);
+            }
+  
 
           })
           accpt(this.allDjSArray)
@@ -164,7 +170,7 @@ export class DatabaseProvider {
       })
     })
   }
-
+  
   SelectDj(category) {
     return new Promise((accpt, rej) => {
       firebase.database().ref('Registration/').on('value', (data: any) => {

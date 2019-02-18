@@ -4,6 +4,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
+import Swal from 'sweetalert2';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -41,28 +42,40 @@ export class CategoriesPage {
   GoToProfilePage() {
     this.PulsedbDatabase.checkAuthState().then(data => {
       if (data == false) {
-        let alert = this.alertCtrl.create({
-          subTitle: 'You have to sign in before you can view your profile, would you like to sign in now?',
-          cssClass: 'myAlert',
-          buttons: [
-            {
-              text: 'Sign in',
-              handler: data => {
-                var opt = "profile";
-                this.navCtrl.push(LoginPage, { option: opt })
-              }
-            },
-            {
-              text: 'Cancel',
-              handler: data => {
-
-              }
-            }
-          ]
-        });
-        alert.present();
+        const swalWithBootstrapButtons = Swal.mixin({
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+        })
+        
+        swalWithBootstrapButtons.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, cancel!',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            swalWithBootstrapButtons.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire(
+              'Cancelled',
+              'Your imaginary file is safe :)',
+              'error'
+            )
+          }
+        })
       } else {
-        this.navCtrl.push(ProfilePage)
+        this.navCtrl.push('ProfilePage');
       }
 
     })

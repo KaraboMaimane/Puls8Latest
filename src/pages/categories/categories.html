@@ -70,9 +70,9 @@
     </div> -->
 
 
-    <ion-list no-lines *ngFor="let a of getprofileArr">
+    <ion-list no-lines>
         <!-- *ngFor="let x of  arrDj;let i = index" -->
-      <ion-item  (click)="viewProfile(i)">
+      <ion-item  *ngFor="let a of getprofileArr"  (click)="viewProfile(i)">
         <ion-thumbnail item-start>
           <img src='{{a.img}}' height="2px">
         </ion-thumbnail>

@@ -47,5 +47,48 @@
         </div>
       </div>
     </form>
+
+    <div class="loadcontainer" *ngIf="regloader == 'true'">
+        <div class="loadingmod">
+            <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+            <p class="message">Loggin In
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+            </p>
+        </div> 
+    </div>
   
+    <div class="failcontainer" *ngIf="reg == 'true'">
+        <div class="alertbox" (click)="regfail = 'false'">
+            <img src="../../assets/sad.svg" alt="" class="alertimg">
+            <div class="messagebox">
+                <p class="alertmessagehead">Ehsan!</p>
+                <p class="alertmessage">{{message}}</p>
+                <button class="alertbutton" (click)="regfail = 'false';">Okay</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="warncontainer" *ngIf="regwarn == 'true'">
+        <div class="alertbox" (click)="regwarn = 'false'">
+          <img src="../../assets/thinking.svg" alt="" class="alertimg">
+          <div class="messagebox">
+              <p class="alertmessagehead">Whoa, Hey There...</p>
+              <p class="alertmessage">Your Email Cannot Be Empty</p>
+              <button class="alertbutton" (click)="regwarn = 'false'">Okay</button>
+          </div>
+        </div>
+      </div>
+  
+    <div class="succcontainer" *ngIf="regsucc == 'true'">
+      <div class="alertbox">
+        <img src="../../assets/happy.svg" alt="" class="alertimg">
+        <div class="messagebox">
+            <p class="alertmessagehead">Yesss!</p>
+            <p class="alertmessage">You Have Successfully Logged In</p>
+            <button class="alertbutton" (click)="regsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
+        </div>
+      </div>
+    </div>
   </ion-content>
