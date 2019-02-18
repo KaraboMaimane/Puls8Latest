@@ -29,9 +29,27 @@ export class DatabaseProvider {
     firebase.database().ref("Registration/" + userID.uid).on('value', (data: any) => {
       let details = data.val();
       this.ProfileArr.length = 0;
-      console.log(details)
-      this.ProfileArr.push(details);
+    let keys = Object.keys(details);
+    let k = keys[0];
+    console.log(details[k].bio);
+    let obj ={
+      bio: details[k].bio, 
+      city: details[k].city,
+      email: details[k].email,
+      fullname: details[k].fullname,
+      gender: details[k].gender,
+      genre: details[k].genre,
+      payment: details[k].payment,
+      price: details[k].price,
+      role: details[k].role,
+      img: details[k].img,
+      stagename: details[k].stagename,
+      key: k
+    }
+    
+      this.ProfileArr.push(obj);
       console.log(this.ProfileArr)
+      
     });
     resolve(this.ProfileArr)
   })
