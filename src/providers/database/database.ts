@@ -81,7 +81,7 @@ export class DatabaseProvider {
                 console.log(obj)
               }
 
-            }
+            }  
 
           })
           accpt(this.allDjSArray)
