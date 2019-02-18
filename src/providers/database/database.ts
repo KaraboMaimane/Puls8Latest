@@ -23,6 +23,8 @@ export class DatabaseProvider {
   ProfileArr = new Array();
   pic2;
   stayLoggedIn
+
+  userCommentsArray2 = new Array();
   constructor(public http: HttpClient, public alertCtrl: AlertController,private ngzone: NgZone,public loadingCtrl: LoadingController) {
     console.log('Hello DatabaseProvider Provider');
   }
@@ -185,7 +187,8 @@ export class DatabaseProvider {
                 role: djInfomation[k].role,
                 img: djInfomation[k].img,
                 stagename: djInfomation[k].stagename,
-                key: k
+                key: k,
+                key2: x
               }
 
               if (obj.role == "Dj") {
@@ -202,11 +205,51 @@ export class DatabaseProvider {
     })
   }
 
-  makeComment(key,userKey,userComment){
+  makeComment(key,username,userKey,userPic,userComment){
     return new Promise((accpt,rej)=>{
       firebase.database().ref('Comments/' + key).push({
         comment: userComment,
-        username: userKey,
+        userKey: userKey,
+        username: username,
+        userImage: userPic
+      })
+      accpt("Comment sent")
+    })
+  }
+
+  getComments(key){
+    return new Promise((accpt,rej)=>{
+      firebase.database().ref('Comments/').on('value',(data:any)=>{
+        console.log(data.val())
+        var djComments = data.val();
+        var k = Object.keys(djComments)
+        console.log(k)
+        console.log(key)
+        if(key == k){
+          for(var x  = 0;x < k.length;x++){
+            var y = k[x];
+            var z = 'Comments/' + y;
+            console.log(z);
+            firebase.database().ref(z).on('value',(data2:any)=>{
+              var UserComments = data2.val();
+              console.log(UserComments)
+              var k2 = Object.keys(UserComments)
+              for(var a = 0;a < k2.length;a++){
+                 var key2 = k2[a]
+                 let obj = {
+                  comment: UserComments[key2].comment,
+                  userImage: UserComments[key2].userImage,
+                  userKey: UserComments[key2].userKey,
+                  username: UserComments[key2].username,
+                 }
+                 console.log(obj)
+                 this.userCommentsArray2.push(obj)
+              }
+
+            })
+            accpt(this.userCommentsArray2)
+          }
+        }
       })
     })
   }
@@ -236,9 +279,6 @@ export class DatabaseProvider {
               accpt(Userdetails[keys2])
             })
             break
-          }
-          else{
-            alert("you are not logged in")
           }
         }
       })

@@ -94,13 +94,13 @@
 
         <ion-list *ngSwitchCase="'reviews'" class="segcontainer__seg">
             <div class="commentslist">
-                <div class="chatBubble" *ngFor="let n of commentArr; let i = index; let odd = 'left'; let even = 'right'">
-                    <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
+                <div class="chatBubble" *ngFor="let n of commentsArray; let i = index; let odd = 'left'; let even = 'right'">
+                    <img class="profile-pic even" src="{{n.userImage}}">
                     <div class="chat-bubble left">
                         <!-- commments go here -->
-                        <div class="message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt repellat reprehenderit velit, ab itaque voluptatum tenetur labore quas sequi odio in, maiores eum temporibus doloremque nulla sit accusamus impedit magni?</div>
+                        <div class="message">{{n.comment}}</div>
                         <div class="message-detail">
-                            <span style="font-weight:bold;">Sello Mcube </span>,
+                            <span style="font-weight:bold;">{{n.username}} </span>,
                             <span>12062018</span>
                         </div>
                     </div>
@@ -122,10 +122,10 @@
                 <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
               <div class="contentflex">
                 <div class="group">
-                  <input  type="text" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
+                  <input  type="text" [ngModel]="input" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
                 </div>
                   <button ion-button end class="hero--back" >
-                    <ion-icon name="send" (messageCreate)="SendMessage($event)" (click)="messagestate = 'not sending'"></ion-icon>
+                    <ion-icon name="send" (click)="messagestate = 'not sending';onMessageAdded(message.value) "></ion-icon>
                   </button>
               </div>
                
@@ -134,8 +134,8 @@
     </div>
 </ion-content>
 
-<!-- <ion-footer *ngIf="userStatus==false ||obj == null ||obj == undefined">
+<ion-footer *ngIf="userStatus==false ||obj == null ||obj == undefined">
     <ion-toolbar color="primary" (click)="Booking()">
         <ion-title align="center">Request Booking</ion-title>
     </ion-toolbar>
-</ion-footer> -->
+</ion-footer>

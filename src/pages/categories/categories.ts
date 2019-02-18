@@ -4,6 +4,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
+import { ViewProfilePage } from '../view-profile/view-profile';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -23,7 +24,7 @@ export class CategoriesPage {
   getprofileArr=[];
   constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase:DatabaseProvider,public alertCtrl: AlertController) {
    this.PulsedbDatabase.getAllDjs().then((data:any)=>{
-    this.getprofileArr =data
+    this.getprofileArr = data
      console.log(this.getprofileArr);
    })
    this.selectGenre()
@@ -42,9 +43,9 @@ export class CategoriesPage {
     console.log(i)
     let dj = i;
     console.log(dj)
-    this.navCtrl.push('ViewProfilePage', {Djkey: dj})
+    this.navCtrl.push(ViewProfilePage, {Djkey: dj})
   }
-  
+
   GoToProfilePage() {
     this.PulsedbDatabase.checkAuthState().then(data => {
       if (data == false) {
@@ -56,7 +57,7 @@ export class CategoriesPage {
               text: 'Sign in',
               handler: data => {
                 var opt = "profile";
-                this.navCtrl.push('LoginPage', { option: opt })
+                this.navCtrl.push(LoginPage, { option: opt })
               }
             },
             {
@@ -69,7 +70,7 @@ export class CategoriesPage {
         });
         alert.present();
       } else {
-        this.navCtrl.push('ProfilePage')
+        this.navCtrl.push(ProfilePage)
       }
 
     })

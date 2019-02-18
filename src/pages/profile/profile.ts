@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the ProfilePage page.
@@ -37,7 +38,12 @@ export class ProfilePage {
     })
   }
 
-
+logout(){
+  firebase.auth().signOut().then(()=>{
+    console.log("sign out succesful");
+    this.navCtrl.setRoot(LoginPage);
+  })
+}
 
 
 

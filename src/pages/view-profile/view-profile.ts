@@ -15,6 +15,10 @@ import { DatabaseProvider } from '../../providers/database/database';
   templateUrl: 'view-profile.html',
 })
 export class ViewProfilePage {
+  commentsArray = [];
+  userKey: any;
+  userImage: void;
+  UserName: any;
   profile;
   messagestate: string;
   userstatus: any;
@@ -27,7 +31,9 @@ export class ViewProfilePage {
   djImage;
   djCity;
   djKey;
+  userDetails;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
+    this.profile = this.navParams.get("Djkey")
   }
 
   ionViewDidLoad() {
@@ -48,14 +54,34 @@ export class ViewProfilePage {
 
     this.database.getuser().then((data:any)=>{
       console.log(data)
+      this.userDetails = data;
+      this.UserName = this.userDetails.fullname;
+      this.userImage = this.userDetails.img;
+      this.userKey = this.userDetails.key;
+
+      console.log(this.UserName)
+    })
+
+    console.log(this.djKey)
+    this.database.getComments(this.djKey).then((data:any)=>{
+      console.log(data)
+      this.commentsArray = data;
     })
   }
   
 
-  SendMessage(event:string){
-    
-
-    // this.database.makeComment()
+  onMessageAdded(message){
+    alert("ive been clicked")
+    let profile = this.navParams.get("Djkey")
+    let DjProfile;
+     DjProfile = profile
+    let djKey =  DjProfile.key2;
+    console.log(profile.key)
+    console.log(djKey)
+    this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message).then((data:any)=>{
+      console.log(data)
+      console.log("data saved")
+    })
   }
 
 }
