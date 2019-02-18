@@ -8,10 +8,14 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 import { DatabaseProvider } from '../providers/database/database';
+import { ViewprofilePage } from '../pages/viewprofile/viewprofile';
+import { ChatboxComponent } from '../components/chatbox/chatbox';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    ViewprofilePage,
+    ChatboxComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +24,9 @@ import { DatabaseProvider } from '../providers/database/database';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    ViewprofilePage,
+    ChatboxComponent
   ],
   providers: [
     StatusBar,

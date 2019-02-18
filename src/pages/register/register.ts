@@ -41,32 +41,32 @@ export class RegisterPage implements OnInit{
     });
     loading.present();
 
-    this.db.registerUser(form.value.email, form.value.password).then(data => {
-      let userID = firebase.auth().currentUser.uid;
-      let registrationObj = {
-        name: form.value.name,
-        surname: form.value.surname,
-        password: form.value.password,
-        email: form.value.email,
-        phone: form.value.phone
-      };
-    }).catch((error)=>{
-      console.log(error);
-      loading.dismiss();
-      //check if the email already exists
-      if(error.code == 'auth/email-already-in-use'){
-        this.navCtrl.push('LoginPage');
-      }
-      const alert = this.alertCtrl.create({
-        title: error.code,
-        subTitle: error.message,
-        buttons: [{
-          text: 'Okay',
-          handler: ()=>{
-          }
-        }]
-      })
-      alert.present();
-    })
+    // this.db.registerUser(form.value.email, form.value.password).then(data => {
+    //   let userID = firebase.auth().currentUser.uid;
+    //   let registrationObj = {
+    //     name: form.value.name,
+    //     surname: form.value.surname,
+    //     password: form.value.password,
+    //     email: form.value.email,
+    //     phone: form.value.phone
+    //   };
+    // }).catch((error)=>{
+    //   console.log(error);
+    //   loading.dismiss();
+    //   //check if the email already exists
+    //   if(error.code == 'auth/email-already-in-use'){
+    //     this.navCtrl.push('LoginPage');
+    //   }
+    //   const alert = this.alertCtrl.create({
+    //     title: error.code,
+    //     subTitle: error.message,
+    //     buttons: [{
+    //       text: 'Okay',
+    //       handler: ()=>{
+    //       }
+    //     }]
+    //   })
+    //   alert.present();
+    // })
   }
 }
