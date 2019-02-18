@@ -8,20 +8,12 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 import { DatabaseProvider } from '../providers/database/database';
-import { LoginPage } from '../pages/login/login';
-import { ProfilePage } from '../pages/profile/profile';
-import {  ViewProfilePage } from '../pages/view-profile/view-profile';
-import { ChatboxComponent } from '../components/chatbox/chatbox';
-import { CategoriesPage } from '../pages/categories/categories';
+
  
 @NgModule({
   declarations: [
-    MyApp,
-    LoginPage,
-    ProfilePage,
-    ViewProfilePage,
-    ChatboxComponent,
-    CategoriesPage
+    MyApp
+
   ],
   imports: [
     BrowserModule,
@@ -30,12 +22,9 @@ import { CategoriesPage } from '../pages/categories/categories';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    LoginPage,
-    ProfilePage,
-    ViewProfilePage,
-    ChatboxComponent,
-    CategoriesPage
+    MyApp
+
+    
   ],
   providers: [
     StatusBar,

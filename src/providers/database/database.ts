@@ -18,6 +18,8 @@ export class DatabaseProvider {
   ProfileArr = new Array();
   pic2;
   stayLoggedIn
+  stagename
+  url
   constructor(public http: HttpClient, public alertCtrl: AlertController,private ngzone: NgZone,public loadingCtrl: LoadingController,public toastCtrl: ToastController) {
     console.log('Hello DatabaseProvider Provider');
   }
@@ -212,17 +214,22 @@ export class DatabaseProvider {
     })
   }
 
-  update(name, email, downloadurl, address, surname) {
+  update(fullname, email, img, stagename, gender,genre,price,payment,bio,city) {
     this.ProfileArr.length = 0;
     return new Promise((pass, fail) => {
       this.ngzone.run(() => {
         var user = firebase.auth().currentUser
         firebase.database().ref('Registration/' + user.uid).update({
-          name: name,
+          fullname: fullname,
           email: email,
-          downloadurl: downloadurl,
-          address: address,
-          surname: surname
+          img: img,
+          stagename: stagename,
+          gender: gender,
+          genre: genre,
+          payment: payment,
+          city: city,
+          price: price,
+          bio:bio
         });
       })
     })
@@ -255,6 +262,104 @@ export class DatabaseProvider {
         });
       });
     });
+  }
+
+  retrieveProfile() {
+    let userID = firebase.auth().currentUser;
+    return firebase.database().ref("Registration/" + userID.uid)
+  }
+  getUserID() {
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        var userID = firebase.auth().currentUser
+        firebase.database().ref("Registration").on("value", (data: any) => {
+          var profileDetails = data.val();
+          if (profileDetails !== null) {
+          }
+          console.log(profileDetails);
+          accpt(userID.uid);
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
+  storeImgur(url) {
+    this.url = url;
+    console.log(this.url)
+  }
+
+  viewUserProfile() {
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        let user = firebase.auth().currentUser
+        firebase.database().ref("Registration").on("value", (data: any) => {
+          let DisplayData = data.val();
+          let keys = Object.keys(DisplayData);
+          if (DisplayData !== null) {
+          }
+          for (var i = 0; i < keys.length; i++) {
+            this.storeImgur(DisplayData[keys[i]].img);
+            console.log(DisplayData[keys[i]].img)
+          }
+          accpt(DisplayData);
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
+
+  // UploadMusic(){
+  //   let user = firebase.auth().currentUser
+  //   firebase.database().ref('DjLinkUpload/' + user.uid).push({
+  
+  //     key: user.uid
+  //   })
+  // }
+  UploadMusic(pic) {
+    var MusicName = "SA" + Date.now();
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Please wait',
+      duration: 8000
+    });
+    const toast = this.toastCtrl.create({
+      message: 'your imagine had been uploaded!',
+      duration: 3000
+    });
+    loading.present();
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        firebase.storage().ref(MusicName + "jpg").putString(pic, 'data_url').then(() => {
+          // toast.present();
+          accpt(MusicName);
+          console.log(MusicName)
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
+  storeToDB(MusicName,picName) {
+    var d = "SA" + Date.now();
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        var storageRef = firebase.storage().ref(MusicName + "jpg");
+        storageRef.getDownloadURL().then(url => {
+          var user = firebase.auth().currentUser;
+          var link = url;
+          firebase.database().ref('uploadLink/').push({
+            downloadurl: link,
+            name: MusicName,
+          });
+          accpt('success');
+        }, Error => {
+          rejc(Error.message);
+          console.log(Error.message);
+        });
+      })
+    })
   }
 
 

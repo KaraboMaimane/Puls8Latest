@@ -49,7 +49,7 @@ export class CategoriesPage {
               text: 'Sign in',
               handler: data => {
                 var opt = "profile";
-                this.navCtrl.push(LoginPage, { option: opt })
+                this.navCtrl.push('LoginPage', { option: opt })
               }
             },
             {
@@ -62,7 +62,7 @@ export class CategoriesPage {
         });
         alert.present();
       } else {
-        this.navCtrl.push(ProfilePage)
+        this.navCtrl.push('ProfilePage')
       }
 
     })

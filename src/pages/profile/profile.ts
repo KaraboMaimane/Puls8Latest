@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
+import { CategoriesPage } from '../categories/categories';
 
 /**
  * Generated class for the ProfilePage page.
@@ -35,6 +36,9 @@ export class ProfilePage {
   img
   stagename
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
+  
+  }
+  ionViewDidEnter() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
@@ -58,21 +62,22 @@ export class ProfilePage {
       }
     })
   }
-
-
-
-
-
-  nextpage(page: string) {
-    this.navCtrl.push(page);
+  edit(page: string) {
+    this.navCtrl.push('EditDjProfilePage');
 
   }
   logout() {
     this.PulsedbDatabase.logout().then(() => {
-      this.navCtrl.push('LoginPage');
+      this.navCtrl.push(CategoriesPage);
     }, (error) => {
       console.log(error.message);
     })
   }
+
+  upload(){
+    this.navCtrl.push('TrackUploadPage')
+  }
+
+
 
 }

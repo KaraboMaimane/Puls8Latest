@@ -3,8 +3,6 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
-import { LoginPage } from '../pages/login/login';
-import { CategoriesPage } from '../pages/categories/categories';
 import { DatabaseProvider } from '../providers/database/database';
 @Component({
   templateUrl: 'app.html'
@@ -18,7 +16,7 @@ export class MyApp {
       authDomain: "puls8-database.firebaseapp.com",
       databaseURL: "https://puls8-database.firebaseio.com",
       projectId: "puls8-database",
-      storageBucket: "",
+      storageBucket: "puls8-database.appspot.com",
       messagingSenderId: "212472551538"
     })
     
@@ -31,10 +29,10 @@ export class MyApp {
 
     PulsedbDatabase.checkstate().then((data:any)=>{
       if (data ==1){
-        this.rootPage =  CategoriesPage
+        this.rootPage =  'CategoriesPage'
       }
       else {
-        this.rootPage = LoginPage
+        this.rootPage = 'LoginPage'
       }
      })
   }
