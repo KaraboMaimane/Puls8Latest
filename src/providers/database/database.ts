@@ -73,9 +73,9 @@ export class DatabaseProvider {
           }
         });
       })
-    })
+    }) 
   }
-  Register(fullname, email, password) {
+  Register(fullname, email, password) { 
     return new Promise((accpt, rej) => {
       firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
         var user = firebase.auth().currentUser;
@@ -95,11 +95,10 @@ export class DatabaseProvider {
           message: Error.message,
           buttons: ['Dismiss']
         });
-        alert.present();
+        alert.present(); 
       })
     })
-
-  }
+  } 
 
   getAllDjs() {
      this.allDjSArray.length =0;
@@ -126,7 +125,7 @@ export class DatabaseProvider {
                 email: djInfomation[k].email,
                 fullname: djInfomation[k].fullname,
                 gender: djInfomation[k].gender,
-                genre: djInfomation[k].genre,
+                genre: djInfomation[k].genre, 
                 payment: djInfomation[k].payment,
                 price: djInfomation[k].price,
                 role: djInfomation[k].role,
@@ -195,6 +194,11 @@ export class DatabaseProvider {
     })
   }
 
+  register(email: string, password: string){
+    return firebase.auth().createUserWithEmailAndPassword(email, password);
+  }
 
-
+  resetpassword(email: string){
+    return firebase.auth().sendPasswordResetEmail(email);
+  }
 }

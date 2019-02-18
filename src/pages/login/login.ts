@@ -11,6 +11,7 @@ import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
 import { ProfilePage } from "../profile/profile";
+import swal from 'sweetalert2';
 
 /**
 * Generated class for the LoginPage page.
@@ -39,8 +40,10 @@ export class LoginPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
+    // swal.fire('Karabo');
   }
   login(form: NgForm) {
+    console.log('yellow')
     if(form.valid){
       this.PulsedbDatabase.loginx(form.value.email, form.value.password).then((user) => {
         console.log(user);
@@ -84,50 +87,36 @@ export class LoginPage {
 
   }
 
-  // resetPassword() {
-  //   const prompt = this.alertCtrl.create({
-  //     title: "Auth",
-  //     message: "Enter your email to reset your password",
-  //     inputs: [
-  //       {
-  //         name: "email",
-  //         placeholder: "Example@gmail.com"
-  //       }
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: "Cancel",
-  //         handler: data => {
-  //           console.log("Cancel clicked");
-  //           this.navCtrl.setRoot('LoginPage');
-  //         }
-  //       },
-  //       {
-  //         text: "Save",
-  //         handler: data => {
-  //           this.db.resetPassword(data.email).then(
-  //             () => {
-  //               const alert = this.alertCtrl.create({
-  //                 title: "Caution",
-  //                 message: "your request is been proccessed check your email ",
-  //                 buttons: ["OK"]
-  //               });
-  //               alert.present();
-  //             },
-  //             error => {
-  //               const alert = this.alertCtrl.create({
-  //                 title: "Caution",
-  //                 message: error.message,
-  //                 buttons: ["OK"]
-  //               });
-  //               alert.present();
-  //             }
-  //           );
-  //           console.log("Saved clicked");
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   prompt.present();
-  // }
+  resetpassword() {
+     swal.fire({
+      title: 'Enter your email address',
+      input: 'email',
+      showCancelButton: true,
+      inputValidator: (value) => {
+          console.log(value)
+          this.PulsedbDatabase.resetpassword(value).then((email) => {
+            console.log(email);
+            swal.fire({
+              position: 'center',
+              type: 'success',
+              title: `A Password Reset Email Has Been Sent to ${value}`,
+              showConfirmButton: false,
+              timer: 2500
+            }).catch((error)=>{
+              swal.fire({
+                type: 'error',
+                title: 'Oh Snap!',
+                text: `${error.message}`
+              })
+            })
+          })
+        return !value && 'Please enter a valid email address!';
+      }
+
+    })
+  }
+
+  nextpage(page: string){
+    this.navCtrl.push(page);
+  }
 }
