@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ViewprofilePage } from '../viewprofile/viewprofile';
 
 /**
  * Generated class for the SplashPage page.
