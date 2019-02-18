@@ -15,11 +15,16 @@ export class ViewprofilePage {
   profile;
   messagestate: string;
   userstatus: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+   
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewprofilePage');
+    this.profile = this.navParams.get("Djkey")
+    console.log(this.profile)
+    
   }
 
 }

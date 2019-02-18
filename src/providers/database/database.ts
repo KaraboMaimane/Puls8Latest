@@ -67,7 +67,7 @@ export class DatabaseProvider {
                 email: djInfomation[k].email,
                 fullname: djInfomation[k].fullname,
                 gender: djInfomation[k].gender,
-                genre: djInfomation[k].genew,
+                genre: djInfomation[k].genre,
                 payment: djInfomation[k].payment,
                 price: djInfomation[k].price,
                 role: djInfomation[k].role,
