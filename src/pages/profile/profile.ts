@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
 
 /**
@@ -16,15 +17,60 @@ import firebase from 'firebase';
 })
 export class ProfilePage {
 
-  profile: any;
-  messagestate = 'not sending';
+  name;
+  email;
+  surname;
+  pic;
+  track;
+  profileArr = new Array();
+  trackarray = [];
+  bio;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
+    this.PulsedbDatabase.getProfile().then((data:any) => {
+      console.log(data)
+      this.profileArr=data
+      console.log(this.profileArr)
+    this.bio = this.profileArr[0].bio
+  console.log(this.bio)
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public actionSheetCtrl: ActionSheetController) {
+
+    })
   }
 
-   ionViewDidLoad() {
-     console.log('ProfilePage');
-   }
 
+
+
+
+  edit() {
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'Modify your album',
+      buttons: [
+        {
+          text: 'Edit Profile',
+          role: 'Edit Profile',
+          handler: () => {
+            console.log('Edit Profile clicked');
+
+            this.navCtrl.push('EditPage');
+          }
+        }, {
+          text: 'Upload Track',
+          handler: () => {
+            console.log('Upload Track clicked');
+            this.navCtrl.push('UploadPage');
+          }
+        }, {
+
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
 }

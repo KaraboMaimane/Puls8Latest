@@ -2,7 +2,7 @@
   <div class="filtercontainer">
       <ion-item class="dropdown" no-lines>
           <ion-label class="dropdown--text">Filter By:</ion-label>
-          <ion-select name="genre" [(ngModel)]="genre" multiple="false" (ionChange)="input()" interface="popover">
+          <ion-select name="genre" [(ngModel)]="genre" multiple="false" (ionChange)="selectGenre()" interface="popover">
               <ion-option value="Genre"selected disabled>Genre</ion-option>
             <ion-option value="House">House</ion-option>
             <ion-option value="Hip-Hop">Hip-Hop</ion-option>
@@ -79,7 +79,7 @@
         <!-- {{x.stagename}} -->
         <h2 class="card-heading">{{a.stagename}}</h2>
         <!-- {{x.genre}} -->
-        <p>Deep House
+        <p>{{a.genre}}
           <i class="fas fa-star"></i>
         </p>
         <!-- R{{x.price | number:'3.2-5'}}/{{x.payment}} -->
@@ -89,7 +89,7 @@
   </div>
 
   <ion-fab right bottom>
-    <button ion-fab color="primary" (click)="profilePage()">
+    <button ion-fab color="primary" (click)="GoToProfilePage()">
       <ion-icon ios="ios-contact" md="md-contact"></ion-icon>
     </button>
   </ion-fab>
