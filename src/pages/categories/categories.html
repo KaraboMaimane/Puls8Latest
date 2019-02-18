@@ -70,20 +70,20 @@
     </div> -->
 
 
-    <ion-list no-lines>
+    <ion-list no-lines *ngFor="let a of getprofileArr">
         <!-- *ngFor="let x of  arrDj;let i = index" -->
       <ion-item  (click)="viewProfile(i)">
         <ion-thumbnail item-start>
-          <img src='../../assets/dj.JPG' height="2px">
+          <img src='{{a.img}}' height="2px">
         </ion-thumbnail>
         <!-- {{x.stagename}} -->
-        <h2 class="card-heading">Dj Rambo</h2>
+        <h2 class="card-heading">{{a.stagename}}</h2>
         <!-- {{x.genre}} -->
         <p>Deep House
           <i class="fas fa-star"></i>
         </p>
         <!-- R{{x.price | number:'3.2-5'}}/{{x.payment}} -->
-        <button ion-button clear item-end>R2345</button>
+        <button ion-button clear item-end>{{a.price}}</button>
       </ion-item>
     </ion-list>
   </div>

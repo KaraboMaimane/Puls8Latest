@@ -12,12 +12,12 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     firebase.initializeApp({
-      apiKey: "AIzaSyBcha08Y3N17aPJqUm869JYNwoDuKuKZfU",
-      authDomain: "hertzwave-1ce74.firebaseapp.com",
-      databaseURL: "https://hertzwave-1ce74.firebaseio.com",
-      projectId: "hertzwave-1ce74",
-      storageBucket: "hertzwave-1ce74.appspot.com",
-      messagingSenderId: "622484760811"
+      apiKey: "AIzaSyAYvrGMhnVRLP0j30xzzd-eNzd-Kn1ypvY",
+      authDomain: "puls8-database.firebaseapp.com",
+      databaseURL: "https://puls8-database.firebaseio.com",
+      projectId: "puls8-database",
+      storageBucket: "",
+      messagingSenderId: "212472551538"
     })
     
     platform.ready().then(() => {
