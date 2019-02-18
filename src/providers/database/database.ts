@@ -62,7 +62,7 @@ export class DatabaseProvider {
               var k = keys2[j];
               console.log(k)
               let obj = {
-                bio: djInfomation[k].bio,
+                bio: djInfomation[k].bio, 
                 city: djInfomation[k].city,
                 email: djInfomation[k].email,
                 fullname: djInfomation[k].fullname,

@@ -115,10 +115,21 @@
                 </div> -->
             </div>
 
-            <button ion-button icon-only *ngIf="messagestate != 'sending' && userStatus == false" class="comment" (click)="messagestate = 'sending'">
+            <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
                 <ion-icon name="chatbubbles"></ion-icon>
             </button>
-            <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox>
+            <div class="chatbox" *ngIf="messagestate == 'sending'">
+                <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
+              <div class="contentflex">
+                <div class="group">
+                  <input  type="text" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
+                </div>
+                  <button ion-button end class="hero--back" >
+                    <ion-icon name="send" (click)="messagestate = 'not sending'"></ion-icon>
+                  </button>
+              </div>
+               
+              </div>
         </ion-list>
     </div>
 </ion-content>

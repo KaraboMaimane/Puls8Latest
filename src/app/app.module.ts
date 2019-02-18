@@ -8,13 +8,11 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 import { DatabaseProvider } from '../providers/database/database';
-import { ViewprofilePage } from '../pages/viewprofile/viewprofile';
 import { ChatboxComponent } from '../components/chatbox/chatbox';
-
+ 
 @NgModule({
   declarations: [
     MyApp,
-    ViewprofilePage,
     ChatboxComponent
   ],
   imports: [
@@ -25,7 +23,6 @@ import { ChatboxComponent } from '../components/chatbox/chatbox';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ViewprofilePage,
     ChatboxComponent
   ],
   providers: [
