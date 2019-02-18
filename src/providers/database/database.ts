@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable ,NgZone} from '@angular/core';
 import { AlertController,LoadingController } from 'ionic-angular'
-
+import { ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 /*
   Generated class for the DatabaseProvider provider.
@@ -18,7 +18,7 @@ export class DatabaseProvider {
   ProfileArr = new Array();
   pic2;
   stayLoggedIn
-  constructor(public http: HttpClient, public alertCtrl: AlertController,private ngzone: NgZone,public loadingCtrl: LoadingController) {
+  constructor(public http: HttpClient, public alertCtrl: AlertController,private ngzone: NgZone,public loadingCtrl: LoadingController,public toastCtrl: ToastController) {
     console.log('Hello DatabaseProvider Provider');
   }
 
@@ -46,7 +46,6 @@ export class DatabaseProvider {
       stagename: details[k].stagename,
       key: k
     }
-    
       this.ProfileArr.push(obj);
       console.log(this.ProfileArr)
       
@@ -213,6 +212,50 @@ export class DatabaseProvider {
     })
   }
 
+  update(name, email, downloadurl, address, surname) {
+    this.ProfileArr.length = 0;
+    return new Promise((pass, fail) => {
+      this.ngzone.run(() => {
+        var user = firebase.auth().currentUser
+        firebase.database().ref('Registration/' + user.uid).update({
+          name: name,
+          email: email,
+          downloadurl: downloadurl,
+          address: address,
+          surname: surname
+        });
+      })
+    })
+  }
+
+  uploadProfilePic(pic, name) {
+    const toast = this.toastCtrl.create({
+      message: 'Successfully updated!',
+      duration: 3000
+    });
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        toast.present();
+        firebase.storage().ref(name).putString(pic, 'data_url').then(() => {
+          accpt(name);
+          console.log(name);
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
+  logout() {
+    return new Promise((resolve, reject) => {
+      this.ngzone.run(() => {
+        firebase.auth().signOut().then(() => {
+          resolve()
+        }, (error) => {
+          reject(error)
+        });
+      });
+    });
+  }
 
 
 }
