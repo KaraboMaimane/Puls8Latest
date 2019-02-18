@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'view-profile.html',
 })
 export class ViewProfilePage {
-
+  messagestate = 'not sending';
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 

@@ -10,15 +10,18 @@ import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { DatabaseProvider } from '../providers/database/database';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
-import { ViewprofilePage } from '../pages/viewprofile/viewprofile';
+import {  ViewProfilePage } from '../pages/view-profile/view-profile';
 import { ChatboxComponent } from '../components/chatbox/chatbox';
-
+import { CategoriesPage } from '../pages/categories/categories';
+ 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,ProfilePage,
-    ViewprofilePage,
-    ChatboxComponent
+    LoginPage,
+    ProfilePage,
+    ViewProfilePage,
+    ChatboxComponent,
+    CategoriesPage
   ],
   imports: [
     BrowserModule,
@@ -30,8 +33,9 @@ import { ChatboxComponent } from '../components/chatbox/chatbox';
     MyApp,
     LoginPage,
     ProfilePage,
-    ViewprofilePage,
-    ChatboxComponent
+    ViewProfilePage,
+    ChatboxComponent,
+    CategoriesPage
   ],
   providers: [
     StatusBar,

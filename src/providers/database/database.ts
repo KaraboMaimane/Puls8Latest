@@ -15,12 +15,27 @@ import firebase from 'firebase';
 export class DatabaseProvider {
   allDjSArray = new Array();
   DjCategoryArray = new Array();
+  ProfileArr = new Array();
   pic2;
   stayLoggedIn
   constructor(public http: HttpClient, public alertCtrl: AlertController,private ngzone: NgZone,public loadingCtrl: LoadingController) {
     console.log('Hello DatabaseProvider Provider');
   }
 
+
+  getProfile(){
+    return new Promise((resolve, reject) => {
+    let userID = firebase.auth().currentUser;
+    firebase.database().ref("Registration/" + userID.uid).on('value', (data: any) => {
+      let details = data.val();
+      this.ProfileArr.length = 0;
+      console.log(details)
+      this.ProfileArr.push(details);
+      console.log(this.ProfileArr)
+    });
+    resolve(this.ProfileArr)
+  })
+  }
 
   checkstate() {
     return new Promise((resolve, reject) => {
@@ -106,7 +121,7 @@ export class DatabaseProvider {
               var k = keys2[j];
               console.log(k)
               let obj = {
-                bio: djInfomation[k].bio,
+                bio: djInfomation[k].bio, 
                 city: djInfomation[k].city,
                 email: djInfomation[k].email,
                 fullname: djInfomation[k].fullname,
