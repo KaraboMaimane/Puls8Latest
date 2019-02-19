@@ -1,45 +1,96 @@
 <ion-content>
-    <!-- creating the form  
-  giving the form a template variable of f-->
 
-    <div class="contentflex">
-        <form #f="ngForm" (ngSubmit)="login(f)">
-            <div class="contentflex__iconcontainer">
-                <img src="../../assets/imgs/sound-wavesdard.png" class="contentflex__iconcontainer__icon">
-                <div class="contentflex__iconcontainer__heading">
-                    <h1 class="contentflex__iconcontainer__heading--headingtext">Sign In</h1>
+        <div class="contentflex">
+                <form #f="ngForm" (ngSubmit)="login(f)">
+                    <div class="contentflex__iconcontainer">
+                        <img src="../../assets/imgs/sound-wavesdard.png" class="contentflex__iconcontainer__icon">
+                    </div>
+                    <div class="contentflex__formcontent">
+                        <ion-item no-lines>
+                            <ion-label color="light">
+                                <ion-icon name="mail"></ion-icon>
+                            </ion-label>
+                            <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
+                                required></ion-input>
+                        </ion-item>
+        
+                        <ion-item no-lines>
+                            <ion-label color="light">
+                                <ion-icon name="lock"></ion-icon>
+                            </ion-label>
+                            <ion-input type="password" class="contentflex__formcontent--input" placeholder="Password" name="password" pattern=".{6,30}"
+                                id="input" ngModel required></ion-input>
+                        </ion-item>
+                    </div>
+                    <div class="contentflex__buttoncontent">
+                        <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Sign In</button>
+                    </div>
+                </form>
+                <div class="contentflex__buttoncontent2">
+                    <p class="contentflex__buttoncontent2--button" type="submit" ion-button block (click)="signup()">Create Account</p>
+                    <p class="contentflex__buttoncontent2--button" type="submit" ion-button block (click)="resetPassword()">Forgot Password?</p>
                 </div>
             </div>
-            <div class="contentflex__formcontent">
-                <ion-item no-lines>
-                    <ion-label color="light">
-                        <ion-icon name="mail"></ion-icon>
-                    </ion-label>
-                    <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
-                        required></ion-input>
-                </ion-item>
 
-                <ion-item no-lines>
-                    <ion-label color="light">
-                        <ion-icon name="lock"></ion-icon>
-                    </ion-label>
-                    <ion-input type="password" class="contentflex__formcontent--input" placeholder="Password" name="password" pattern=".{6,10}"
-                        id="input" ngModel required></ion-input>
-                </ion-item>
+                <!-- <div class="errmodal">
+        <div class="icon">
+            <ion-icon name="alert"></ion-icon>
+        </div>
+        <div class="textconainer">
+          <p class="message">A There Was An Error Logging You In</p>
+        </div>
+      </div> -->
+
+    <!-- <div class="succmodal">
+        <div class="icon">
+            <ion-icon name="alert"></ion-icon>
+        </div>
+        <div class="textconainer">
+          <p class="message">You Have Been Successfully Logged In!</p>
+        </div>
+      </div> -->
+        
+        <div class="loadcontainer" *ngIf="logloader == 'true'">
+                <div class="loadingmod">
+                    <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+                    <p class="message">Loggin In
+                        <span>.</span>
+                        <span>.</span>
+                        <span>.</span>
+                    </p>
+                </div> 
             </div>
-
-            <div class="contentflex__buttoncontent">
-
-                <!-- creating the submission button for the form 
-                    -[disabled]="!f.valid" will make the button not work unless valid data is entered
-                    -type="submit" triggers the ngsubmit method-->
-                <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Sign
-                    In</button>
-                    <button class="contentflex__buttoncontent--button1" (click)="signup()">New Account? Sign Up</button>
-            <button class="contentflex__buttoncontent--button2">Forgot Password</button>
+          
+            <div class="failcontainer" *ngIf="logfail == 'true'">
+                <div class="alertbox" (click)="logfail = 'false'">
+                    <img src="../../assets/sad.svg" alt="" class="alertimg">
+                    <div class="messagebox">
+                        <p class="alertmessagehead">Ehsan!</p>
+                        <p class="alertmessage">{{message}}</p>
+                        <button class="alertbutton" (click)="logfail = 'false';">Okay</button>
+                    </div>
+                </div>
             </div>
-        </form>
-
-    </div>
-
-</ion-content>
+            
+            <div class="warncontainer" *ngIf="logwarn == 'true'">
+                <div class="alertbox" (click)="logwarn = 'false'">
+                  <img src="../../assets/thinking.svg" alt="" class="alertimg">
+                  <div class="messagebox">
+                      <p class="alertmessagehead">Whoa, Hey There...</p>
+                      <p class="alertmessage">Your Email Cannot Be Empty</p>
+                      <button class="alertbutton" (click)="logwarn = 'false'">Okay</button>
+                  </div>
+                </div>
+              </div>
+          
+            <div class="succcontainer" *ngIf="logsucc == 'true'">
+              <div class="alertbox">
+                <img src="../../assets/happy.svg" alt="" class="alertimg">
+                <div class="messagebox">
+                    <p class="alertmessagehead">Yesss!</p>
+                    <p class="alertmessage">You Have Successfully Logged In</p>
+                    <button class="alertbutton" (click)="logsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
+                </div>
+              </div>
+            </div>
+    </ion-content>

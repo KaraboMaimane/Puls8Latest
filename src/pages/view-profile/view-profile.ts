@@ -84,4 +84,14 @@ export class ViewProfilePage {
     })
   }
 
+  booking(){
+    let Obj = {
+      djName: this.djName,
+      djEmail:  this.djEmail,
+      djKey: this.djKey,
+    }
+    console.log(Obj)
+    this.navCtrl.push('ChatRequestPage', { Djkey:Obj})
+  }
+
 }

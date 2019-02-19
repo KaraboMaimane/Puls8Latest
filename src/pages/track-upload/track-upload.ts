@@ -140,31 +140,4 @@ export class TrackUploadPage {
  
   }
 }
-
-  saveArtist(event: any)
-  {
-    console.log(this.artistName);
-
-      let obj={
-        artistName:this.artistName,
-        trackName:this.trackName
-      }
-
-      var userId = firebase.auth().currentUser.uid;
-      this.db.saveArtists(userId,obj).then(()=>{
-        
-        let loading = this.loadingCtrl.create({
-          content: 'Please wait...',
-          duration: 10000
-          
-        });
-      
-        loading.present();
-      
-        setTimeout(() => {
-          this.navCtrl.setRoot(ProfilePage);
-        }, 10000);
-      });
-      
-  }
 }

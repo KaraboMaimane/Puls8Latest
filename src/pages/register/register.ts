@@ -10,6 +10,7 @@ import {
 import { DatabaseProvider } from "../../providers/database/database";
 import { NgForm } from "@angular/forms";
 import firebase from "firebase";
+import swal from 'sweetalert2';
 
 @IonicPage()
 @Component({
@@ -27,46 +28,32 @@ export class RegisterPage implements OnInit{
   ) {}
 
   ngOnInit(){
+
     if(this.navParams.get('role')){
       this.role = this.navParams.get('role');
       console.log(this.role);
     }else{
       console.log('nothing here')
     }
+
+    
   }
 
   register(form: NgForm) {
-    const loading = this.loadingCtrl.create({
-      content: `Registering ${form.value.email}...`
+    console.log(form.value)
+    this.db.register(form.value.fullnameform.value.email, form.value.password).then((data)=>{
+      let user = firebase.auth().currentUser;
+        firebase.database().ref('Registration/' + user.uid).push({
+          fullname: form.value.fullname,
+          email: form.value.email,
+          role: "Audience",
+          userType: "user",
+          img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
+          key: user.uid
+        })
+        console.log(data);
+    }).catch((error)=>{
+      console.log(error);
     });
-    loading.present();
-
-    // this.db.registerUser(form.value.email, form.value.password).then(data => {
-    //   let userID = firebase.auth().currentUser.uid;
-    //   let registrationObj = {
-    //     name: form.value.name,
-    //     surname: form.value.surname,
-    //     password: form.value.password,
-    //     email: form.value.email,
-    //     phone: form.value.phone
-    //   };
-    // }).catch((error)=>{
-    //   console.log(error);
-    //   loading.dismiss();
-    //   //check if the email already exists
-    //   if(error.code == 'auth/email-already-in-use'){
-    //     this.navCtrl.push('LoginPage');
-    //   }
-    //   const alert = this.alertCtrl.create({
-    //     title: error.code,
-    //     subTitle: error.message,
-    //     buttons: [{
-    //       text: 'Okay',
-    //       handler: ()=>{
-    //       }
-    //     }]
-    //   })
-    //   alert.present();
-    // })
   }
 }

@@ -17,8 +17,8 @@ export class SplashPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     let timer = setInterval(()=>{
-      this.navCtrl.setRoot('CategoriesPage');clearInterval(timer)
+      this.navCtrl.setRoot('CategoryPage');clearInterval(timer)
     }, 5000);
   }
 
-}
+} 

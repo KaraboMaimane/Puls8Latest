@@ -2,14 +2,14 @@
         <div class="hero">
             <div class="hero__herobanner">
                 <div class="hero__herobanner__heroimagecontainer">
-                    <img src="../../assets/dj.JPG" alt="" class="hero__herobanner__heroimagecontainer--image">
+                    <img src="{{img}}" alt="" class="hero__herobanner__heroimagecontainer--image">
                 </div>
                 <div class="hero__herobanner__herotagcontainer">
                     <div class="hero__herobanner__herotagcontainer__headingcontainer">
                             <!-- {{fullname | slice:0:20}} -->
-                        <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">Karabo Maimane</h1>
+                        <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">{{fullname}}</h1>
                         <span class="buttoncontainer">
-                            <button ion-button icon-only (click)="edit()">
+                            <button ion-button icon-only (click)="nextpage('EditDjProfilePage')">
                                 <ion-icon ios="ios-create" md="md-create"></ion-icon>
                             </button>
                             <button ion-button icon-only (click)="upload()">
@@ -69,7 +69,7 @@
                     <div class="segcontainer__seg__bio__userProfile">
                         <h2 class="segcontainer__seg__bio__userProfile--bioheading">Bio</h2>
                         <!-- bio goes here -->
-                        <p class="segcontainer__seg__bio__userProfile--biotext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis earum exercitationem minus? Iure suscipit magnam necessitatibus laborum pariatur. Ratione debitis magni excepturi vitae ipsam laboriosam sunt et doloremque architecto error.</p>
+                        <p class="segcontainer__seg__bio__userProfile--biotext">{{bio}}</p>
                     </div>
                     <!-- <div class="nocontent1" *ngIf="z.bio == '' || z.bio == undefined">
                         <div class="nocontent1__contents">
@@ -84,13 +84,13 @@
                     <div class="segcontainer__seg__profilecontainer__profile">
                         <h2 class="segcontainer__seg__profilecontainer__profile--bioheading">Profile</h2>
                         <p class="segcontainer__seg__profilecontainer__profile--information">
-                            <ion-icon name="contact"></ion-icon> <span class="infotext">Dj Breeze</span>
+                            <ion-icon name="contact"></ion-icon> <span class="infotext">{{stagename}}</span>
                         </p>
                         <p class="segcontainer__seg__profilecontainer__profile--information">
-                            <ion-icon name="mail"></ion-icon> <span class="infotext">maimane23@hotmail.com</span>
+                            <ion-icon name="mail"></ion-icon> <span class="infotext">{{email}}</span>
                         </p>
                         <p class="segcontainer__seg__profilecontainer__profile--information">
-                            <ion-icon name="locate"></ion-icon> <span class="infotext">Johannesburg</span>
+                            <ion-icon name="locate"></ion-icon> <span class="infotext">{{city}}</span>
                         </p>
                     </div>
                 </div>
@@ -110,13 +110,13 @@
                 </div> -->
                 
                 <!-- arrary of chat requests -->
-                <ion-item-sliding class="segcontainer__seg__cardcontainer">
+                <ion-item-sliding class="segcontainer__seg__cardcontainer" *ngFor="let x of inboxArray;let a of index" >
                     <ion-item no-lines class="segcontainer__seg__cardcontainer__cards" (click)="viewBooking(a)">
                         <ion-avatar item-start>
-                            <img src="../../assets/dj.JPG">
+                            <img src="{{x.userImage}}">
                         </ion-avatar>
                         <!-- sender name goes here -->
-                        <p class="segcontainer__seg__cardcontainer__cards--text"><strong>Thando Thabethe</strong>, has requested
+                        <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.username}}</strong>, has requested
                             to chat with you.</p>
                             <!-- date goes here -->
                         <p class="segcontainer__seg__cardcontainer__cards--datetext">23062017</p>
@@ -149,12 +149,12 @@
 
                     <!-- adding commnet in the page Right is for sender and Left is for receiver -->
                         <!-- *ngFor="let n of commentArr ; let i = index; let odd = 'left'; let even = 'right'" -->
-                    <div class="chatBubble">
-                        <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
+                    <div class="chatBubble"*ngFor="let x of commentsArray">
+                        <img class="profile-pic even" src="{{x.userImage}}">
                         <div class="chat-bubble left">
-                            <div class="message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis reprehenderit consequuntur dicta enim dolorem laboriosam quia, dolores nam nemo doloribus natus saepe sunt delectus porro eos ipsum! Quis, animi cumque.</div>
+                            <div class="message">{{x.comment}}</div>
                             <div class="message-detail">
-                                <span style="font-weight:bold;">Karabo Maimane</span>,
+                                <span style="font-weight:bold;">{{x.username}}</span>,
                                 <span>12042018</span>
                             </div>
                         </div>

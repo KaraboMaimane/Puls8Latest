@@ -37,14 +37,13 @@ page-login {
               margin: 0 auto;
               display: block;
               margin-top: 1rem;
-              margin-bottom: 1rem;
+              margin-bottom: 8rem;
             }
             &__heading{
               color: white;
               text-align: center;
               &--headingtext{
                 text-transform: uppercase;
-                
                 font-size: 5rem;
                 font-weight: 300;
               }
@@ -79,12 +78,25 @@ page-login {
                 color: transparent;
             }
             &--button2{
-                background: linear-gradient(rgba($color-primary-dark, .5), rgba($color-primary-light, .8));
-                -webkit-background-clip: text;
-                display: inline-block;
-                color: transparent;
+                // background: linear-gradient(rgba($color-primary-dark, .5), rgba($color-primary-light, .8));
+                // -webkit-background-clip: text;
+                // display: inline-block;
+                // color: transparent;
             }
             
+        }
+
+        &__buttoncontent2{
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            box-shadow: none;
+            &--button{
+                color: rgba($color-primary-light, .8);
+                background: transparent;
+                box-shadow: none;
+            }
         }
     }
 
@@ -93,5 +105,3 @@ page-login {
     }
 
 }
-
-

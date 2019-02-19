@@ -18,6 +18,9 @@ import { LoginPage } from '../login/login';
 })
 export class ProfilePage {
 
+  commentsArray = [];
+  inboxArray = [];
+  userKey: void;
   name;
   email;
   surname;
@@ -26,59 +29,71 @@ export class ProfilePage {
   profileArr = new Array();
   trackarray = [];
   bio;
+  city
+  fullname
+  gender
+  genre
+  payment
+  price
+  role
+  img
+  stagename
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
-    this.PulsedbDatabase.getProfile().then((data:any) => {
-      console.log(data.key)
-      this.profileArr=data
-      console.log(this.profileArr)
-    this.bio = this.profileArr[0].bio
-  console.log(this.bio)
-    })
-
-    this.PulsedbDatabase.getDjcomments().then((data:any)=>{
+    this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
+      this.profileArr = data
+      console.log(this.profileArr)
+      this.bio = this.profileArr[0].bio
+      this.city = this.profileArr[0].city,
+        this.email = this.profileArr[0].email,
+        this.fullname = this.profileArr[0].fullname,
+        this.gender = this.profileArr[0].gender,
+        this.genre = this.profileArr[0].genre,
+        this.payment = this.profileArr[0].payment,
+        this.price = this.profileArr[0].price,
+        this.role = this.profileArr[0].role,
+        this.img = this.profileArr[0].img,
+        this.stagename = this.profileArr[0].stagename,
+        this.userKey = this.profileArr[0].user
+        console.log(this.userKey)
+
+        this.PulsedbDatabase.getComments(this.userKey).then((data:any)=>{
+          console.log(data)
+          this.commentsArray = data;
+        })
+        this.PulsedbDatabase.getDjInbox(this.userKey).then((data:any)=>{
+          console.log(data)
+          this.inboxArray = data;
+        })
+
+      if (this.role != "Dj") {
+
+      }
     })
   }
 
-logout(){
-  firebase.auth().signOut().then(()=>{
-    console.log("sign out succesful");
-    this.navCtrl.setRoot(LoginPage);
-  })
-}
-
-
-
-  edit() {
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Modify your album',
-      buttons: [
-        {
-          text: 'Edit Profile',
-          role: 'Edit Profile',
-          handler: () => {
-            console.log('Edit Profile clicked');
-
-            this.navCtrl.push('EditPage');
-          }
-        }, {
-          text: 'Upload Track',
-          handler: () => {
-            console.log('Upload Track clicked');
-            this.navCtrl.push('UploadPage');
-          }
-        }, {
-
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
+  ionViewDidLoad(){
+    
   }
+
+  viewBooking(i){
+    console.log(i)
+    let userInfo = i;
+    this.navCtrl.push('ViewChatRequestPage', {userObj: userInfo})
+  }
+
+  nextpage(page: string) {
+    this.navCtrl.push(page);
+
+  }
+  logout() {
+    this.PulsedbDatabase.logout().then(() => {
+      this.navCtrl.push('LoginPage');
+    }, (error) => {
+      console.log(error.message);
+    })
+  }
+
+
 
 }

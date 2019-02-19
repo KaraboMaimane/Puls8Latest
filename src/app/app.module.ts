@@ -17,11 +17,6 @@ import { CategoriesPage } from '../pages/categories/categories';
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
-    ProfilePage,
-    ViewProfilePage,
-    ChatboxComponent,
-    CategoriesPage
   ],
   imports: [
     BrowserModule,
@@ -31,11 +26,6 @@ import { CategoriesPage } from '../pages/categories/categories';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage,
-    ProfilePage,
-    ViewProfilePage,
-    ChatboxComponent,
-    CategoriesPage
   ],
   providers: [
     StatusBar,
