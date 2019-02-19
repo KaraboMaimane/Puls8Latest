@@ -100,6 +100,56 @@ export class DatabaseProvider {
       })
     })
   }
+  login(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
+  resetPassword(email) {
+    return new Promise((resolve, reject) => {
+      this.ngzone.run(() => {
+        if (email == null || email == undefined) {
+          const alert = this.alertCtrl.create({
+            subTitle: 'Please enter your Email.',
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+        else if (email != null || email != undefined) {
+          firebase.auth().sendPasswordResetEmail(email).then(() => {
+            const alert = this.alertCtrl.create({
+              title: 'Password request Sent',
+              subTitle: "We've sent you and email with a reset link, go to your email to recover your account.",
+              buttons: ['OK']
+
+            });
+            alert.present();
+            resolve()
+          }, Error => {
+            const alert = this.alertCtrl.create({
+              subTitle: Error.message,
+              buttons: ['OK']
+            });
+            alert.present();
+            resolve()
+          });
+        }
+      })
+    }).catch((error) => {
+      const alert = this.alertCtrl.create({
+        subTitle: error.message,
+        buttons: [
+          {
+            text: 'ok',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          }
+        ]
+      });
+      alert.present();
+    })
+  }
+
   loginx(email, password) {
     // let loading = this.loadingCtrl.create({
     //   spinner: 'bubbles',

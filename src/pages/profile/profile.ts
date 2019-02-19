@@ -2,11 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
-<<<<<<< HEAD
-import { LoginPage } from '../login/login';
-=======
 import { CategoriesPage } from '../categories/categories';
->>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
 /**
  * Generated class for the ProfilePage page.
@@ -64,7 +60,6 @@ export class ProfilePage {
         this.userKey = this.profileArr[0].user
         console.log(this.userKey)
 
-<<<<<<< HEAD
         this.PulsedbDatabase.getComments(this.userKey).then((data:any)=>{
           console.log(data)
           this.commentsArray = data;
@@ -74,31 +69,13 @@ export class ProfilePage {
           this.inboxArray = data;
         })
 
-=======
->>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
       if (this.role != "Dj") {
 
       }
     })
   }
-<<<<<<< HEAD
-
-  ionViewDidLoad(){
-    
-  }
-
-  viewBooking(i){
-    console.log(i)
-    let userInfo = i;
-    this.navCtrl.push('ViewChatRequestPage', {userObj: userInfo})
-  }
-
-  nextpage(page: string) {
-    this.navCtrl.push(page);
-=======
   edit(page: string) {
     this.navCtrl.push('EditDjProfilePage');
->>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
   }
   logout() {
@@ -109,13 +86,10 @@ export class ProfilePage {
     })
   }
 
-<<<<<<< HEAD
-=======
   upload() {
     this.navCtrl.push('TrackUploadPage')
   }
 
->>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
 
 }
