@@ -142,20 +142,6 @@ export class UploadPage {
     }
   }
 
-  saveArtist(event: any) {
-    console.log(this.artistName);
-
-    let obj = {
-      artistName: this.artistName,
-      trackName: this.trackName
-    };
-
-    let userId = firebase.auth().currentUser.uid;
-    this.db.saveArtists(userId, obj).then(() => {
-      this.navCtrl.setRoot('ProfilePage');
-    });
-  }
-
   trackUpload(form: NgForm){
     console.log();
     let reader = new FileReader();

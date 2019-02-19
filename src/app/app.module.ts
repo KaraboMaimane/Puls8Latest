@@ -12,8 +12,7 @@ import { DatabaseProvider } from '../providers/database/database';
  
 @NgModule({
   declarations: [
-    MyApp
-
+    MyApp,
   ],
   imports: [
     BrowserModule,
@@ -22,9 +21,7 @@ import { DatabaseProvider } from '../providers/database/database';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
-
-    
+    MyApp,
   ],
   providers: [
     StatusBar,

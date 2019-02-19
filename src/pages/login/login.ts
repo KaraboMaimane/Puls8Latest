@@ -1,5 +1,5 @@
 
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   IonicPage,
   NavController,
@@ -10,7 +10,7 @@ import { NgForm } from "@angular/forms";
 import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
-import { ProfilePage } from "../profile/profile";
+// import swal from 'sweetalert2';
 
 /**
 * Generated class for the LoginPage page.
@@ -28,6 +28,11 @@ import { ProfilePage } from "../profile/profile";
 export class LoginPage {
   email;
   password;
+  logloader: string;
+  logwarn: string;
+  logfail: string;
+  logsucc: string;
+  message: string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -37,97 +42,101 @@ export class LoginPage {
     public loadingCtrl: LoadingController
   ) {}
 
+  // ngOnInit(){
+  //   this.logloader = 'false';
+  //   this.logwarn = 'false';
+  //   this.logfail = 'false';
+  //   this.logsucc = 'false';
+  //   this.message = 'false';
+  // }
+
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
   login(form: NgForm) {
-    if(form.valid){
-      this.PulsedbDatabase.loginx(form.value.email, form.value.password).then((user) => {
-        console.log(user);
-        if (user.user.emailVerified == true) {
-          if (form.value.email == undefined
-            || form.value.password == undefined) {
-            const alert = this.alertCtrl.create({
-              // title: "Oh no! ",
-              subTitle: "Please enter your valid email and password to login.",
-              buttons: ['OK'],
-            });
-          } else if (this.email == "") {
-            const alert = this.alertCtrl.create({
-              // title: "No Email",
-              subTitle: "Your email can't be blank.",
-              buttons: ['OK'],
-            });
-            alert.present();
-          }
-          else if (form.value.password  == "") {
-            const alert = this.alertCtrl.create({
-              // title: "No Password",
-              subTitle: "Your password can't be blank",
-              buttons: ['OK'],
-            });
-            alert.present();
-          }
-          this.navCtrl.setRoot('ProfilePage');
+    const loading = this.loadingCtrl.create({
+       content: `Logging in ${form.value.email}...`
+     });
+     loading.present();
+     this.PulsedbDatabase
+       .login(form.value.email, form.value.password)
+       .then(data => {
+         console.log(data.user.emailVerified)
+         // alert(data.user.emailVerified)
+         let userID = firebase.auth().currentUser.uid;
+         loading.dismiss();
+        this.navCtrl.setRoot('CategoriesPage');           
+       })
+       .catch(error => {
+         loading.dismiss();
+         const alert = this.alertCtrl.create({
+           title: 'Caution',
+           subTitle: error.message,
+           buttons: [
+             {
+               text: "Ok",
+               handler: () => {      
+               }
+             }
+           ]
+         });
+         alert.present();
+       });
+   }
+   resetPassword() {
+    const prompt = this.alertCtrl.create({
+      title: "Reser Password",
+      message: "Enter your email to reset your password",
+      cssClass: '.background',
+      inputs: [
+        {
+          name: "email",
+          placeholder: "Example@gmail.com",
+          type: "email"
         }
-      }).catch((error) => {
-        const alert = this.alertCtrl.create({
-          // title: "No Password",
-          subTitle: error.message,
-          buttons: ['OK'],
-        });
-        alert.present();
-      })
-    }else{
-      console.log('error');
-    }
-
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          handler: data => {
+            console.log("Cancel clicked");
+           
+            this.navCtrl.push(LoginPage);
+          }
+        },
+        {
+          text: "Save",
+          handler: data => {
+            this.PulsedbDatabase.resetPassword(data.email).then(
+              () => {
+                const alert = this.alertCtrl.create({
+                  title: "Caution",
+                  message: "your request is been proccessed check your email ",
+                  buttons: ["OK"]
+                });
+                alert.present();
+              },
+              error => {
+                const alert = this.alertCtrl.create({
+                  title: "Caution",
+                  message: error.message,
+                  buttons: ["OK"]
+                });
+                alert.present();
+              }
+            );
+            console.log("Saved clicked");
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
-
-  // resetPassword() {
-  //   const prompt = this.alertCtrl.create({
-  //     title: "Auth",
-  //     message: "Enter your email to reset your password",
-  //     inputs: [
-  //       {
-  //         name: "email",
-  //         placeholder: "Example@gmail.com"
-  //       }
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: "Cancel",
-  //         handler: data => {
-  //           console.log("Cancel clicked");
-  //           this.navCtrl.setRoot('LoginPage');
-  //         }
-  //       },
-  //       {
-  //         text: "Save",
-  //         handler: data => {
-  //           this.db.resetPassword(data.email).then(
-  //             () => {
-  //               const alert = this.alertCtrl.create({
-  //                 title: "Caution",
-  //                 message: "your request is been proccessed check your email ",
-  //                 buttons: ["OK"]
-  //               });
-  //               alert.present();
-  //             },
-  //             error => {
-  //               const alert = this.alertCtrl.create({
-  //                 title: "Caution",
-  //                 message: error.message,
-  //                 buttons: ["OK"]
-  //               });
-  //               alert.present();
-  //             }
-  //           );
-  //           console.log("Saved clicked");
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   prompt.present();
+  // nextpage(page: string){
+  //   this.navCtrl.push(page);
   // }
+
+  GoToSignup() {
+    this.navCtrl.push('RegisterPage')
+  }
 }

@@ -36,15 +36,15 @@ export class ProfilePage {
   img
   stagename
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
-  
+
   }
   ionViewDidEnter() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
       console.log(this.profileArr)
-      this.bio = this.profileArr[0].bio
-      this.city = this.profileArr[0].city,
+        this.bio = this.profileArr[0].bio
+        this.city = this.profileArr[0].city,
         this.email = this.profileArr[0].email,
         this.fullname = this.profileArr[0].fullname,
         this.gender = this.profileArr[0].gender,
@@ -55,7 +55,6 @@ export class ProfilePage {
         this.img = this.profileArr[0].img,
         this.stagename = this.profileArr[0].stagename,
         console.log(this.fullname)
-
 
       if (this.role != "Dj") {
 
@@ -68,13 +67,13 @@ export class ProfilePage {
   }
   logout() {
     this.PulsedbDatabase.logout().then(() => {
-      this.navCtrl.push(CategoriesPage);
+      this.navCtrl.push('CategoriesPage');
     }, (error) => {
       console.log(error.message);
     })
   }
 
-  upload(){
+  upload() {
     this.navCtrl.push('TrackUploadPage')
   }
 

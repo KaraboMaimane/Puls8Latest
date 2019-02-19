@@ -4,6 +4,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
+// import Swal from 'sweetalert2';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -20,22 +21,52 @@ export class CategoriesPage {
   gender;
   genre;
   city;
-  getprofileArr=[];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase:DatabaseProvider,public alertCtrl: AlertController) {
-   this.PulsedbDatabase.getAllDjs().then((data:any)=>{
-    this.getprofileArr =data
-     console.log(this.getprofileArr);
-   })
-   this.selectGenre()
+  getprofileArr = [];
+  getcategoryArr = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
+    this.PulsedbDatabase.getAllDjs().then((data: any) => {
+      this.getprofileArr = data
+      console.log(this.getprofileArr);
+    })
+    this.selectGenre();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CategoriesPage');
   }
+  refreshs() {
+    this.genre = null;
+    this.gender = null;
+    this.city = null;
 
-  selectGenre(){
-    this.PulsedbDatabase.SelectDj(this.genre).then((data)=>{
-      console.log(data)
+  }
+
+  selectGenre() {
+    this.PulsedbDatabase.SelectDj(this.genre).then((data) => {
+      this.getcategoryArr.length = 0;
+      var keys: any = Object.keys(data);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (this.genre == data[k].genre) {
+          let obj = {
+            bio: data[k].bio,
+            city: data[k].city,
+            email: data[k].email,
+            fullname: data[k].fullname,
+            gender: data[k].gender,
+            genre: data[k].genre,
+            payment: data[k].payment,
+            price: data[k].price,
+            role: data[k].role,
+            img: data[k].img,
+            stagename: data[k].stagename,
+            key: k
+          }
+          this.getcategoryArr.push(obj);
+          console.log(this.getcategoryArr);
+          this.getcategoryArr.reverse();
+        }
+      }
     })
   }
   GoToProfilePage() {
@@ -43,19 +74,17 @@ export class CategoriesPage {
       if (data == false) {
         let alert = this.alertCtrl.create({
           subTitle: 'You have to sign in before you can view your profile, would you like to sign in now?',
-          cssClass: 'myAlert',
           buttons: [
             {
               text: 'Sign in',
               handler: data => {
                 var opt = "profile";
-                this.navCtrl.push('LoginPage', { option: opt })
+                this.navCtrl.push('LoginPage')
               }
             },
             {
               text: 'Cancel',
               handler: data => {
-
               }
             }
           ]

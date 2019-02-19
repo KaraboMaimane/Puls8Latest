@@ -34,14 +34,16 @@ export class EditDjProfilePage {
   uid;
   stagename
   downloadurl
-  EditProfileArr=[];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase: DatabaseProvider) {
+  EditProfileArr = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {
+    this.retreivePics1();
   }
 
   ionViewDidLoad() {
+    this.retreivePics1();
     console.log('ionViewDidLoad EditDjProfilePage');
   }
-  ngOnInit(){
+  ngOnInit() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
@@ -64,6 +66,7 @@ export class EditDjProfilePage {
 
       }
     })
+
   }
   UpdateImage(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -76,12 +79,12 @@ export class EditDjProfilePage {
 
   }
 
- 
+
 
   submit(form: NgForm) {
     this.PulsedbDatabase.uploadProfilePic(this.img, form.value.fullname).then(data => {
       console.log('added to db');
-      this.PulsedbDatabase.update(form.value.fullname, form.value.email, this.img, form.value.stagename, form.value.gender,form.value.genre,form.value.price,form.value.payment,form.value.bio,form.value.city).then((data) => {
+      this.PulsedbDatabase.updateDjProfile(form.value.fullname, form.value.email, this.img, form.value.stagename, form.value.gender, form.value.genre, form.value.price, form.value.payment, form.value.bio, form.value.city).then((data) => {
         this.EditProfileArr.push(data);
         console.log(this.EditProfileArr)
       })
@@ -110,13 +113,14 @@ export class EditDjProfilePage {
             downloadurl: data[k].downloadurl
           }
           this.profileArr.push(objt);
+          console.log(this.profileArr)
         }
       }
- 
+
     }, Error => {
       console.log(Error)
     });
-  
-   
+
+
   }
 }

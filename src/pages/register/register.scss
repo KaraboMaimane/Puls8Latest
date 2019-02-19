@@ -1,5 +1,4 @@
 page-register {
-    
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
         background-size: cover !important;
@@ -27,18 +26,19 @@ page-register {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        height: 100vh;
+        height: 80vh;
         &__iconcontainer{
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-bottom: 8rem;
             &__icon{
-              width: 15rem;
+              width: 13rem;
               margin: 0 auto;
               display: block;
               margin-top: 1rem;
-              margin-bottom: 1rem;
+            //   margin-bottom: 6rem;
             }
             &__heading{
               color: white;
@@ -54,7 +54,8 @@ page-register {
 
         &__formcontent{
             width: 80%;
-        }
+            
+                 }
 
         &__buttoncontent{
             width: 80%;

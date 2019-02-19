@@ -1,50 +1,94 @@
 <ion-content padding>
-  <!-- creating the form  
-  giving the form a template variable of f-->
-  <form #f="ngForm" (ngSubmit)="register(f)">
-    <div class="contentflex">
-      <div class="contentflex__iconcontainer">
-        <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">
-        <div class="contentflex__iconcontainer__heading">
-          <h1 class="contentflex__iconcontainer__heading--headingtext">Register</h1>
+    <!-- creating the form  
+    giving the form a template variable of f-->
+    <form #f="ngForm" (ngSubmit)="register(f)">
+      <div class="contentflex">
+        <div class="contentflex__iconcontainer">
+          <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">
+          
+        </div>
+        <div class="contentflex__formcontent">
+          <ion-item no-lines>
+            <ion-label color="light">
+              <ion-icon name="contact"></ion-icon>
+            </ion-label>
+            <!-- input we have
+            name="name" will give our input a variable of "name"
+            required validates that the input is not empty
+            ngModel assigns the name to variable-->
+            <ion-input  maxlength="20" minlength="3" type="name" name="fullname" placeholder="Full Name(20 chars max)" class="contentflex__formcontent--input" id="input" ngModel required></ion-input>
+          </ion-item>
+  
+          <ion-item no-lines>
+            <ion-label color="light">
+              <ion-icon name="mail"></ion-icon>
+            </ion-label>
+            <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
+              required></ion-input>
+          </ion-item>
+  
+  
+          <ion-item no-lines>
+            <ion-label color="light">
+              <ion-icon name="lock"></ion-icon>
+            </ion-label>
+            <ion-input maxlength="20" minlength="6"  type="password" class="contentflex__formcontent--input" placeholder="Password(6 chars min)" name="password" pattern=".{6,30}"
+              id="input" ngModel required></ion-input>
+          </ion-item>
+  
+         
+        </div>
+        <div class="contentflex__buttoncontent">
+          <!-- creating the submission button for the form 
+          -[disabled]="!f.valid" will make the button not work unless valid data is entered
+          -type="submit" triggers the ngsubmit method-->
+          <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Register</button>
+  
         </div>
       </div>
-      <div class="contentflex__formcontent">
-        <ion-item no-lines>
-          <ion-label color="light">
-            <ion-icon name="contact"></ion-icon>
-          </ion-label>
-          <!-- input we have
-          name="name" will give our input a variable of "name"
-          required validates that the input is not empty
-          ngModel assigns the name to variable-->
-          <ion-input type="name" name="name" placeholder="Full names" class="contentflex__formcontent--input" id="input" ngModel required></ion-input>
-        </ion-item>
+    </form>
 
-        <ion-item no-lines>
-          <ion-label color="light">
-            <ion-icon name="mail"></ion-icon>
-          </ion-label>
-          <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
-            required></ion-input>
-        </ion-item>
-
-        <ion-item no-lines>
-          <ion-label color="light">
-            <ion-icon name="lock"></ion-icon>
-          </ion-label>
-          <ion-input type="password" class="contentflex__formcontent--input" placeholder="Password" name="password" pattern=".{6,30}"
-            id="input" ngModel required></ion-input>
-        </ion-item>
+    <div class="loadcontainer" *ngIf="regloader == 'true'">
+        <div class="loadingmod">
+            <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+            <p class="message">Loggin In
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+            </p>
+        </div> 
+    </div>
+  
+    <div class="failcontainer" *ngIf="reg == 'true'">
+        <div class="alertbox" (click)="regfail = 'false'">
+            <img src="../../assets/sad.svg" alt="" class="alertimg">
+            <div class="messagebox">
+                <p class="alertmessagehead">Ehsan!</p>
+                <p class="alertmessage">{{message}}</p>
+                <button class="alertbutton" (click)="regfail = 'false';">Okay</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="warncontainer" *ngIf="regwarn == 'true'">
+        <div class="alertbox" (click)="regwarn = 'false'">
+          <img src="../../assets/thinking.svg" alt="" class="alertimg">
+          <div class="messagebox">
+              <p class="alertmessagehead">Whoa, Hey There...</p>
+              <p class="alertmessage">Your Email Cannot Be Empty</p>
+              <button class="alertbutton" (click)="regwarn = 'false'">Okay</button>
+          </div>
+        </div>
       </div>
-      <div class="contentflex__buttoncontent">
-        <!-- creating the submission button for the form 
-        -[disabled]="!f.valid" will make the button not work unless valid data is entered
-        -type="submit" triggers the ngsubmit method-->
-        <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Register</button>
-
+  
+    <div class="succcontainer" *ngIf="regsucc == 'true'">
+      <div class="alertbox">
+        <img src="../../assets/happy.svg" alt="" class="alertimg">
+        <div class="messagebox">
+            <p class="alertmessagehead">Yesss!</p>
+            <p class="alertmessage">You Have Successfully Logged In</p>
+            <button class="alertbutton" (click)="regsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
+        </div>
       </div>
     </div>
-  </form>
-
-</ion-content>
+  </ion-content>
