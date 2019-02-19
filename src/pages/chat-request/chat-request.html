@@ -11,7 +11,7 @@
    
    </ion-header>
    
-   <ion-content padding>
+   <ion-content>
     <div class="mainContent">
    
       <h1>Confirm Details</h1>
@@ -28,5 +28,10 @@
       </div>
    
       <button class="button" type="submit" ion-button block (click)="send()">Send</button>
+    </div>
+
+    <div class="succtoast" *ngIf="chatsucc == 'true'">
+      <img src="../../assets/happy.svg" alt="" class="icon">
+      <p class="message">Success! Check your inbox.</p>
     </div>
    </ion-content>

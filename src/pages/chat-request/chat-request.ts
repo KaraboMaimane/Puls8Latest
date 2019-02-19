@@ -30,6 +30,7 @@ export class ChatRequestPage {
   djname;
   name;
   message2;
+  chatsucc: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public database: DatabaseProvider) {
     let profile = this.navParams.get("Djkey")
 
@@ -83,6 +84,13 @@ export class ChatRequestPage {
         console.log("Chatroom created",data)
       })
     })
+
+    this.chatsucc = 'true';
+    let timer = setInterval(()=>{
+      this.chatsucc = 'false';
+      this.navCtrl.setRoot('CategoriesPage');
+      clearInterval(timer);
+    },3000);
 
   }
 

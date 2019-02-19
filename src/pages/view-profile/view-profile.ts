@@ -65,7 +65,9 @@ export class ViewProfilePage {
     console.log(this.djKey)
     this.database.getComments(this.djKey).then((data:any)=>{
       console.log(data)
+      this.commentsArray.length =0;
       this.commentsArray = data;
+      this.commentsArray.reverse();
     })
   }
   

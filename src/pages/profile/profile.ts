@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
@@ -16,7 +16,7 @@ import { CategoriesPage } from '../categories/categories';
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
 
   commentsArray = [];
   inboxArray = [];
@@ -38,8 +38,14 @@ export class ProfilePage {
   role
   img
   stagename
+  profile: string;
+  state;
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
 
+  }
+
+  ngOnInit(){
+    this.profile = 'infor';
   }
   ionViewDidEnter() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
@@ -74,10 +80,40 @@ export class ProfilePage {
       }
     })
   }
-  edit(page: string) {
-    this.navCtrl.push('EditDjProfilePage');
+  // edit(page: string) {
+  //   this.PulsedbDatabase.getUser().then(data => {
+  //     console.log(data);
+  //   })
+  //   console.log("in");
+  //   this.PulsedbDatabase.getUserState().then((state: any) => {
+  //     console.log(state)
+  //     this.state = state
+  //     console.log(this.state) 
+  //     if (this.state == 1) {
+  //       this.db.getProfile1().then((data: any) => {
+  //         console.log(data)
+  //         let profile = [];
+  //         profile = data
+  //         this.role = profile[0].role
+  //         console.log(this.role)
+  //         if (this.role == "Audience") {
+  //           this.navCtrl.push('');
+  //         }
+  //         else if (this.role == "Dj") {
+  //           this, this.navCtrl.push(ProfilePage)
+  //         }
+  //         else {
+  //           this.navCtrl.push('CatergoriesPage');
+  //         }
+  //       })
+  //     }
+  //     else if (this.state == 0) {
+  //       console.log('user is offline')
+  //       this.navCtrl.push(LoginPage)
+  //     }
+  //   })
 
-  }
+  // }
   logout() {
     this.PulsedbDatabase.logout().then(() => {
       this.navCtrl.push('CategoriesPage');

@@ -36,11 +36,11 @@ export class EditDjProfilePage {
   downloadurl
   EditProfileArr = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {
-    this.retreivePics1();
+    // this.retreivePics1();
   }
 
   ionViewDidLoad() {
-    this.retreivePics1();
+    // this.retreivePics1();
     console.log('ionViewDidLoad EditDjProfilePage');
   }
   ngOnInit() {
@@ -81,46 +81,46 @@ export class EditDjProfilePage {
 
 
 
-  submit(form: NgForm) {
-    this.PulsedbDatabase.uploadProfilePic(this.img, form.value.fullname).then(data => {
-      console.log('added to db');
-      this.PulsedbDatabase.updateDjProfile(form.value.fullname, form.value.email, this.img, form.value.stagename, form.value.gender, form.value.genre, form.value.price, form.value.payment, form.value.bio, form.value.city).then((data) => {
-        this.EditProfileArr.push(data);
-        console.log(this.EditProfileArr)
-      })
-      this.navCtrl.pop();
-    },
-      Error => {
-        console.log(Error)
-      })
-  }
+  // submit(form: NgForm) {
+  //   this.PulsedbDatabase.uploadProfilePic(this.img, form.value.fullname).then(data => {
+  //     console.log('added to db');
+  //     this.PulsedbDatabase.updateDjProfile(form.value.fullname, form.value.email, this.img, form.value.stagename, form.value.gender, form.value.genre, form.value.price, form.value.payment, form.value.bio, form.value.city).then((data) => {
+  //       this.EditProfileArr.push(data);
+  //       console.log(this.EditProfileArr)
+  //     })
+  //     this.navCtrl.pop();
+  //   },
+  //     Error => {
+  //       console.log(Error)
+  //     })
+  // }
 
-  getUid1() {
-    this.PulsedbDatabase.getUserID().then(data => {
-      this.uid = data
-      console.log(this.uid);
-    })
-  }
-  retreivePics1() {
-    this.profileArr.length = 0;
-    this.getUid1();
-    this.PulsedbDatabase.viewUserProfile().then(data => {
-      var keys: any = Object.keys(data);
-      for (var i = 0; i < keys.length; i++) {
-        var k = keys[i];
-        if (this.uid == data[k].uid) {
-          let objt = {
-            downloadurl: data[k].downloadurl
-          }
-          this.profileArr.push(objt);
-          console.log(this.profileArr)
-        }
-      }
+  // getUid1() {
+  //   this.PulsedbDatabase.getUserID().then(data => {
+  //     this.uid = data
+  //     console.log(this.uid);
+  //   })
+  // }
+  // retreivePics1() {
+  //   this.profileArr.length = 0;
+  //   this.getUid1();
+  //   this.PulsedbDatabase.viewUserProfile().then(data => {
+  //     var keys: any = Object.keys(data);
+  //     for (var i = 0; i < keys.length; i++) {
+  //       var k = keys[i];
+  //       if (this.uid == data[k].uid) {
+  //         let objt = {
+  //           downloadurl: data[k].downloadurl
+  //         }
+  //         this.profileArr.push(objt);
+  //         console.log(this.profileArr)
+  //       }
+  //     }
 
-    }, Error => {
-      console.log(Error)
-    });
+  //   }, Error => {
+  //     console.log(Error)
+  //   });
 
 
-  }
+  // }
 }

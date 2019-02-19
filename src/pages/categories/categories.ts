@@ -27,16 +27,23 @@ export class CategoriesPage implements OnInit{
   logsucc: string;
   logwarn: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
-    this.PulsedbDatabase.getAllDjs().then((data: any) => {
-      this.getprofileArr = data
-      console.log(this.getprofileArr);
-    })
-    this.selectGenre();
+    this.displayDj();
   }
 
   ionViewDidLoad() {
+    // this.displayDj();
     console.log('ionViewDidLoad CategoriesPage');
   } 
+
+  displayDj(){
+    this.PulsedbDatabase.getAllDjs().then((data: any) => {
+      this.getprofileArr.length =0;
+      this.getprofileArr=[];
+      this.getprofileArr = data
+      console.log(this.getprofileArr)
+      
+    })
+  }
 
   ngOnInit(){
     this.logsucc = 'false';
@@ -67,8 +74,8 @@ export class CategoriesPage implements OnInit{
   }
 
   selectGenre() {
-    this.PulsedbDatabase.SelectDj(this.genre).then((data) => {
-      this.getcategoryArr.length = 0;
+    this.PulsedbDatabase.SelectDj(this.genre).then((data:any) => {
+      this.getprofileArr.length = 0;
       var keys: any = Object.keys(data);
       for (var i = 0; i < keys.length; i++) {
         var k = keys[i];
@@ -88,6 +95,9 @@ export class CategoriesPage implements OnInit{
             key: k
           }
           this.getprofileArr.push(obj);
+          this.getprofileArr.length = 0;
+          this.getprofileArr=[];
+          this.getprofileArr = data
           console.log(this.getprofileArr);
           this.getprofileArr.reverse();
         }

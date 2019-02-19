@@ -199,10 +199,10 @@ export class DatabaseProvider {
   // }
 
   getAllDjs() {
-     this.allDjSArray.length =0;
     return new Promise((accpt, rej) => {
       this.allDjSArray.length =0;
       firebase.database().ref('Registration/').on('value', (data: any) => {
+        this.allDjSArray.length =0;
         var Djs = data.val();
         var keys: any = Object.keys(Djs);
         console.log(keys)
@@ -210,7 +210,7 @@ export class DatabaseProvider {
           var x = keys[i];
           var y = 'Registration/' + x;
           firebase.database().ref(y).on('value', (data2: any) => {
-            this.allDjSArray.length =0;
+         
             var djInfomation = data2.val();
             if(data2.val() != null || data2.val() != undefined){
               var keys2: any = Object.keys(djInfomation);
@@ -238,7 +238,7 @@ export class DatabaseProvider {
                   this.allDjSArray.push(obj);
                   console.log(obj)
                 }
-  
+   
               }
             }else{
               this.allDjSArray = null;
@@ -255,6 +255,7 @@ export class DatabaseProvider {
   
   SelectDj(category) {
     return new Promise((accpt, rej) => {
+      this.allDjSArray.length =0;
       firebase.database().ref('Registration/').on('value', (data: any) => {
         var Djs = data.val();
         var keys: any = Object.keys(Djs);
@@ -262,6 +263,7 @@ export class DatabaseProvider {
           var x = keys[i];
           var y = 'Registration/' + x;
           firebase.database().ref(y).on('value', (data2: any) => {
+            this.allDjSArray.length =0;
             var djInfomation = data2.val();
             var keys2: any = Object.keys(djInfomation);
             console.log(djInfomation)
@@ -349,11 +351,12 @@ export class DatabaseProvider {
         }
       })
     })
-  }
+  } 
 
   getComments(key){
     this.userCommentsArray2.length = 0
     return new Promise((accpt,rej)=>{
+      this.userCommentsArray2.length = 0
       firebase.database().ref('Comments/').on('value',(data:any)=>{
         console.log(data.val())
         var djComments = data.val();
@@ -452,7 +455,7 @@ export class DatabaseProvider {
         email: userEmail,
         key: Userkey,
         date: date,
-        time: time,
+        time: time, 
         message: message,
         image: image,
         check: false
@@ -536,3 +539,4 @@ export class DatabaseProvider {
     return firebase.auth().sendPasswordResetEmail(email);
   }
 }
+ 
