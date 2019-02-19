@@ -88,6 +88,16 @@
     </ion-list>
   </div>
 
+  <div class="succtoast" *ngIf="logsucc == 'true'">
+      <img src="../../assets/happy.svg" alt="" class="icon">
+      <p class="message">You have logged in!</p>
+    </div> -->
+  
+     <div class="warntoast" *ngIf="logwarn == 'true'">
+      <img src="../../assets/thinking.svg" alt="" class="icon">
+      <p class="message">You have not logged in!</p>
+    </div>
+
   <ion-fab right bottom>
     <button ion-fab color="primary" (click)="GoToProfilePage()">
       <ion-icon ios="ios-contact" md="md-contact"></ion-icon>

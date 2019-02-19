@@ -50,7 +50,7 @@
         </div>
       </div> -->
         
-        <!-- <div class="loadcontainer" *ngIf="logloader == 'true'">
+        <div class="loadcontainer" *ngIf="logloader == 'true'">
                 <div class="loadingmod">
                     <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
                     <p class="message">Loggin In
@@ -61,18 +61,18 @@
                 </div> 
             </div>
           
-            <div class="failcontainer" *ngIf="logfail == 'true'">
+           <div class="failcontainer" *ngIf="logfail == 'true'">
                 <div class="alertbox" (click)="logfail = 'false'">
                     <img src="../../assets/sad.svg" alt="" class="alertimg">
                     <div class="messagebox">
-                        <p class="alertmessagehead">Ehsan!</p>
+                        <p class="alertmessagehead">Oh Snap!</p>
                         <p class="alertmessage">{{message}}</p>
                         <button class="alertbutton" (click)="logfail = 'false';">Okay</button>
                     </div>
                 </div>
-            </div> -->
+            </div> 
             
-            <!-- <div class="warncontainer" *ngIf="logwarn == 'true'">
+            <div class="warncontainer" *ngIf="logwarn == 'true'">
                 <div class="alertbox" (click)="logwarn = 'false'">
                   <img src="../../assets/thinking.svg" alt="" class="alertimg">
                   <div class="messagebox">
@@ -81,9 +81,9 @@
                       <button class="alertbutton" (click)="logwarn = 'false'">Okay</button>
                   </div>
                 </div>
-              </div> -->
+              </div>
           
-            <!-- <div class="succcontainer" *ngIf="logsucc == 'true'">
+            <div class="succcontainer" *ngIf="logsucc == 'true'">
               <div class="alertbox">
                 <img src="../../assets/happy.svg" alt="" class="alertimg">
                 <div class="messagebox">
@@ -92,5 +92,5 @@
                     <button class="alertbutton" (click)="logsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
                 </div>
               </div>
-            </div> -->
+            </div> 
     </ion-content>

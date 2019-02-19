@@ -42,47 +42,52 @@ export class LoginPage {
     public loadingCtrl: LoadingController
   ) {}
 
-  // ngOnInit(){
-  //   this.logloader = 'false';
-  //   this.logwarn = 'false';
-  //   this.logfail = 'false';
-  //   this.logsucc = 'false';
-  //   this.message = 'false';
-  // }
+  ngOnInit(){
+    this.logloader = 'false';
+    this.logwarn = 'false';
+    this.logfail = 'false';
+    this.logsucc = 'false';
+    this.message = 'false';
+  }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
-  login(form: NgForm) {
-    const loading = this.loadingCtrl.create({
-       content: `Logging in ${form.value.email}...`
-     });
-     loading.present();
-     this.PulsedbDatabase
-       .login(form.value.email, form.value.password)
-       .then(data => {
-         console.log(data.user.emailVerified)
-         // alert(data.user.emailVerified)
-         let userID = firebase.auth().currentUser.uid;
-         loading.dismiss();
-        this.navCtrl.setRoot('CategoriesPage');           
-       })
-       .catch(error => {
-         loading.dismiss();
-         const alert = this.alertCtrl.create({
-           title: 'Caution',
-           subTitle: error.message,
-           buttons: [
-             {
-               text: "Ok",
-               handler: () => {      
-               }
-             }
-           ]
-         });
-         alert.present();
-       });
-   }
+
+
+   login(form: NgForm) {
+    this.logloader = 'true';
+    console.log('yellow')
+    if(form.valid){
+      this.PulsedbDatabase.login(form.value.email, form.value.password).then((data) => {
+        console.log(data);
+        let userID = firebase.auth().currentUser.uid;
+        if (data.user.emailVerified == true) {
+        this.logloader = 'false';
+        this.logsucc = 'true';
+        } else {
+          this.message = 'You are not verified';
+          this.logloader = 'false';
+          this.logfail = 'true';
+        }
+      }).catch((error) => {
+        this.message = error.message;
+        this.logloader = 'false';
+        this.logfail = 'true';
+      })
+    }else{
+      this.logwarn;
+    }
+
+  }
+
+
+
+  
+
+  cancelmodal(){
+    // this.navCtrl.setRoot('CategoriesPage');      
+  }
    resetPassword() {
     const prompt = this.alertCtrl.create({
       title: "Reser Password",
@@ -132,9 +137,9 @@ export class LoginPage {
     });
     prompt.present();
   }
-  // nextpage(page: string){
-  //   this.navCtrl.push(page);
-  // }
+  nextpage(page: string){
+    this.navCtrl.push(page);
+  }
 
   GoToSignup() {
     this.navCtrl.push('RegisterPage')

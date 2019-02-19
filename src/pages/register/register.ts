@@ -35,6 +35,11 @@ export class RegisterPage {
   price
   img
   stagename
+  loader: string;
+  regwarn: string;
+  regsucc: string;
+  regfail: string;
+  message: string;
 
   constructor(
     public navCtrl: NavController,
@@ -44,49 +49,62 @@ export class RegisterPage {
     public alertCtrl: AlertController
   ) {}
 
-  // ngOnInit(){
-  //   if(this.navParams.get('role')){
-  //     this.role = this.navParams.get('role');
-  //     console.log(this.role);
-  //   }else{
-  //     console.log('nothing here')
-  //   }
+  ngOnInit(){
+    // if(this.navParams.get('role')){
+    //   this.role = this.navParams.get('role');
+    //   console.log(this.role);
+    // }else{
+    //   console.log('nothing here')
+    // }
 
-  // }
-  register(form: NgForm) {
-    const loading = this.loadingCtrl.create({
-      content: `Registering ${form.value.email}...`,
-      duration: 3000
+    this.loader = 'false';
+    this.regwarn = 'false';
+    this.regfail = 'false';
+    this.regsucc = 'false';
+    this.message = 'false';
+  }
 
-    });
-    loading.present();
-    if (form.value.email == "" || form.value.email == undefined){
-      const alert = this.alertCtrl.create({
-        title: 'Reminder,',
-        subTitle: 'Your email cannot be left empty',
-        buttons: ['OK']
-      });
-      alert.present();
-    }
-    else{
-      this.PulsedbDatabase.Register(form.value.fullname,form.value.email,form.value.password).then((data)=>{
-        console.log("succesful")
+
+  register(form:NgForm){
+    if(form.valid){
+      this.loader = 'true';
+      console.log('enter');
+      this.PulsedbDatabase.register(form.value.fullname,form.value.email, form.value.password).then((data)=>{
         let user = firebase.auth().currentUser;
-        user.sendEmailVerification().then((a)=>{
-          const alert = this.alertCtrl.create({
-            title: 'Thank you for Registering',
-            subTitle: 'Please check emails for verification link',
-            buttons: ['OK']
-          });
-          alert.present();
-        }).catch((a)=>{
-          // an error has occured
+        user.sendEmailVerification().then((data)=>{
+          //add user node to the database 
+          firebase.database().ref("Registration/" + user.uid).push({
+            fullname: form.value.fullname,
+            email: form.value.email,
+            role: "Audience",
+            userType: "user",
+            img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
+            key: user.uid
+          })
+          console.log(data);
+          this.loader ='false';
+          this.regsucc = 'true';
+        }).catch((error)=>{
+          this.loader = 'false';
+          this.regfail = 'true';
+          this.message =  error.message;
         })
-        this.navCtrl.setRoot('LoginPage')
+        
       }).catch((error)=>{
-        console.log(error)
-      })
+        console.log(error); 
+        this.loader = 'false';
+        this.regfail = 'true';
+        this.message = error.message;
+      });
+    }else{
+      this.regwarn = 'true';
     }
 
   }
+
+  nextpage(page: string){
+    this.navCtrl.push(page)
+  }
+
+
 }

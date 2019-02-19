@@ -59,7 +59,7 @@
         </div> 
     </div>
   
-    <div class="failcontainer" *ngIf="reg == 'true'">
+    <div class="failcontainer" *ngIf="regfail == 'true'">
         <div class="alertbox" (click)="regfail = 'false'">
             <img src="../../assets/sad.svg" alt="" class="alertimg">
             <div class="messagebox">
@@ -86,9 +86,10 @@
         <img src="../../assets/happy.svg" alt="" class="alertimg">
         <div class="messagebox">
             <p class="alertmessagehead">Yesss!</p>
-            <p class="alertmessage">You Have Successfully Logged In</p>
-            <button class="alertbutton" (click)="regsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
+            <p class="alertmessage">You Have Successfully Registered. Check Your Email To Verify</p>
+            <button class="alertbutton" (click)="regsucc = 'false'; nextpage('LoginPage')">Okay</button>
         </div>
       </div>
     </div>
+
   </ion-content>

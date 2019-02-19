@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -17,12 +17,14 @@ import { AlertController } from 'ionic-angular';
   selector: 'page-categories',
   templateUrl: 'categories.html',
 })
-export class CategoriesPage {
+export class CategoriesPage implements OnInit{
   gender;
   genre;
   city;
   getprofileArr = [];
   getcategoryArr = [];
+  logsucc: string;
+  logwarn: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
     this.PulsedbDatabase.getAllDjs().then((data: any) => {
       this.getprofileArr = data
@@ -34,6 +36,28 @@ export class CategoriesPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CategoriesPage');
   }
+
+  ngOnInit(){
+    this.logsucc = 'false';
+    this.logwarn = 'false';
+    this.PulsedbDatabase.checkstate().then((data:any)=>{
+      if (data == 1){
+        this.logsucc = 'true';
+        let timer = setInterval(()=>{
+          clearInterval(timer);
+          this.logsucc = 'false';
+        },3000)
+      }
+      else {
+        this.logwarn = 'true';
+        let timer = setInterval(()=>{
+          clearInterval(timer);
+          this.logwarn = 'false';
+        },3000)
+      }
+     })
+  }
+
   refreshs() {
     this.genre = null;
     this.gender = null;
@@ -62,9 +86,9 @@ export class CategoriesPage {
             stagename: data[k].stagename,
             key: k
           }
-          this.getcategoryArr.push(obj);
-          console.log(this.getcategoryArr);
-          this.getcategoryArr.reverse();
+          this.getprofileArr.push(obj);
+          console.log(this.getprofileArr);
+          this.getprofileArr.reverse();
         }
       }
     })

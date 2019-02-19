@@ -136,32 +136,30 @@ export class DatabaseProvider {
       })
     })
   }
-  Register(fullname, email, password) {
-    return new Promise((accpt, rej) => {
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-        var user = firebase.auth().currentUser;
-        firebase.database().ref("Registration/" + user.uid).push({
-          fullname: fullname,
-          email: email,
-          role: "Audience",
-          userType: "user",
-          img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
-          key: user.uid
-        })
-        accpt("user registered")
+  // Register(fullname, email, password) {
+  //   return new Promise((accpt, rej) => {
+  //     firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
+  //       var user = firebase.auth().currentUser;
+  //       firebase.database().ref("Registration/" + user.uid).push({
+  //         fullname: fullname,
+  //         email: email,
+  //         role: "Audience",
+  //         userType: "user",
+  //         img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
+  //         key: user.uid
+  //       })
+  //       accpt("user registered")
 
-      }, Error => {
-        let alert = this.alertCtrl.create({
-          title: 'Credentials Error',
-          message: Error.message,
-          buttons: ['Dismiss']
-        });
-        alert.present();
-      })
-    })
-  }
-
-
+  //     }, Error => {
+  //       let alert = this.alertCtrl.create({
+  //         title: 'Credentials Error',
+  //         message: Error.message,
+  //         buttons: ['Dismiss']
+  //       });
+  //       alert.present();
+  //     })
+  //   })
+  // }
 
   getAllDjs() {
     this.allDjSArray.length = 0;
@@ -442,7 +440,7 @@ export class DatabaseProvider {
     })
   }
 
-  register(email: string, password: string) {
+  register(fullname, email: string, password: string) {
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   }
 
