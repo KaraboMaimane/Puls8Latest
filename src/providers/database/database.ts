@@ -312,7 +312,9 @@ export class DatabaseProvider {
     })
   }
   getDjInbox(key){
+    this.userInbox.length = 0;
     return new Promise((accpt,rej)=>{
+      this.userInbox.length = 0;
       firebase.database().ref('Bookings/').on('value',(data:any)=>{
         console.log(data.val())
         var djComments = data.val();
@@ -344,16 +346,18 @@ export class DatabaseProvider {
               }
 
             })
-            accpt(this.userInbox)
+            
           }
         }
       })
+      accpt(this.userInbox)
     })
   }
 
   getComments(key){
     this.userCommentsArray2.length = 0
     return new Promise((accpt,rej)=>{
+      this.userCommentsArray2.length = 0
       firebase.database().ref('Comments/').on('value',(data:any)=>{
         console.log(data.val())
         var djComments = data.val();
@@ -458,6 +462,20 @@ export class DatabaseProvider {
         check: false
       })
       accpt("Request sent")
+    })
+  }
+
+  StartChat(key,djKey,userName,userKey,userEmail,date,time){
+    return new Promise((accpt,rej)=>{
+      firebase.database().ref('Bookings/' + key).child(djKey).set({
+        check: true,
+        date: date,
+        time: time,
+        name: userName,
+        key: userKey,
+        email: userEmail,
+      })
+      accpt("chat started")
     })
   }
 

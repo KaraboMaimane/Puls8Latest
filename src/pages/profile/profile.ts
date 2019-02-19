@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
-import { CategoriesPage } from '../categories/categories';
+
 
 /**
  * Generated class for the ProfilePage page.
@@ -73,6 +73,22 @@ export class ProfilePage {
 
       }
     })
+  }
+
+  ionViewDidLoad(){
+    
+  }
+
+  viewBooking(i){
+    console.log(i)
+    let dj = this.userKey
+    console.log(dj)
+    let userInfo = i;
+    this.navCtrl.push('ViewChatRequestPage', {userObj: userInfo,djObj: dj})
+  }
+
+  nextpage(page: string) {
+    this.navCtrl.push(page);
   }
   edit(page: string) {
     this.navCtrl.push('EditDjProfilePage');
