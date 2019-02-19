@@ -15,11 +15,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ViewChatRequestPage {
 
+  date: any;
+  name: any;
+  email: any;
+  time: any;
+  image: any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewChatRequestPage');
+    let profile = this.navParams.get("userObj")
+    console.log(profile)
+    let userProfile = profile;
+    this.image = userProfile.userImage;
+    this.time = userProfile.time;
+    this.email = userProfile.userEmail;
+    this.name = userProfile.username;
+    this.date = userProfile.date;
   }
 
 }

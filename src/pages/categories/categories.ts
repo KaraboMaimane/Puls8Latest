@@ -4,7 +4,8 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
-import Swal from 'sweetalert2';
+// import { ViewProfilePage } from '../view-profile/view-profile';
+import swal from 'sweetalert2';
 /**
  * Generated class for the CategoriesPage page.
  *
@@ -22,7 +23,7 @@ export class CategoriesPage implements OnInit{
   genre;
   city;
   getprofileArr = [];
-  getcategoryArr = [];
+  getcategoryArr = []; 
   logsucc: string;
   logwarn: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
@@ -35,7 +36,7 @@ export class CategoriesPage implements OnInit{
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CategoriesPage');
-  }
+  } 
 
   ngOnInit(){
     this.logsucc = 'false';
@@ -93,6 +94,13 @@ export class CategoriesPage implements OnInit{
       }
     })
   }
+  ViewProfile(i){
+    console.log(i)
+    let dj = i;
+    console.log(dj)
+    this.navCtrl.push('ViewProfilePage', {Djkey: dj})
+  }
+
   GoToProfilePage() {
     this.PulsedbDatabase.checkAuthState().then(data => {
       if (data == false) {

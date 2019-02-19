@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,Output, EventEmitter } from '@angular/core';
+import { AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the ChatboxComponent component.
@@ -11,12 +12,26 @@ import { Component } from '@angular/core';
   templateUrl: 'chatbox.html'
 })
 export class ChatboxComponent {
+@Output() messageCreate = new EventEmitter<any>();
+ 
 
-  text: string;
-
-  constructor() {
+  constructor(public alertCtrl: AlertController) {
     console.log('Hello ChatboxComponent Component');
-    this.text = 'Hello World';
+  }
+
+  onMessageAdded(MessageText){
+    if(MessageText != undefined && MessageText != ''){
+      this.messageCreate.emit(MessageText)
+    }
+    else{
+      const alert = this.alertCtrl.create({
+        title: 'Please note, Empty Input',
+        message: 'Please type a message before sending',
+        buttons: ['OK']
+      })
+      alert.present();
+    }
+    console.log(MessageText)
   }
 
 }

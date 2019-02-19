@@ -18,6 +18,9 @@ import { CategoriesPage } from '../categories/categories';
 })
 export class ProfilePage {
 
+  commentsArray = [];
+  inboxArray = [];
+  userKey: void;
   name;
   email;
   surname;
@@ -54,7 +57,17 @@ export class ProfilePage {
         this.role = this.profileArr[0].role,
         this.img = this.profileArr[0].img,
         this.stagename = this.profileArr[0].stagename,
-        console.log(this.fullname)
+        this.userKey = this.profileArr[0].user
+        console.log(this.userKey)
+
+        this.PulsedbDatabase.getComments(this.userKey).then((data:any)=>{
+          console.log(data)
+          this.commentsArray = data;
+        })
+        this.PulsedbDatabase.getDjInbox(this.userKey).then((data:any)=>{
+          console.log(data)
+          this.inboxArray = data;
+        })
 
       if (this.role != "Dj") {
 

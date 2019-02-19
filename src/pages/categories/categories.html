@@ -62,17 +62,15 @@
   <div class="list">
     <!-- <div class="nocontent" >
       <div class="nocontent__contents">
-
         
         <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
         <p class="nocontent__contents--text" style="color: white">no information</p>
       </div>
     </div> -->
 
-
-    <ion-list no-lines>
+    <ion-list no-lines *ngFor="let a of getprofileArr;let i of index">
         <!-- *ngFor="let x of  arrDj;let i = index" -->
-      <ion-item  *ngFor="let a of getprofileArr"  (click)="viewProfile(i)">
+      <ion-item  (click)="ViewProfile(i)">
         <ion-thumbnail item-start>
           <img src='{{a.img}}' height="2px">
         </ion-thumbnail>

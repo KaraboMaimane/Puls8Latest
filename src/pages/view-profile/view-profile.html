@@ -7,12 +7,12 @@
             </div>
             <div class="hero__herobanner__herotagcontainer">
                 <div class="hero__herobanner__herotagcontainer__headingcontainer">
-                  <!-- {{fullname | slice:0:20}} -->
-                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">Mjojos Gamede</h1>
+                  
+                    <h1 class="hero__herobanner__herotagcontainer__headingcontainer--heading">{{djName | slice:0:20}}</h1>
                 </div>
                 <div class="hero__herobanner__herotagcontainer__tagcontainer">
-                  <!-- {{genre}} -->
-                    <ion-badge outline class="hero__herobanner__herotagcontainer--tag">Amapiano</ion-badge>
+                  
+                    <ion-badge outline class="hero__herobanner__herotagcontainer--tag">{{djGenre}}</ion-badge>
                 </div>
                 <!-- <div class="hero__herobanner__herotagcontainer__tagcontainer__reviews">
                 </div> -->
@@ -62,7 +62,7 @@
             <div no-lines class="segcontainer__seg__bio">
                 <div class="segcontainer__seg__bio__userProfile">
                     <h2 class="segcontainer__seg__bio__userProfile--bioheading">Bio</h2>
-                    <p class="segcontainer__seg__bio__userProfile--biotext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid sint fuga molestiae doloribus blanditiis, deserunt perferendis ipsum cupiditate necessitatibus dolore adipisci quia natus quam fugiat minima, accusamus debitis, distinctio tempora?</p>
+                    <p class="segcontainer__seg__bio__userProfile--biotext">{{djBio}}</p>
                 </div>
                 <div class="nocontent1" *ngIf="bio == '' || bio == undefined">
                     <div class="nocontent1__contents">
@@ -77,12 +77,12 @@
                     <!-- *ngIf="stagename != undefined || stagename != stagename"  -->
                     <p class="segcontainer__seg__profilecontainer__profile--information">
                         <ion-icon name="contact"></ion-icon>
-                        <span class="infotext">Dj Mjojos</span>
+                        <span class="infotext">{{djStagename}}</span>
                     </p>
-                    <p *ngIf="city != undefined || city != city" class="segcontainer__seg__profilecontainer__profile--information">
+                    <p *ngIf="djCity != undefined || djCity != djCity" class="segcontainer__seg__profilecontainer__profile--information">
                         <ion-icon name="locate"></ion-icon>
                         <!-- City -->
-                        <span class="infotext">Johannesburg</span>
+                        <span class="infotext">{{djCity}}</span>
                     </p>
                 </div>
             </div>
@@ -94,13 +94,13 @@
 
         <ion-list *ngSwitchCase="'reviews'" class="segcontainer__seg">
             <div class="commentslist">
-                <div class="chatBubble" *ngFor="let n of commentArr; let i = index; let odd = 'left'; let even = 'right'">
-                    <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
+                <div class="chatBubble" *ngFor="let n of commentsArray; let i = index; let odd = 'left'; let even = 'right'">
+                    <img class="profile-pic even" src="{{n.userImage}}">
                     <div class="chat-bubble left">
                         <!-- commments go here -->
-                        <div class="message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt repellat reprehenderit velit, ab itaque voluptatum tenetur labore quas sequi odio in, maiores eum temporibus doloremque nulla sit accusamus impedit magni?</div>
+                        <div class="message">{{n.comment}}</div>
                         <div class="message-detail">
-                            <span style="font-weight:bold;">Sello Mcube </span>,
+                            <span style="font-weight:bold;">{{n.username}} </span>,
                             <span>12062018</span>
                         </div>
                     </div>
@@ -122,10 +122,10 @@
                 <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
               <div class="contentflex">
                 <div class="group">
-                  <input  type="text" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
+                  <input  type="text" [ngModel]="input" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
                 </div>
                   <button ion-button end class="hero--back" >
-                    <ion-icon name="send" (click)="messagestate = 'not sending'"></ion-icon>
+                    <ion-icon name="send" (click)="messagestate = 'not sending';onMessageAdded(message.value) "></ion-icon>
                   </button>
               </div>
                
@@ -134,8 +134,8 @@
     </div>
 </ion-content>
 
-<!-- <ion-footer *ngIf="userStatus==false ||obj == null ||obj == undefined">
-    <ion-toolbar color="primary" (click)="Booking()">
+<ion-footer *ngIf="userStatus==false ||obj == null ||obj == undefined">
+    <ion-toolbar color="primary" (click)="booking()">
         <ion-title align="center">Request Booking</ion-title>
     </ion-toolbar>
-</ion-footer> -->
+</ion-footer>

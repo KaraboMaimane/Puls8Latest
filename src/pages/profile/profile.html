@@ -110,13 +110,13 @@
                 </div> -->
                 
                 <!-- arrary of chat requests -->
-                <ion-item-sliding class="segcontainer__seg__cardcontainer">
+                <ion-item-sliding class="segcontainer__seg__cardcontainer" *ngFor="let x of inboxArray;let a of index" >
                     <ion-item no-lines class="segcontainer__seg__cardcontainer__cards" (click)="viewBooking(a)">
                         <ion-avatar item-start>
-                            <img src="../../assets/dj.JPG">
+                            <img src="{{x.userImage}}">
                         </ion-avatar>
                         <!-- sender name goes here -->
-                        <p class="segcontainer__seg__cardcontainer__cards--text"><strong>Thando Thabethe</strong>, has requested
+                        <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.username}}</strong>, has requested
                             to chat with you.</p>
                             <!-- date goes here -->
                         <p class="segcontainer__seg__cardcontainer__cards--datetext">23062017</p>
@@ -149,12 +149,12 @@
 
                     <!-- adding commnet in the page Right is for sender and Left is for receiver -->
                         <!-- *ngFor="let n of commentArr ; let i = index; let odd = 'left'; let even = 'right'" -->
-                    <div class="chatBubble">
-                        <!-- <img class="profile-pic even" src="{{n.pic}}"> -->
+                    <div class="chatBubble"*ngFor="let x of commentsArray">
+                        <img class="profile-pic even" src="{{x.userImage}}">
                         <div class="chat-bubble left">
-                            <div class="message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis reprehenderit consequuntur dicta enim dolorem laboriosam quia, dolores nam nemo doloribus natus saepe sunt delectus porro eos ipsum! Quis, animi cumque.</div>
+                            <div class="message">{{x.comment}}</div>
                             <div class="message-detail">
-                                <span style="font-weight:bold;">Karabo Maimane</span>,
+                                <span style="font-weight:bold;">{{x.username}}</span>,
                                 <span>12042018</span>
                             </div>
                         </div>
