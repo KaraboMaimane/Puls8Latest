@@ -26,6 +26,8 @@ export class CategoriesPage implements OnInit{
   getcategoryArr = []; 
   logsucc: string;
   logwarn: string;
+  role
+  state
   constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
     this.displayDj();
   }
@@ -111,31 +113,37 @@ export class CategoriesPage implements OnInit{
     this.navCtrl.push('ViewProfilePage', {Djkey: dj})
   }
 
-  GoToProfilePage() {
-    this.PulsedbDatabase.checkAuthState().then(data => {
-      if (data == false) {
-        let alert = this.alertCtrl.create({
-          subTitle: 'You have to sign in before you can view your profile, would you like to sign in now?',
-          buttons: [
-            {
-              text: 'Sign in',
-              handler: data => {
-                var opt = "profile";
-                this.navCtrl.push('LoginPage')
-              }
-            },
-            {
-              text: 'Cancel',
-              handler: data => {
-              }
-            }
-          ]
-        });
-        alert.present();
-      } else {
-        this.navCtrl.push('ProfilePage')
+  profilePage() {
+    this.PulsedbDatabase.getuser().then(data => {
+      console.log(data);
+    })
+    console.log("in");
+    this.PulsedbDatabase.checkstate().then((state: any) => {
+      console.log(state)
+      this.state = state
+      console.log(this.state) 
+      if (this.state == 1) {
+        this.PulsedbDatabase.getProfile().then((data: any) => {
+          console.log(data)
+          let profile = [];
+          profile = data
+          this.role = profile[0].role
+          console.log(this.role)
+          if (this.role == "Audience") {
+            this.navCtrl.push('ProfilePage');
+          }
+          else if (this.role == "Dj") {
+            this, this.navCtrl.push('DjProfilePage')
+          }
+          else {
+            this.navCtrl.push('CatergoriesPage');
+          }
+        })
       }
-
+      else if (this.state == 0) {
+        console.log('user is offline')
+        this.navCtrl.push(LoginPage)
+      }
     })
   }
 

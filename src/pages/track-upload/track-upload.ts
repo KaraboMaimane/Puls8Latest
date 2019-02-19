@@ -32,16 +32,16 @@ export class TrackUploadPage {
   ionViewDidLoad() {
   }
 
-  saveArtist(event: any) {
-    this.PulsedbDatabase.UploadMusic(this.trackName).then(data => {
-      this.PulsedbDatabase.storeToDB(data, this.artistName).then(() => {
-      })
-      this.navCtrl.pop();
-    },
-      Error => {
-        console.log(Error)
-      })
-  }
+  // saveArtist(event: any) {
+  //   this.PulsedbDatabase.UploadMusic(this.trackName).then(data => {
+  //     this.PulsedbDatabase.storeToDB(data, this.artistName).then(() => {
+  //     })
+  //     this.navCtrl.pop();
+  //   },
+  //     Error => {
+  //       console.log(Error)
+  //     })
+  // }
 
 
 }

@@ -12,8 +12,11 @@
                             <button ion-button icon-only (click)="edit()">
                                 <ion-icon ios="ios-create" md="md-create"></ion-icon>
                             </button>
-                            <button ion-button icon-only (click)="upload()">
+                            <button *ngIf="role != 'Audience'" ion-button icon-only (click)="upload()">
                                 <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+                            </button>
+                            <button ion-button icon-only *ngIf="role != 'Dj'" (click)="changeRole()">
+                                <ion-icon ios="ios-headset" md="md-headset"></ion-icon>
                             </button>
                         </span>
                     </div>

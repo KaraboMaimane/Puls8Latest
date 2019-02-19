@@ -63,12 +63,66 @@ export class DatabaseProvider {
       user:userID.uid
     }
       this.ProfileArr.push(obj);
+
       console.log(this.ProfileArr)
+      this.userKey = this.ProfileArr[0].key
+      console.log(this.userKey)
       
     });
     resolve(this.ProfileArr)
   })
   }
+  updateProfile(fullname, email, gender, location, bio, pic) {
+    var user = firebase.auth().currentUser.uid;
+    console.log(this.userKey)
+    return new Promise((accpt, rej) => {
+      firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
+        fullname: fullname,
+        email: email,
+        gender: gender,
+        location: location,
+        bio: bio,
+        img: pic
+      })
+      accpt("scccessful")
+    })
+  }
+
+  updateDjProfile(fullname, email, stagename, gender, genre, price, payment, city, bio, pic) {
+    var user = firebase.auth().currentUser.uid;
+    console.log(this.userKey)
+    return new Promise((accpt, rej) => {
+      firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
+        fullname: fullname,
+        email: email,
+        stagename: stagename,
+        gender: gender,
+        genre: genre,
+        price: price,
+        payment: payment,
+        city: city,
+        bio: bio,
+        img: pic,
+        role: "Dj",
+
+      })
+      accpt("scccessful")
+    })
+  }
+
+  removeProfilePicture(userImage) {
+    var user = firebase.auth().currentUser.uid;
+    console.log(this.userKey)
+    return new Promise((accpt, rej) => {
+      firebase.database().ref('Registration/' + user + '/' + this.userKey).set({
+        img: userImage,
+      })
+      accpt("scccessful")
+      console.log("success")
+    })
+  }
+
+
 
   getDjcomments(){
     return new Promise((accpt,rej)=>{
@@ -314,7 +368,9 @@ export class DatabaseProvider {
     })
   }
   getDjInbox(key){
+    this.userInbox.length = 0;
     return new Promise((accpt,rej)=>{
+      this.userInbox.length = 0;
       firebase.database().ref('Bookings/').on('value',(data:any)=>{
         console.log(data.val())
         var djComments = data.val();
@@ -346,10 +402,11 @@ export class DatabaseProvider {
               }
 
             })
-            accpt(this.userInbox)
+            
           }
         }
       })
+      accpt(this.userInbox)
     })
   } 
 
@@ -464,6 +521,20 @@ export class DatabaseProvider {
     })
   }
 
+  StartChat(key,djKey,userName,userKey,userEmail,date,time){
+    return new Promise((accpt,rej)=>{
+      firebase.database().ref('Bookings/' + key).child(djKey).set({
+        check: true,
+        date: date,
+        time: time,
+        name: userName,
+        key: userKey,
+        email: userEmail,
+      })
+      accpt("chat started")
+    })
+  }
+
   createInbox(key,djName,djEmail,djKey,date,time){
     return new Promise((accpt,rej)=>{
       firebase.database().ref('inbox/' + key).push({
@@ -502,6 +573,40 @@ export class DatabaseProvider {
     })
   }
 
+
+  getUserID() {
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        var user = firebase.auth().currentUser
+        firebase.database().ref("Registration").on("value", (data: any) => {
+          var a = data.val();
+          if (a !== null) {
+          }
+          accpt(user.uid);
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
+
+  viewPicGallery1() {
+    return new Promise((accpt, rejc) => {
+      this.ngzone.run(() => {
+        var user = firebase.auth().currentUser
+        firebase.database().ref("Registration").on("value", (data: any) => {
+          var b = data.val();
+          var keys = Object.keys(b);
+          if (b !== null) {
+          }
+          // this.storeImgur(b[keys[0]].downloadurl);
+          accpt(b);
+        }, Error => {
+          rejc(Error.message)
+        })
+      })
+    })
+  }
   uploadProfilePic(pic, name) {
     const toast = this.toastCtrl.create({
       message: 'Successfully updated!',

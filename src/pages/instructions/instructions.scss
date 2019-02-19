@@ -1,0 +1,55 @@
+page-instructions {
+    ion-content{
+        background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
+        background-size: cover !important;
+        font-size: 62.5% !important;
+        color: white !important;
+        margin: 0 !important; 
+        padding: 0 !important;
+    }
+
+    .block{
+        height: 5rem;
+    }
+
+    .slidecontent{
+        padding: 0;
+        margin: 0;
+        &--image{
+            margin-top: -9rem;
+            width: 20rem;
+            height: 25rem;
+        }
+        &--heading{
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: .2rem;
+            color: $color-primary-light;
+        }
+
+        &--text{
+            font-size: 1.6rem;
+          
+            
+        }
+    }
+    
+
+    .emp{
+        font-size: 1.8rem;
+        color: $color-primary-light;
+    }
+
+    .heading{
+        color: $color-primary-light;
+        font-weight: bold !important;
+    }
+
+    button{
+        border-radius: 5rem !important;
+    }
+
+    .slider{
+        height: 85vh !important;
+    }
+}

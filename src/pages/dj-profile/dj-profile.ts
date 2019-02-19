@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
-
 /**
- * Generated class for the ProfilePage page.
+ * Generated class for the DjProfilePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -12,10 +10,10 @@ import firebase from 'firebase';
 
 @IonicPage()
 @Component({
-	selector: 'page-profile',
-	templateUrl: 'profile.html'
+  selector: 'page-dj-profile',
+  templateUrl: 'dj-profile.html',
 })
-export class ProfilePage implements OnInit {
+export class DjProfilePage {
 	commentsArray = [];
 	inboxArray = [];
 	userKey: void;
@@ -38,18 +36,18 @@ export class ProfilePage implements OnInit {
 	stagename;
 	profile: string;
 	state;
-	constructor(
-		public navCtrl: NavController,
+  constructor(		public navCtrl: NavController,
 		public navParams: NavParams,
 		public actionSheetCtrl: ActionSheetController,
-		public PulsedbDatabase: DatabaseProvider,
-		public modalCtrl: ModalController
-	) {}
+    public PulsedbDatabase: DatabaseProvider,
+    public modalCtrl: ModalController) {
+  }
 
-	ngOnInit() {
-		this.profile = 'infor';
-	}
-	ionViewDidEnter() {
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad DjProfilePage');
+  }
+
+  ionViewDidEnter() {
 		this.PulsedbDatabase.getProfile().then((data: any) => {
 			console.log(data);
 			this.profileArr = data;
@@ -81,11 +79,6 @@ export class ProfilePage implements OnInit {
 			}
 		});
 	}
-	edit(page: string) {
-		this, this.navCtrl.push('EditUserProfilePage');
-	}
-	ionViewDidLoad() {}
-
 	viewBooking(i) {
 		console.log(i);
 		let dj = this.userKey;
@@ -93,27 +86,7 @@ export class ProfilePage implements OnInit {
 		let userInfo = i;
 		this.navCtrl.push('ViewChatRequestPage', { userObj: userInfo, djObj: dj });
 	}
-
-	nextpage(page: string) {
-		this.navCtrl.push(page);
-	}
-
-	logout() {
-		this.PulsedbDatabase.logout().then(
-			() => {
-				this.navCtrl.push('CategoriesPage');
-			},
-			(error) => {
-				console.log(error.message);
-			}
-		);
-	}
-
-	upload() {
-		this.navCtrl.push('TrackUploadPage');
-	}
-	changeRole() {
-		const modal = this.modalCtrl.create('InstructionsPage');
-		modal.present();
-	}
+  edit(){
+    this.navCtrl.push('EditDjProfilePage')
+  }
 }
