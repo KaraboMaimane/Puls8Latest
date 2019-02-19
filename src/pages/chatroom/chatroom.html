@@ -42,21 +42,32 @@
       </ion-list> -->
   
     <div class="messages">
-      <div class="chatBubble" *ngFor="let x of arrMssg">
-        <div class="chat-bubble {{x.condition}}">
+      <div class="chatBubble" *ngFor="let x of chatArray" >
+        <div class="chat-bubble left">
           <div class="message">{{x.message}}</div>
           <div class="message-detail">
             <span style="font-weight:bold;">{{x.name}} </span>,
             <span>{{x.time}}</span>
           </div>
+          </div>
         </div>
       </div>
-    </div>
+    
   
     <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
       <ion-icon name="chatbubbles"></ion-icon>
     </button>
-  
-    <chatbox (messageCreate)="onMessageAdded($event)" *ngIf="messagestate == 'sending'"></chatbox>
+    <div class="chatbox" *ngIf="messagestate == 'sending'">
+      <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
+    <div class="contentflex">
+      <div class="group">
+        <input  type="text" [(ngModel)]="message2" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
+      </div>
+        <button ion-button end class="hero--back" >
+          <ion-icon name="send" (click)="messagestate = 'not sending'; reply()"></ion-icon>
+        </button>
+    </div>
+     
+    </div>
   
   </ion-content>

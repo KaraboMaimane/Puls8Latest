@@ -50,7 +50,7 @@ export class ViewProfilePage {
     this.djStagename = this.DjProfile.stagename;
     this.djCity = this.DjProfile.city;
     this.djKey = this.DjProfile.key2;
-    console.log(this.djName)
+    console.log(this.djKey)
 
     this.database.getuser().then((data:any)=>{
       console.log(data)

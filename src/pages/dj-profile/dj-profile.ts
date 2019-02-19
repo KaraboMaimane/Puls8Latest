@@ -43,9 +43,7 @@ export class DjProfilePage {
     public modalCtrl: ModalController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DjProfilePage');
-  }
+ 
 
   ionViewDidEnter() {
 		this.PulsedbDatabase.getProfile().then((data: any) => {
@@ -79,6 +77,19 @@ export class DjProfilePage {
 			}
 		});
 	}
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad DjProfilePage');
+		console.log(this.userKey);
+		this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
+			console.log(data);
+			this.inboxArray = data;
+		});
+		this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+			console.log(data);
+			this.commentsArray = data;
+		});
+	}
+	
 	viewBooking(i) {
 		console.log(i);
 		let dj = this.userKey;
@@ -88,5 +99,15 @@ export class DjProfilePage {
 	}
   edit(){
     this.navCtrl.push('EditDjProfilePage')
-  }
+	}
+	logout() {
+		this.PulsedbDatabase.logout().then(
+			() => {
+				this.navCtrl.push('LoginPage');
+			},
+			(error) => {
+				console.log(error.message);
+			}
+		);
+	}
 }

@@ -44,9 +44,12 @@ export class ViewChatRequestPage {
 
 
   chatroom(){
-    this.database.StartChat(this.userKey,this.djKey,this.name,this.userKey,this.email,this.date,this.time).then((data:any)=>{
-      console.log("chat started",data)
-      this.navCtrl.push('ChatroomPage',{userKey: this.userKey})
-    })
+    // this.database.StartChat(this.userKey,this.djKey,this.name,this.userKey,this.email,this.date,this.time).then((data:any)=>{
+    //   console.log("chat started",data)
+    let userProfile2 = this.navParams.get("userObj")
+    let djProfile = this.navParams.get("djObj")
+    console.log(userProfile2 + "/" + djProfile)
+      this.navCtrl.push('ChatroomPage',{userKey: userProfile2,djKey: djProfile})
+    // })
   }
 }

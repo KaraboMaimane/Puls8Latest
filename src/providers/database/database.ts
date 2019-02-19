@@ -3,6 +3,7 @@ import { Injectable ,NgZone} from '@angular/core';
 import { AlertController,LoadingController } from 'ionic-angular'
 import { ToastController } from 'ionic-angular';
 import firebase from 'firebase';
+import * as moment from 'moment'
 /*
   Generated class for the DatabaseProvider provider.
 
@@ -16,10 +17,12 @@ export class DatabaseProvider {
   
   
   
+  
   commentsArray(arg0: any): any {
     throw new Error("Method not implemented.");
   }
   currentUserID: any;
+  chatroomArray =  new Array();
   userKey: any;
   currentUserPath: any;
   currentUserImage: any;
@@ -285,7 +288,8 @@ export class DatabaseProvider {
                   role: djInfomation[k].role,
                   img: djInfomation[k].img,
                   stagename: djInfomation[k].stagename,
-                  key: k
+                  key: k,
+                  key2: x
                 }
   
                 if (obj.role == "Dj") {
@@ -371,16 +375,16 @@ export class DatabaseProvider {
     this.userInbox.length = 0;
     return new Promise((accpt,rej)=>{
       this.userInbox.length = 0;
-      firebase.database().ref('Bookings/').on('value',(data:any)=>{
+      firebase.database().ref('Bookings/' + key).on('value',(data:any)=>{
         console.log(data.val())
         var djComments = data.val();
         var k = Object.keys(djComments)
         console.log(k)
         console.log(key)
-        if(key == k){
+        // if(key == k){
           for(var x  = 0;x < k.length;x++){
             var y = k[x];
-            var z = 'Bookings/' + y;
+            var z = 'Bookings/' + key;
             console.log(z);
             firebase.database().ref(z).on('value',(data2:any)=>{
               var User = data2.val();
@@ -404,7 +408,7 @@ export class DatabaseProvider {
             })
             
           }
-        }
+        // }
       })
       accpt(this.userInbox)
     })
@@ -521,38 +525,91 @@ export class DatabaseProvider {
     })
   }
 
-  StartChat(key,djKey,userName,userKey,userEmail,date,time){
+  retrieveChats(key){
     return new Promise((accpt,rej)=>{
-      firebase.database().ref('Bookings/' + key).child(djKey).set({
-        check: true,
-        date: date,
-        time: time,
-        name: userName,
-        key: userKey,
-        email: userEmail,
+      firebase.database().ref('Chatroom/' + key).on('value',(data:any)=>{
+        console.log(data)
       })
-      accpt("chat started")
+      accpt("data Found")
     })
   }
 
-  createInbox(key,djName,djEmail,djKey,date,time){
+  StartChat(djKey,key,userName,userEmail,date,time,message,image,userKey){
+    return new Promise((accpt,rej)=>{
+      firebase.database().ref('Chatroom/' + djKey).child(key).push({
+        check: false,
+        date: date,
+        userkey: userKey,
+        time: time,
+        name: userName,
+        image: image,
+        email: userEmail,
+        message: message
+      })
+      accpt("chat started") 
+    })
+  }
+
+  getChats(path){
+    return new Promise((accpt,rej)=>{
+      firebase.database().ref('Chatroom/' + path).on('value',(data)=>{
+        console.log(data.val())
+        var chatDetails = data.val()
+        var key = Object.keys(chatDetails);
+      for(var x = 0; x< key.length;x++){
+        var k =key[x]
+        let obj = {
+          name: chatDetails[k].name,
+          email: chatDetails[k].email,
+          message: chatDetails[k].message,
+          userKey: chatDetails[k].userkey,
+          djKey: chatDetails[k].uid,
+        }
+        this.chatroomArray.push(obj)
+        console.log(this.chatroomArray)
+      }
+      })
+      accpt(this.chatroomArray)
+    })
+  }
+
+  createInbox(key,userName,userEmail,date,time){
     return new Promise((accpt,rej)=>{
       firebase.database().ref('inbox/' + key).push({
-        name: djName,
-        email: djEmail,
-        key: djKey,
+        name: userName,
+        email: userEmail,
+        date: date,
+        time:time,
         check: false
       })
       accpt("inbox sent")
     })
   }
 
-  createChatRoom(key,djKey){
+  // createChatRoom(key,djKey){
+  //   return new Promise((accpt,rej)=>{
+  //     firebase.database().ref('Chatroom/' + key).push({
+  //       key: djKey
+  //     })
+  //     accpt("chatroom created")
+  //   })
+  // }
+
+  replyMessage(path,message){
     return new Promise((accpt,rej)=>{
-      firebase.database().ref('Chatroom/' + key).push({
-        key: djKey
+      let dateObj = new Date
+      let currentUser = firebase.auth().currentUser.uid;
+      let time = moment().format('MMMM Do YYYY, h:mm:ss a');
+      var results = false;
+      firebase.database().ref('Chatroom/' + path).push({
+        message:message,
+        uid: currentUser,
+        time: time,
+        status: results,
+        artKey: currentUser,
+        date: dateObj
       })
-      accpt("chatroom created")
+      accpt("message sent")
     })
   }
 
