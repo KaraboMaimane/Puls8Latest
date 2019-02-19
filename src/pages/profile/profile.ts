@@ -28,13 +28,15 @@ export class ProfilePage {
   bio;
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
     this.PulsedbDatabase.getProfile().then((data:any) => {
-      console.log(data)
+      console.log(data.key)
       this.profileArr=data
       console.log(this.profileArr)
     this.bio = this.profileArr[0].bio
   console.log(this.bio)
+    })
 
-
+    this.PulsedbDatabase.getDjcomments().then((data:any)=>{
+      console.log(data)
     })
   }
 
