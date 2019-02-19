@@ -1,4 +1,4 @@
-page-edit {
+page-edit-dj-profile {
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
         background-size: cover !important;
@@ -138,6 +138,5 @@ page-edit {
     .item-input-has-focus{
         animation: pulseate 1s ease infinite, .3s ease grow;
     }
-
 
 }

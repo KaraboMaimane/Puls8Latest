@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import firebase from 'firebase';
+<<<<<<< HEAD
 import { LoginPage } from '../login/login';
+=======
+import { CategoriesPage } from '../categories/categories';
+>>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
 /**
  * Generated class for the ProfilePage page.
@@ -39,12 +43,15 @@ export class ProfilePage {
   img
   stagename
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public PulsedbDatabase: DatabaseProvider) {
+
+  }
+  ionViewDidEnter() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
       console.log(this.profileArr)
-      this.bio = this.profileArr[0].bio
-      this.city = this.profileArr[0].city,
+        this.bio = this.profileArr[0].bio
+        this.city = this.profileArr[0].city,
         this.email = this.profileArr[0].email,
         this.fullname = this.profileArr[0].fullname,
         this.gender = this.profileArr[0].gender,
@@ -57,6 +64,7 @@ export class ProfilePage {
         this.userKey = this.profileArr[0].user
         console.log(this.userKey)
 
+<<<<<<< HEAD
         this.PulsedbDatabase.getComments(this.userKey).then((data:any)=>{
           console.log(data)
           this.commentsArray = data;
@@ -66,11 +74,14 @@ export class ProfilePage {
           this.inboxArray = data;
         })
 
+=======
+>>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
       if (this.role != "Dj") {
 
       }
     })
   }
+<<<<<<< HEAD
 
   ionViewDidLoad(){
     
@@ -84,16 +95,27 @@ export class ProfilePage {
 
   nextpage(page: string) {
     this.navCtrl.push(page);
+=======
+  edit(page: string) {
+    this.navCtrl.push('EditDjProfilePage');
+>>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
   }
   logout() {
     this.PulsedbDatabase.logout().then(() => {
-      this.navCtrl.push('LoginPage');
+      this.navCtrl.push('CategoriesPage');
     }, (error) => {
       console.log(error.message);
     })
   }
 
+<<<<<<< HEAD
+=======
+  upload() {
+    this.navCtrl.push('TrackUploadPage')
+  }
+
+>>>>>>> 62b480cb6986cfa56ae6e14bc56e5348effeec89
 
 
 }

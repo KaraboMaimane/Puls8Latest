@@ -14,13 +14,13 @@
             <ion-option value="Afro Pop">Afro Pop</ion-option>
             <ion-option value="Soul">Soul</ion-option>
           </ion-select>
-          <ion-select [(ngModel)]="gender" (ionChange)="input()" interface="popover">
+          <ion-select [(ngModel)]="gender" (ionChange)="selectGenre()" interface="popover">
               <ion-option value="Gender" selected disabled>Gender</ion-option>
 
             <ion-option checked="true" value="Male">Male</ion-option>
             <ion-option value="Female">Female</ion-option>
           </ion-select>
-          <ion-select [(ngModel)]="city" (ionChange)="input()" interface="popover">
+          <ion-select [(ngModel)]="city" (ionChange)="selectGenre()" interface="popover">
               <ion-option value="City" selected disabled>City</ion-option>
 
             <ion-option value="Johannesburg">Johannesburg</ion-option>

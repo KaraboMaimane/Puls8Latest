@@ -17,7 +17,7 @@ export class MyApp {
       authDomain: "puls8-database.firebaseapp.com",
       databaseURL: "https://puls8-database.firebaseio.com",
       projectId: "puls8-database",
-      storageBucket: "",
+      storageBucket: "puls8-database.appspot.com",
       messagingSenderId: "212472551538"
     })
     

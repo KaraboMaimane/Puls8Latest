@@ -22,22 +22,52 @@ export class CategoriesPage {
   gender;
   genre;
   city;
-  getprofileArr=[];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase:DatabaseProvider,public alertCtrl: AlertController) {
-   this.PulsedbDatabase.getAllDjs().then((data:any)=>{
-    this.getprofileArr = data
-     console.log(this.getprofileArr);
-   })
-   this.selectGenre()
+  getprofileArr = [];
+  getcategoryArr = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public alertCtrl: AlertController) {
+    this.PulsedbDatabase.getAllDjs().then((data: any) => {
+      this.getprofileArr = data
+      console.log(this.getprofileArr);
+    })
+    this.selectGenre();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CategoriesPage');
   }
+  refreshs() {
+    this.genre = null;
+    this.gender = null;
+    this.city = null;
 
-  selectGenre(){
-    this.PulsedbDatabase.SelectDj(this.genre).then((data)=>{
-      console.log(data)
+  }
+
+  selectGenre() {
+    this.PulsedbDatabase.SelectDj(this.genre).then((data) => {
+      this.getcategoryArr.length = 0;
+      var keys: any = Object.keys(data);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (this.genre == data[k].genre) {
+          let obj = {
+            bio: data[k].bio,
+            city: data[k].city,
+            email: data[k].email,
+            fullname: data[k].fullname,
+            gender: data[k].gender,
+            genre: data[k].genre,
+            payment: data[k].payment,
+            price: data[k].price,
+            role: data[k].role,
+            img: data[k].img,
+            stagename: data[k].stagename,
+            key: k
+          }
+          this.getcategoryArr.push(obj);
+          console.log(this.getcategoryArr);
+          this.getcategoryArr.reverse();
+        }
+      }
     })
   }
   ViewProfile(i){
@@ -50,28 +80,26 @@ export class CategoriesPage {
   GoToProfilePage() {
     this.PulsedbDatabase.checkAuthState().then(data => {
       if (data == false) {
-        const swalWithBootstrapButtons = swal.mixin({
-          confirmButtonClass: 'btn btn-success',
-          cancelButtonClass: 'btn btn-danger',
-          buttonsStyling: false,
-        })
-        
-        swalWithBootstrapButtons.fire({
-          title: 'Login Required?',
-          text: "You cant access your profile without logging in!",
-          type: 'info',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, Login',
-          reverseButtons: true
-        }).then((result) => {
-          if (result.value) {
-        this.navCtrl.push('LoginPage');
-          }else{
-
-          } 
-        })
+        let alert = this.alertCtrl.create({
+          subTitle: 'You have to sign in before you can view your profile, would you like to sign in now?',
+          buttons: [
+            {
+              text: 'Sign in',
+              handler: data => {
+                var opt = "profile";
+                this.navCtrl.push('LoginPage')
+              }
+            },
+            {
+              text: 'Cancel',
+              handler: data => {
+              }
+            }
+          ]
+        });
+        alert.present();
       } else {
-        this.navCtrl.push('ProfilePage');
+        this.navCtrl.push('ProfilePage')
       }
 
     })

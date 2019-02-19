@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
+import { NgForm } from "@angular/forms";
 /**
  * Generated class for the EditDjProfilePage page.
  *
@@ -8,11 +9,12 @@ import { DatabaseProvider } from '../../providers/database/database';
  * Ionic pages and navigation.
  */
 
+@IonicPage()
 @Component({
   selector: 'page-edit-dj-profile',
   templateUrl: 'edit-dj-profile.html',
 })
-export class EditDjProfilePage implements OnInit{
+export class EditDjProfilePage {
   name;
   email;
   surname;
@@ -29,14 +31,19 @@ export class EditDjProfilePage implements OnInit{
   price
   role
   img
+  uid;
   stagename
   downloadurl
-  EditProfileArr=[];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public PulsedbDatabase: DatabaseProvider) {
+  EditProfileArr = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {
+    this.retreivePics1();
   }
 
-
-  ngOnInit(){
+  ionViewDidLoad() {
+    this.retreivePics1();
+    console.log('ionViewDidLoad EditDjProfilePage');
+  }
+  ngOnInit() {
     this.PulsedbDatabase.getProfile().then((data: any) => {
       console.log(data)
       this.profileArr = data
@@ -59,23 +66,61 @@ export class EditDjProfilePage implements OnInit{
 
       }
     })
+
   }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EditDjProfilePage');
+  UpdateImage(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.img = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
   }
 
-  // uploadPicture() {
-  //     this.PulsedbDatabase.uploadProfilePic(this.downloadurl, this.name).then(data => {
-  //       console.log('added to db');
-  //       this.PulsedbDatabase.update(this.name, this.email, this.contact, this.bio, this.downloadurl).then((data) => {
-  //         this.EditProfileArr.push(data);
-  //       })
-  //       this.navCtrl.pop();
-  //     },
-  //       Error => {
-  //         console.log(Error)
-  //       })
-    
-  // }
 
+
+  submit(form: NgForm) {
+    this.PulsedbDatabase.uploadProfilePic(this.img, form.value.fullname).then(data => {
+      console.log('added to db');
+      this.PulsedbDatabase.updateDjProfile(form.value.fullname, form.value.email, this.img, form.value.stagename, form.value.gender, form.value.genre, form.value.price, form.value.payment, form.value.bio, form.value.city).then((data) => {
+        this.EditProfileArr.push(data);
+        console.log(this.EditProfileArr)
+      })
+      this.navCtrl.pop();
+    },
+      Error => {
+        console.log(Error)
+      })
+  }
+
+  getUid1() {
+    this.PulsedbDatabase.getUserID().then(data => {
+      this.uid = data
+      console.log(this.uid);
+    })
+  }
+  retreivePics1() {
+    this.profileArr.length = 0;
+    this.getUid1();
+    this.PulsedbDatabase.viewUserProfile().then(data => {
+      var keys: any = Object.keys(data);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (this.uid == data[k].uid) {
+          let objt = {
+            downloadurl: data[k].downloadurl
+          }
+          this.profileArr.push(objt);
+          console.log(this.profileArr)
+        }
+      }
+
+    }, Error => {
+      console.log(Error)
+    });
+
+
+  }
 }

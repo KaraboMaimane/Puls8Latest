@@ -2,7 +2,7 @@
   <div class="iconcontainer">
 
       <!-- <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">  -->
-      <img [src]="image" *ngIf="image != null" width="150" height="150" style="border:1px solid whitesmoke;border-radius: 50%;"
+      <img [src]="img" *ngIf="image != null" width="150" height="150" style="border:1px solid whitesmoke;border-radius: 50%;"
           alt="" class="iconcontainer__icon">
       <!-- <input type="file" #image (change)="insertImage($event)">  -->
 
@@ -14,7 +14,7 @@
       <div class="button">
           <div class="upload-btn-wrapper">
               <button class="btn">Edit Image</button>
-              <input type="file" (change)="insertImage($event)" />
+              <input type="file" type="file" accept="image/*"  (change)="UpdateImage($event)">
           </div>
       </div>
 
@@ -163,3 +163,4 @@
   </form>
 
 </ion-content>
+

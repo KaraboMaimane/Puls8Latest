@@ -10,50 +10,83 @@ import {
 import { DatabaseProvider } from "../../providers/database/database";
 import { NgForm } from "@angular/forms";
 import firebase from "firebase";
-import swal from 'sweetalert2';
+// import swal from 'sweetalert2';
 
 @IonicPage()
 @Component({
   selector: "page-register",
   templateUrl: "register.html"
 })
-export class RegisterPage implements OnInit{
+export class RegisterPage {
   role: any;
+  name;
+  email;
+  surname;
+  pic;
+  track;
+  profileArr = new Array();
+  trackarray = [];
+  bio;
+  city
+  fullname
+  gender
+  genre
+  payment
+  price
+  img
+  stagename
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public db: DatabaseProvider,
+    public PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController
   ) {}
 
-  ngOnInit(){
+  // ngOnInit(){
+  //   if(this.navParams.get('role')){
+  //     this.role = this.navParams.get('role');
+  //     console.log(this.role);
+  //   }else{
+  //     console.log('nothing here')
+  //   }
 
-    if(this.navParams.get('role')){
-      this.role = this.navParams.get('role');
-      console.log(this.role);
-    }else{
-      console.log('nothing here')
+  // }
+  register(form: NgForm) {
+    const loading = this.loadingCtrl.create({
+      content: `Registering ${form.value.email}...`,
+      duration: 3000
+
+    });
+    loading.present();
+    if (form.value.email == "" || form.value.email == undefined){
+      const alert = this.alertCtrl.create({
+        title: 'Reminder,',
+        subTitle: 'Your email cannot be left empty',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+    else{
+      this.PulsedbDatabase.Register(form.value.fullname,form.value.email,form.value.password).then((data)=>{
+        console.log("succesful")
+        let user = firebase.auth().currentUser;
+        user.sendEmailVerification().then((a)=>{
+          const alert = this.alertCtrl.create({
+            title: 'Thank you for Registering',
+            subTitle: 'Please check emails for verification link',
+            buttons: ['OK']
+          });
+          alert.present();
+        }).catch((a)=>{
+          // an error has occured
+        })
+        this.navCtrl.setRoot('LoginPage')
+      }).catch((error)=>{
+        console.log(error)
+      })
     }
 
-    
-  }
-
-  register(form: NgForm) {
-    console.log(form.value)
-    this.db.register(form.value.fullnameform.value.email, form.value.password).then((data)=>{
-      let user = firebase.auth().currentUser;
-        firebase.database().ref('Registration/' + user.uid).push({
-          fullname: form.value.fullname,
-          email: form.value.email,
-          role: "Audience",
-          userType: "user",
-          img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
-          key: user.uid
-        })
-        console.log(data);
-    }).catch((error)=>{
-      console.log(error);
-    });
   }
 }

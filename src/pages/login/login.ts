@@ -10,7 +10,7 @@ import { NgForm } from "@angular/forms";
 import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
-import swal from 'sweetalert2';
+// import swal from 'sweetalert2';
 
 /**
 * Generated class for the LoginPage page.
@@ -25,7 +25,7 @@ import swal from 'sweetalert2';
   selector: "page-login",
   templateUrl: "login.html"
 })
-export class LoginPage implements OnInit{
+export class LoginPage {
   email;
   password;
   logloader: string;
@@ -42,67 +42,101 @@ export class LoginPage implements OnInit{
     public loadingCtrl: LoadingController
   ) {}
 
-  ngOnInit(){
-    this.logloader = 'false';
-    this.logwarn = 'false';
-    this.logfail = 'false';
-    this.logsucc = 'false';
-    this.message = 'false';
-  }
+  // ngOnInit(){
+  //   this.logloader = 'false';
+  //   this.logwarn = 'false';
+  //   this.logfail = 'false';
+  //   this.logsucc = 'false';
+  //   this.message = 'false';
+  // }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
-    // swal.fire('Karabo');
   }
   login(form: NgForm) {
-    this.logloader = 'true';
-    console.log('yellow')
-    if(form.valid){
-      this.PulsedbDatabase.loginx(form.value.email, form.value.password).then((user) => {
-        console.log(user);
-        this.logloader = 'false';
-        this.logsucc = 'true';
-      }).catch((error) => {
-        this.message = error.message;
-        this.logloader = 'false';
-        this.logfail = 'true';
-      })
-    }else{
-      this.logwarn;
-    }
-
+    const loading = this.loadingCtrl.create({
+       content: `Logging in ${form.value.email}...`
+     });
+     loading.present();
+     this.PulsedbDatabase
+       .login(form.value.email, form.value.password)
+       .then(data => {
+         console.log(data.user.emailVerified)
+         // alert(data.user.emailVerified)
+         let userID = firebase.auth().currentUser.uid;
+         loading.dismiss();
+        this.navCtrl.setRoot('CategoriesPage');           
+       })
+       .catch(error => {
+         loading.dismiss();
+         const alert = this.alertCtrl.create({
+           title: 'Caution',
+           subTitle: error.message,
+           buttons: [
+             {
+               text: "Ok",
+               handler: () => {      
+               }
+             }
+           ]
+         });
+         alert.present();
+       });
+   }
+   resetPassword() {
+    const prompt = this.alertCtrl.create({
+      title: "Reser Password",
+      message: "Enter your email to reset your password",
+      cssClass: '.background',
+      inputs: [
+        {
+          name: "email",
+          placeholder: "Example@gmail.com",
+          type: "email"
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          handler: data => {
+            console.log("Cancel clicked");
+           
+            this.navCtrl.push(LoginPage);
+          }
+        },
+        {
+          text: "Save",
+          handler: data => {
+            this.PulsedbDatabase.resetPassword(data.email).then(
+              () => {
+                const alert = this.alertCtrl.create({
+                  title: "Caution",
+                  message: "your request is been proccessed check your email ",
+                  buttons: ["OK"]
+                });
+                alert.present();
+              },
+              error => {
+                const alert = this.alertCtrl.create({
+                  title: "Caution",
+                  message: error.message,
+                  buttons: ["OK"]
+                });
+                alert.present();
+              }
+            );
+            console.log("Saved clicked");
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
+  // nextpage(page: string){
+  //   this.navCtrl.push(page);
+  // }
 
-  resetpassword() {
-     swal.fire({
-      title: 'Enter your email address',
-      input: 'email',
-      showCancelButton: true,
-      inputValidator: (value) => {
-          console.log(value)
-          this.PulsedbDatabase.resetpassword(value).then((email) => {
-            console.log(email);
-            swal.fire({
-              position: 'center',
-              type: 'success',
-              title: `A Password Reset Email Has Been Sent to ${value}`,
-              showConfirmButton: false,
-              timer: 2500
-            }).catch((error)=>{
-              swal.fire({
-                type: 'error',
-                title: 'Oh Snap!',
-                text: `${error.message}`
-              })
-            })
-          })
-        return !value && 'Please enter a valid email address!';
-      }
-
-    })
-  }
-
-  nextpage(page: string){
-    this.navCtrl.push(page);
+  GoToSignup() {
+    this.navCtrl.push('RegisterPage')
   }
 }
