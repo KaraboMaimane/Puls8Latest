@@ -14,13 +14,13 @@
             <ion-option value="Afro Pop">Afro Pop</ion-option>
             <ion-option value="Soul">Soul</ion-option>
           </ion-select>
-          <ion-select [(ngModel)]="gender" (ionChange)="selectGenre()" interface="popover">
+          <ion-select [(ngModel)]="gender" (ionChange)="selectGender()" interface="popover">
               <ion-option value="Gender" selected disabled>Gender</ion-option>
 
             <ion-option checked="true" value="Male">Male</ion-option>
             <ion-option value="Female">Female</ion-option>
           </ion-select>
-          <ion-select [(ngModel)]="city" (ionChange)="selectGenre()" interface="popover">
+          <ion-select [(ngModel)]="city" (ionChange)="selectcity()" interface="popover">
               <ion-option value="City" selected disabled>City</ion-option>
 
             <ion-option value="Johannesburg">Johannesburg</ion-option>
@@ -60,17 +60,17 @@
 
   <h3 class="heading">Puls List</h3>
   <div class="list">
-    <!-- <div class="nocontent" >
+    <div class="nocontent" *ngIf="getprofileArr2 == 0">
       <div class="nocontent__contents">
         
         <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
-        <p class="nocontent__contents--text" style="color: white">no information</p>
+        <p class="nocontent__contents--text" style="color: white">No Information</p>
       </div>
-    </div> -->
+    </div>
 
-    <ion-list no-lines *ngFor="let a of getprofileArr;let i of index">
+    <ion-list no-lines >
         <!-- *ngFor="let x of  arrDj;let i = index" -->
-      <ion-item  (click)="ViewProfile(i)">
+      <ion-item *ngFor="let a of getprofileArr2;let i of index" (click)="ViewProfile(i)">
         <ion-thumbnail item-start>
           <img src='{{a.img}}' height="2px">
         </ion-thumbnail>
@@ -81,7 +81,7 @@
           <i class="fas fa-star"></i>
         </p>
         <!-- R{{x.price | number:'3.2-5'}}/{{x.payment}} -->
-        <button ion-button clear item-end>{{a.price}}</button>
+        <button ion-button clear item-end>{{a.price| number:'3.2-5'}}/ <span class="payment">{{a.payment}}</span></button>
       </ion-item>
     </ion-list>
   </div>
@@ -101,4 +101,15 @@
       <ion-icon ios="ios-contact" md="md-contact"></ion-icon>
     </button>
   </ion-fab>
+
+  <!-- <div class="loadcontainer" *ngIf="getprofileArr.length < 1">
+    <div class="loadingmod">
+        <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+        <p class="message">Loggin In
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+        </p>
+    </div> 
+</div> -->
 </ion-content>

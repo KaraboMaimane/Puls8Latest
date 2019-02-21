@@ -36,9 +36,11 @@ export class EditUserProfilePage implements OnInit {
 	stagename;
 	downloadurl;
 	EditProfileArr = [];
+	loader: string;
 	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {}
 
 	ngOnInit() {
+		this.loader = 'false';
 		this.PulsedbDatabase.getProfile().then((data: any) => {
 			console.log(data);
 			this.profileArr = data;
@@ -67,18 +69,12 @@ export class EditUserProfilePage implements OnInit {
 	}
 
 	submit(form: NgForm) {
+		this.loader = 'true';
 		this.PulsedbDatabase
-			.updateProfile(
-				form.value.fullname,
-				form.value.email,
-				form.value.gender,
-        form.value.city,
-        form.value.bio,
-				this.img,
-			
-			)
+			.updateProfile(form.value.fullname, form.value.gender, form.value.city, form.value.bio, this.img)
 			.then((data) => {
 				console.log(data);
+				this.loader = 'false';
 				this.navCtrl.pop();
 			});
 	}
@@ -93,43 +89,18 @@ export class EditUserProfilePage implements OnInit {
 		}
 	}
 
+
 	remove() {
 		// const loader = this.loadingCtrl.create({
-		//   content: "Deleting image...",
-		//   duration: 1000
+		//   content: "Deleteing Picture...",
+		//   duration: 800
 		// });
 		// loader.present();
-		// this.PulsedbDatabase.removeProfilePicture(this.image).then(()=>{
-		//   this.image = "../../assets/imgs/user.png";
-		//   // loader.dismiss();
-		// })
-	}
-
-	//  getUid1() {
-	//   this.PulsedbDatabase.getUserID().then(data => {
-	//     this.uid = data
-	//     console.log(this.uid);
-	//   })
-	// }
-	// retreivePics1() {
-	//   this.profileArr.length = 0;
-	//   this.getUid1();
-	//   this.PulsedbDatabase.viewUserProfile().then(data => {
-	//     var keys: any = Object.keys(data);
-	//     for (var i = 0; i < keys.length; i++) {
-	//       var k = keys[i];
-	//       if (this.uid == data[k].uid) {
-	//         let objt = {
-	//           downloadurl: data[k].downloadurl
-	//         }
-	//         this.profileArr.push(objt);
-	//         console.log(this.profileArr)
-	//       }
-	//     }
-
-	//   }, Error => {
-	//     console.log(Error)
-	//   });
-
-	// }
+		this.img = "../../assets/imgs/user.png";
+		this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
+		  // loader.dismiss();
+		})
+		
+		
+	  }
 }

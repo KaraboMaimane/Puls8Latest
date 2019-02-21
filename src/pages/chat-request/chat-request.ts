@@ -75,10 +75,13 @@ export class ChatRequestPage {
     let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
     let date = dateObj.toDateString();
 
-    this.database.StartChat(this.djKey,this.userKey,this.UserName,this.userEmail,date,time,this.message2,this.userImage,this.userKey).then((data:any)=>{
+    this.database.createRequest(this.djKey,this.userKey,this.UserName,this.userEmail,date,time,this.message2,this.userImage).then((data:any)=>{
       console.log("data saved",data)
       this.database.createInbox(this.djKey,this.UserName,this.userEmail,date,time).then((data)=>{
         console.log("inbox created",data)
+        this.database.StartChat(this.djKey,this.userKey,this.UserName,this.userEmail,date,time,this.message2,this.userImage,this.userKey).then((data:any)=>{
+          console.log("Chat started")
+        })
       })
       // this.database.createChatRoom(this.userKey,this.djKey).then((data)=>{
       //   console.log("Chatroom created",data)

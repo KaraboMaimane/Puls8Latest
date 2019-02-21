@@ -7,7 +7,7 @@
       <!-- <input type="file" #image (change)="insertImage($event)">  -->
 
       <div class="buttonbox">
-          <button class="delete" color="danger" ion-button icon-only (click)="remove()">
+          <button *ngIf="img != 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w'" class="delete" color="danger" ion-button icon-only (click)="remove()">
               <ion-icon name="trash"></ion-icon>
           </button>
       </div>
@@ -35,7 +35,7 @@
                   <ion-label color="light">
                       <ion-icon name="mail"></ion-icon>
                   </ion-label>
-                  <ion-input type="name" name="email" [value]="email" placeholder="Email" class="contentflex__formcontent--input"
+                  <ion-input type="name" name="email" disabled [value]="email" placeholder="Email" class="contentflex__formcontent--input"
                       id="input" ngModel required></ion-input>
               </ion-item>
 
@@ -109,5 +109,15 @@
       </div>
   </form> 
 
+    <div class="loadcontainer" *ngIf="loader == 'true'">
+    <div class="loadingmod">
+        <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+        <p class="message">Updating Data
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+        </p>
+    </div> 
+</div>
 </ion-content>
 

@@ -65,10 +65,11 @@ page-dj-profile {
     }
 
     .segcontainer{
-        &__seg{
+        &__seg{ 
             overflow: scroll;
             height: 68vh;
             margin: 0;
+            animation: fadein .3s ease;
             &__listitems{
                 background: transparent;
                 color: $color-primary-light !important;

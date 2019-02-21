@@ -7,67 +7,67 @@
 
 <ion-content>
 
-    <div class="hero">
-      <div class="hero__headingcontainer">
-          <h3 class="hero__headingcontainer--header">Chat</h3>
-      </div>
+  <div class="hero">
+    <div class="hero__headingcontainer">
+        <h3 class="hero__headingcontainer--header">Chat</h3>
     </div>
-    <!-- <ion-input placeholder="text" [(ngModel)]="message"></ion-input>
-    <button ion-button (click)="send()">send</button> -->
-    <!-- <ion-list>
-        <ion-item-sliding *ngFor="let x of arrMssg">
-          <ion-item>
-            <h1>{{x.name}}</h1><br>
-           
-            <h2>{{x.message}}</h2><br>
-            <h6>{{x.time}}</h6>
-          </ion-item>
-          <ion-item-options side="left">
-            <button ion-button color="primary">
-              <ion-icon name="text"></ion-icon>
-              Text
-            </button>
-            <button ion-button color="secondary">
-              <ion-icon name="call"></ion-icon>
-              Call
-            </button>
-          </ion-item-options>
-          <ion-item-options side="right">
-            <button ion-button color="primary">
-              <ion-icon name="mail"></ion-icon>
-              Email
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list> -->
-  
-    <div class="messages">
-      <div class="chatBubble" *ngFor="let x of chatArray" >
-        <div class="chat-bubble left">
-          <div class="message">{{x.message}}</div>
-          <div class="message-detail">
-            <span style="font-weight:bold;">{{x.name}} </span>,
-            <span>{{x.time}}</span>
-          </div>
-          </div>
+  </div>
+  <!-- <ion-input placeholder="text" [(ngModel)]="message"></ion-input>
+  <button ion-button (click)="send()">send</button> -->
+  <!-- <ion-list>
+      <ion-item-sliding *ngFor="let x of arrMssg">
+        <ion-item>
+          <h1>{{x.name}}</h1><br>
+         
+          <h2>{{x.message}}</h2><br>
+          <h6>{{x.time}}</h6>
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="primary">
+            <ion-icon name="text"></ion-icon>
+            Text
+          </button>
+          <button ion-button color="secondary">
+            <ion-icon name="call"></ion-icon>
+            Call
+          </button>
+        </ion-item-options>
+        <ion-item-options side="right">
+          <button ion-button color="primary">
+            <ion-icon name="mail"></ion-icon>
+            Email
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list> -->
+
+  <div class="messages">
+    <div class="chatBubble" *ngFor="let x of chatArray" >
+      <div class="chat-bubble {{x.side}}">
+        <div class="message">{{x.message}}</div>
+        <div class="message-detail">
+          <span style="font-weight:bold;">{{x.name}} </span>,
+          <span>{{x.date}} {{x.time}}</span>
+        </div>
         </div>
       </div>
-    
-  
-    <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
-      <ion-icon name="chatbubbles"></ion-icon>
-    </button>
-    <div class="chatbox" *ngIf="messagestate == 'sending'">
-      <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
-    <div class="contentflex">
-      <div class="group">
-        <input  type="text" [(ngModel)]="message2" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
-      </div>
-        <button ion-button end class="hero--back" >
-          <ion-icon name="send" (click)="messagestate = 'not sending'; reply()"></ion-icon>
-        </button>
-    </div>
-     
     </div>
   
-  </ion-content>
+
+  <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
+    <ion-icon name="chatbubbles"></ion-icon>
+  </button>
+  <div class="chatbox" *ngIf="messagestate == 'sending'">
+    <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
+  <div class="contentflex">
+    <div class="group">
+      <input  type="text" [(ngModel)]="message2" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
+    </div>
+      <button ion-button end class="hero--back" >
+        <ion-icon name="send" (click)="messagestate = 'not sending'; reply()"></ion-icon>
+      </button>
+  </div>
+   
+  </div>
+
+</ion-content>

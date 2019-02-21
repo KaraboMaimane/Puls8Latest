@@ -5,6 +5,10 @@ page-categories {
         animation: 1s ease fadeIn;
     }
 
+    .payment{
+        text-transform: lowercase;
+    }
+
     .dropdown{
         background: rgba($color-grey-light, .1) !important;
         border-radius: 5rem;

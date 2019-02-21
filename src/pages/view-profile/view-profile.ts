@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 
@@ -14,12 +14,13 @@ import { DatabaseProvider } from '../../providers/database/database';
   selector: 'page-view-profile',
   templateUrl: 'view-profile.html',
 })
-export class ViewProfilePage {
+export class ViewProfilePage implements OnInit{
   commentsArray = [];
   userKey: any;
+  musicArr=[];
   userImage: void;
   UserName: any;
-  profile;
+  profile: string;
   messagestate: string;
   userstatus: any;
   DjProfile;
@@ -32,8 +33,29 @@ export class ViewProfilePage {
   djCity;
   djKey;
   userDetails;
+
+  getcomments=0;
+  warntoast: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
     this.profile = this.navParams.get("Djkey")
+    console.log(this.profile)
+    // this.profile = 'infor';
+  }
+
+  ionViewDidEnter(){
+    this.profile = 'infor';
+
+
+
+  }
+  ngOnInit(){
+    this.profile = 'infor';
+    console.log(this.profile);
+    this.database.retrieveMusic().then((data:any) => {
+      this.musicArr.length =0;
+      this.musicArr =data
+			console.log(this.musicArr)
+		})
   }
 
   ionViewDidLoad() {
@@ -51,6 +73,18 @@ export class ViewProfilePage {
     this.djCity = this.DjProfile.city;
     this.djKey = this.DjProfile.key2;
     console.log(this.djKey)
+    console.log(this.djKey)
+
+
+    
+    this.database.getComments(this.djKey).then((data:any)=>{
+      console.log(data)
+      // this.commentsArray.length = 0;
+      this.commentsArray = data;
+      this.getcomments = this.commentsArray.length
+      this.commentsArray.reverse();
+      console.log(this.getcomments)
+    })
 
     this.database.getuser().then((data:any)=>{
       console.log(data)
@@ -58,42 +92,65 @@ export class ViewProfilePage {
       this.UserName = this.userDetails.fullname;
       this.userImage = this.userDetails.img;
       this.userKey = this.userDetails.key;
-
+      console.log(this.userKey);
       console.log(this.UserName)
     })
 
-    console.log(this.djKey)
-    this.database.getComments(this.djKey).then((data:any)=>{
-      console.log(data)
-      this.commentsArray.length =0;
-      this.commentsArray = data;
-      this.commentsArray.reverse();
-    })
+    // this.database.retrieveMusic().then((data) => {
+		// 	console.log(data)
+		// })
   }
+  
   
 
   onMessageAdded(message){
-    alert("ive been clicked")
-    let profile = this.navParams.get("Djkey")
+    if(message != "" && message != null && message != undefined){
+      let profile = this.navParams.get("Djkey")
     let DjProfile;
      DjProfile = profile
     let djKey =  DjProfile.key2;
+    let dateObj = new Date
+    let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
+    let date = dateObj.toDateString();
     console.log(profile.key)
     console.log(djKey)
-    this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message).then((data:any)=>{
+
+    this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message,time,date).then((data:any)=>{
       console.log(data)
       console.log("data saved")
     })
+    }
+    else{
+      // alert("comments cannot be left empty")
+      this.warntoast = 'true';
+      let timer = setInterval(()=>{
+        this.warntoast = 'false';
+      }, 4000);
+    }
+    
   }
-
   booking(){
     let Obj = {
       djName: this.djName,
       djEmail:  this.djEmail,
       djKey: this.djKey,
     }
-    console.log(Obj)
-    this.navCtrl.push('ChatRequestPage', { Djkey:Obj})
+    console.log(Obj.djKey)
+    if(this.userKey != Obj.djKey){
+      this.navCtrl.push('ChatRequestPage', { Djkey:Obj})
+    console.log('true')
+    }else{ 
+      this.warntoast = 'true';
+      let timer = setInterval(()=>{
+        clearInterval(timer);
+        this.warntoast = 'false';
+      },3000)
+    }
+    // this.navCtrl.push('ChatRequestPage', { Djkey:Obj})
+  }
+
+  openLink(link){
+    window.open(link);
   }
 
 }

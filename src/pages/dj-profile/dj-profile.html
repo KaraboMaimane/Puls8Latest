@@ -33,10 +33,10 @@
       </ion-segment-button>
       <!-- comment number here -->
       <ion-segment-button value="reviews" *ngIf="role != 'Audience'">
-        12    Comments
+        <span class="noti">{{commentsArray.length}}</span>   Comments
       </ion-segment-button>
       <ion-segment-button value="bookings">
-          Inbox
+        <span class="noti">{{inboxArray.length}}</span> Inbox
       </ion-segment-button>
   </ion-segment>
 
@@ -44,13 +44,13 @@
       <ion-list *ngSwitchCase="'music'" class="segcontainer__seg">
               <!-- add the dj array loop here -->
           <!-- *ngFor="let x of trackarray;let i=index;" -->
-          <ion-item no-lines  class="segcontainer__seg__listitems">
-              <h2 class="segcontainer__seg__listitems--artistname" (click)="deleteTrack(i)">1.Breeze feat Regijazz</h2>
-              <h3 class="segcontainer__seg__listitems--artisttrack">Sghubu Sa Mampela</h3>
-              <p class="segcontainer__seg__listitems--artistlink">Listen to the song
-                  <a (click)="openLink(x.trackLink)">here......</a>
-              </p>
-          </ion-item>
+          <ion-item *ngFor="let a of musicArr;let index =i"no-lines  class="segcontainer__seg__listitems">
+            <h2 class="segcontainer__seg__listitems--artistname" (click)="deleteTrack(i)">{{a.MusicName}}</h2>
+            <h3 class="segcontainer__seg__listitems--artisttrack">{{a.MusicName}}</h3>
+            <p class="segcontainer__seg__listitems--artistlink">Listen to the song
+                <a (click)="openLink(a.name)">here......</a>
+            </p>
+        </ion-item>
 
           <!-- <div class="nocontent" *ngIf="trackarray.length == 0 || trackarray.length == undefined">
               <div class="nocontent__contents">
@@ -122,7 +122,7 @@
                   <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.username}}</strong>, has requested
                       to chat with you.</p>
                       <!-- date goes here -->
-                  <p class="segcontainer__seg__cardcontainer__cards--datetext">23062017</p>
+                  <p class="segcontainer__seg__cardcontainer__cards--datetext">{{x.date}}{{x.time}}</p>
               </ion-item>
               <!-- <ion-item-options side="right" (click)="delete(a)">
                   <button ion-button color="danger">
@@ -132,7 +132,7 @@
               </ion-item-options> -->
           </ion-item-sliding>
 
-          <div class="nocontent">
+          <div class="nocontent" *ngIf="inboxArray.length == 0">
               <div class="nocontent__contents">
                   <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
                   <p class="nocontent__contents--text" style="color: white">No Messages</p>
@@ -152,16 +152,17 @@
 
               <!-- adding commnet in the page Right is for sender and Left is for receiver -->
                   <!-- *ngFor="let n of commentArr ; let i = index; let odd = 'left'; let even = 'right'" -->
-              <div class="chatBubble"*ngFor="let x of commentsArray">
-                  <img class="profile-pic even" src="{{x.userImage}}">
-                  <div class="chat-bubble left">
-                      <div class="message">{{x.comment}}</div>
-                      <div class="message-detail">
-                          <span style="font-weight:bold;">{{x.username}}</span>,
-                          <span>12042018</span>
-                      </div>
-                  </div>
-              </div>
+                  <div class="chatBubble" *ngFor="let n of commentsArray">
+                    <!-- <img class="profile-pic even" src="{{n.userImage}}"> -->
+                    <div class="chat-bubble left">
+                        <!-- commments go here -->
+                        <div class="message">{{n.comment}}</div>
+                        <div class="message-detail">
+                            <span style="font-weight:bold;">{{n.name}} </span>,
+                            <span>{{n.time}}{{n.date}}</span>
+                        </div>
+                    </div>
+                </div>
 
               <div class="block">&nbsp;</div>
           </div>
@@ -172,12 +173,12 @@
                   <p class="nocontent__contents--text" style="color: white">No Comments</p>
               </div>
           </div> -->
-
+<!-- 
           <button ion-button icon-only *ngIf="messagestate != 'sending'" class="comment" (click)="messagestate = 'sending'">
                   <ion-icon name="chatbubbles"></ion-icon>
               </button>
               <div class="chatbox" *ngIf="messagestate == 'sending'">
-                  <!-- <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input> -->
+                  <ion-input type="text" placeholder="Add A Review Message(max 100chars)" class="input" ></ion-input>
                 <div class="contentflex">
                   <div class="group">
                     <input  type="text" placeholder="Enter A Message (Max 100 chars)" class="input" id="name" required #message>
@@ -187,7 +188,7 @@
                     </button>
                 </div>
                  
-                </div>
+                </div> -->
       </ion-list>
 
 

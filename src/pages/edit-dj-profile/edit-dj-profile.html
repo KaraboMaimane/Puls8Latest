@@ -6,8 +6,8 @@
           alt="" class="iconcontainer__icon">
       <!-- <input type="file" #image (change)="insertImage($event)">  -->
 
-      <div class="buttonbox">
-          <button class="delete" color="danger" ion-button icon-only (click)="remove()">
+      <div  class="buttonbox">
+          <button class="delete" *ngIf="img != 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w'" color="danger" ion-button icon-only (click)="remove()">
               <ion-icon name="trash"></ion-icon>
           </button>
       </div>
@@ -35,7 +35,7 @@
                   <ion-label color="light">
                       <ion-icon name="mail"></ion-icon>
                   </ion-label>
-                  <ion-input type="name" name="email" [value]="email" placeholder="Email" class="contentflex__formcontent--input"
+                  <ion-input type="name" disabled name="email" [value]="email" placeholder="Email" class="contentflex__formcontent--input"
                       id="input" ngModel required></ion-input>
               </ion-item>
 
@@ -87,7 +87,7 @@
                       <ion-icon name="cash"></ion-icon>
                   </ion-label>
                   <ion-input type="number" name="price" [value]="price" placeholder="price" class="contentflex__formcontent--input"
-                      id="price" ngModel min="500" max="5000" maxlength="4" minlength="3" required></ion-input>
+                      id="price" ngModel min="500" max="1000" maxlength="4" minlength="2" required></ion-input>
               </ion-item>
 
 
@@ -100,7 +100,7 @@
                   <ion-select name="payment" [(ngModel)]="payment" multiple="false">
                       <ion-option value="HR" (change)="input($event)">Hour</ion-option>
                       <ion-option value="D">Day</ion-option>
-                      <ion-option value="H/hf">Half Hour</ion-option>
+                      <!-- <ion-option value="H/hf">Half Hour</ion-option> -->
 
                   </ion-select>
               </ion-item>
@@ -162,5 +162,27 @@
       </div>
   </form>
 
+
+    <div class="loadcontainer" *ngIf="loader == 'true'">
+    <div class="loadingmod">
+        <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+        <p class="message">Updating Data
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+        </p>
+    </div> 
+</div>
+<!-- 
+<div class="succcontainer" *ngIf="changesucc == 'true'">
+    <div class="alertbox">
+      <img src="../../assets/happy.svg" alt="" class="alertimg">
+      <div class="messagebox">
+          <p class="alertmessagehead">Yesss!</p>
+          <p class="alertmessage">You Have Successfully Logged In</p>
+          <button class="alertbutton" (click)="logsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
+      </div>
+    </div>
+  </div>  -->
 </ion-content>
 

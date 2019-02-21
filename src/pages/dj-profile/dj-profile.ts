@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 /**
@@ -10,12 +10,13 @@ import { DatabaseProvider } from '../../providers/database/database';
 
 @IonicPage()
 @Component({
-  selector: 'page-dj-profile',
-  templateUrl: 'dj-profile.html',
+	selector: 'page-dj-profile',
+	templateUrl: 'dj-profile.html',
 })
 export class DjProfilePage {
 	commentsArray = [];
 	inboxArray = [];
+	musicArr=[];
 	userKey: void;
 	name;
 	email;
@@ -34,48 +35,67 @@ export class DjProfilePage {
 	role;
 	img;
 	stagename;
-	profile: string;
+	getcomments=0;
 	state;
-  constructor(		public navCtrl: NavController,
+	profile = 'infor'
+	constructor(public navCtrl: NavController,
 		public navParams: NavParams,
 		public actionSheetCtrl: ActionSheetController,
-    public PulsedbDatabase: DatabaseProvider,
-    public modalCtrl: ModalController) {
-  }
+		public PulsedbDatabase: DatabaseProvider,
+		public modalCtrl: ModalController) {
 
- 
 
-  ionViewDidEnter() {
+
+
+			this.PulsedbDatabase.retrieveMusic().then((data:any) => {
+				this.musicArr.length=0;
+				this.musicArr =data
+				console.log(this.musicArr)
+				console.log(data)
+			})
+	}
+
+
+
+	ionViewDidEnter() {
 		this.PulsedbDatabase.getProfile().then((data: any) => {
 			console.log(data);
 			this.profileArr = data;
 			console.log(this.profileArr);
 			this.bio = this.profileArr[0].bio;
-			(this.city = this.profileArr[0].city),
-				(this.email = this.profileArr[0].email),
-				(this.fullname = this.profileArr[0].fullname),
-				(this.gender = this.profileArr[0].gender),
-				(this.genre = this.profileArr[0].genre),
-				(this.payment = this.profileArr[0].payment),
-				(this.price = this.profileArr[0].price),
-				(this.role = this.profileArr[0].role),
-				(this.img = this.profileArr[0].img),
-				(this.stagename = this.profileArr[0].stagename),
-				(this.userKey = this.profileArr[0].user);
-			console.log(this.userKey);
+			this.city = this.profileArr[0].city;
+				this.email = this.profileArr[0].email;
+				this.fullname = this.profileArr[0].fullname;
+				this.gender = this.profileArr[0].gender;
+				this.genre = this.profileArr[0].genre;
+				this.payment = this.profileArr[0].payment;
+				this.price = this.profileArr[0].price;
+				this.role = this.profileArr[0].role;
+				this.img = this.profileArr[0].img;
+				this.stagename = this.profileArr[0].stagename;
+				this.userKey = this.profileArr[0].user;
+			console.log(this.email);
 
-			this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
-				console.log(data);
-				this.commentsArray = data;
-			});
+			// this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+			// 	console.log(data);
+			// 	this.commentsArray = data;
+			// });
 			this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
 				console.log(data);
 				this.inboxArray = data;
 			});
+			this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+				console.log(data);
+				this.commentsArray = data;
+			});
 
+	
 			if (this.role != 'Dj') {
 			}
 		});
+
+	
+
 	}
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad DjProfilePage');
@@ -84,12 +104,12 @@ export class DjProfilePage {
 			console.log(data);
 			this.inboxArray = data;
 		});
-		this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
-			console.log(data);
-			this.commentsArray = data;
-		});
+
+		
+		
+		
 	}
-	
+
 	viewBooking(i) {
 		console.log(i);
 		let dj = this.userKey;
@@ -97,17 +117,25 @@ export class DjProfilePage {
 		let userInfo = i;
 		this.navCtrl.push('ViewChatRequestPage', { userObj: userInfo, djObj: dj });
 	}
-  edit(){
-    this.navCtrl.push('EditDjProfilePage')
+	edit() {
+		this.navCtrl.push('EditDjProfilePage')
 	}
 	logout() {
 		this.PulsedbDatabase.logout().then(
 			() => {
-				this.navCtrl.push('LoginPage');
+				this.navCtrl.setRoot('LoginPage');
 			},
 			(error) => {
 				console.log(error.message);
 			}
 		);
 	}
+
+	upload(){
+		this.navCtrl.push('UploadPage');
+	}
+
+	openLink(link){
+		window.open(link);
+	  }
 }

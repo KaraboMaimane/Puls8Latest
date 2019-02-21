@@ -10,7 +10,7 @@ import { NgForm } from "@angular/forms";
 import { DatabaseProvider } from "../../providers/database/database";
 import firebase from "firebase";
 import { LoadingController } from "ionic-angular";
-// import swal from 'sweetalert2';
+import swal from 'sweetalert2';
 
 /**
 * Generated class for the LoginPage page.
@@ -88,54 +88,42 @@ export class LoginPage {
   cancelmodal(){
     // this.navCtrl.setRoot('CategoriesPage');      
   }
-   resetPassword() {
-    const prompt = this.alertCtrl.create({
-      title: "Reser Password",
-      message: "Enter your email to reset your password",
-      cssClass: '.background',
-      inputs: [
-        {
-          name: "email",
-          placeholder: "Example@gmail.com",
-          type: "email"
+  passwordReset() {
+    swal.fire({
+      title: 'Enter your email address',
+      input: 'email',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (value) {
+          console.log(value)
+          this.PulsedbDatabase.resetPassword(value).then((email) => {
+            console.log(email);
+            swal.fire({
+              position: 'center',
+              type: 'success',
+              title: 'email has been sent,please check your emails',
+              showConfirmButton: false,
+              timer: 2500
+            }).catch((error)=>{
+              swal.fire({
+                type: 'error',
+                title: 'Oh Snap!',
+                text: error.message
+              })
+            })
+          }).catch((error)=>{
+            swal.fire({
+              type: 'error',
+              title: 'Oh snap!',
+              text: error.message
+            })
+          })
         }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          handler: data => {
-            console.log("Cancel clicked");
-           
-            this.navCtrl.push(LoginPage);
-          }
-        },
-        {
-          text: "Save",
-          handler: data => {
-            this.PulsedbDatabase.resetPassword(data.email).then(
-              () => {
-                const alert = this.alertCtrl.create({
-                  title: "Caution",
-                  message: "your request is been proccessed check your email ",
-                  buttons: ["OK"]
-                });
-                alert.present();
-              },
-              error => {
-                const alert = this.alertCtrl.create({
-                  title: "Caution",
-                  message: error.message,
-                  buttons: ["OK"]
-                });
-                alert.present();
-              }
-            );
-            console.log("Saved clicked");
-          }
-        }
-      ]
-    });
-    prompt.present();
+        return !value && 'You need to write something!';
+
+      }
+
+    })
   }
   nextpage(page: string){
     this.navCtrl.push(page);

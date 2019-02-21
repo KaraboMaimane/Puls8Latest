@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as firebase from 'firebase'
 import { DatabaseProvider } from '../../providers/database/database';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 /**
  * Generated class for the ChatroomPage page.
@@ -16,27 +17,37 @@ import { DatabaseProvider } from '../../providers/database/database';
   templateUrl: 'chatroom.html',
 })
 export class ChatroomPage {
+  currentUserName: any;
   path: any;
   message: any;
+  Usermessage;
   message2;
   email: any;
   date: any;
   time: any;
-  UserKey: void;
+  UserKey;
   djKey: any;
   key;
   name;
-  chatArray= new Array
+  chatArray= new Array();
+  key2;
+  side;
+  userArray: any[];
+  role: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
+    this.Usermessage = "You have a new message, please check your inbox."
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatroomPage');
     let profileKey = this.navParams.get("userKey")
     let djKey = this.navParams.get("djKey")
+    let djKey2 = this.navParams.get("objKey")
+    this.key2 = djKey2
     this.djKey = djKey
     this.key = profileKey;
-    console.log(this.key)
+    if(this.key != undefined){
+      console.log(this.key)
     this.name = this.key.username;
     this.UserKey = this.key.userKey;
     this.time = this.key.time;
@@ -47,9 +58,11 @@ export class ChatroomPage {
     let currentId = firebase.auth().currentUser.uid;
     console.log(currentId);
     this.path = this.djKey + '/' + this.UserKey
-
+    this.side = "left"
     this.database.getChats(this.path).then((data:any)=>{
       console.log(data.djKey)
+      this.chatArray = [];
+      this.chatArray.length = 0;
       this.chatArray = data;
       var index = Object.keys(this.chatArray)
       console.log(index)
@@ -58,20 +71,65 @@ export class ChatroomPage {
         console.log(k)
       }
     })
+    }
+    else if(this.key2 != undefined){
+      console.log(this.key2)
+      let djDetails = this.key2;
+      this.djKey = djDetails.userKey
+      this.side = "right"
+      console.log(this.djKey)
 
-    this.database.retrieveChats(this.djKey).then((data:any)=>{
-      console.log(data);
-    })
-
-
+      this.UserKey = firebase.auth().currentUser.uid;
+      console.log(this.UserKey)
+       this.path =  this.djKey + '/' + this.UserKey;
+       this.database.getChats(this.path).then((data:any)=>{
+        console.log(data.djKey)
+        this.chatArray = [];
+        this.chatArray.length = 0;
+        this.chatArray = data;
+        var index = Object.keys(this.chatArray)
+        console.log(index)
+        for(var x = 0; x <this.chatArray.length;x++){
+          var k = this.chatArray[x]
+          console.log(k)
+        }
+      })
+    }else{
+      this.chatArray.length = 0;
+      this.chatArray = []
+      this.database.getChats(this.djKey).then((data:any)=>{
+        console.log(data);
+        this.chatArray.length = 0;
+        this.chatArray = data
+  
+      })
+    }
     
+    this.database.getuser().then((data:any)=>{
+      console.log("data found",data)
+      this.currentUserName = data.fullname
+      this.role = data.role
+      
+      
+    })
+   
+
+    console.log(this.path)
+    this.database.getChats(this.path)
   }
 
   reply(){
-    this.database.replyMessage(this.path,this.message2).then((data:any)=>{
-      console.log("reply sent" ,data)
-
-    })
+    let dateObj = new Date
+    let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
+    let date = dateObj.toDateString();
+    
+    this.database.replyMessage(this.path,this.message2,time,date,this.side,this.currentUserName).then((data:any)=>{
+      if(this.role != "Audience"){
+        this.database.createUserInbox(this.UserKey,date,time,this.Usermessage,this.djKey)
+        console.log(data)
+      }
+      
+      })
   }
 
 }

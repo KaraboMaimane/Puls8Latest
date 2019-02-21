@@ -67,6 +67,8 @@ page-profile {
 
     .segcontainer{
         &__seg{
+            animation: fadein .3s ease;
+
             overflow: scroll;
             height: 68vh;
             margin: 0;

@@ -18,6 +18,7 @@ import firebase from 'firebase';
 export class ProfilePage implements OnInit {
 	commentsArray = [];
 	inboxArray = [];
+	userinboxArray = [];
 	userKey: void;
 	name;
 	email;
@@ -38,6 +39,7 @@ export class ProfilePage implements OnInit {
 	stagename;
 	profile: string;
 	state;
+	inbox
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
@@ -68,21 +70,31 @@ export class ProfilePage implements OnInit {
 				(this.userKey = this.profileArr[0].user);
 			console.log(this.userKey);
 
-			this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
-				console.log(data);
-				this.commentsArray = data;
-			});
-			this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
-				console.log(data);
-				this.inboxArray = data;
-			});
+			
+			if(this.role == "Dj"){
+				this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+					console.log(data);
+					this.commentsArray = data;
+				});
+				this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
+					console.log(data);
+					this.inboxArray = data;
+				});
+			}
+			else{
+				 this.PulsedbDatabase.getUserInbox(this.userKey).then((data:any)=>{
+					 console.log(data)
+					 this.userinboxArray = data;
+				 })
+			}
+			
 
 			if (this.role != 'Dj') {
 			}
 		});
 	}
 	edit(page: string) {
-		this, this.navCtrl.push('EditUserProfilePage');
+		this.navCtrl.push('EditUserProfilePage');
 	}
 	ionViewDidLoad() {}
 
@@ -94,6 +106,12 @@ export class ProfilePage implements OnInit {
 		this.navCtrl.push('ViewChatRequestPage', { userObj: userInfo, djObj: dj });
 	}
 
+	viewMessage(k){
+		console.log(k)
+		let djInfo = k
+		this.navCtrl.push('ChatroomPage',{ objKey: djInfo})
+	}
+
 	nextpage(page: string) {
 		this.navCtrl.push(page);
 	}
@@ -101,7 +119,7 @@ export class ProfilePage implements OnInit {
 	logout() {
 		this.PulsedbDatabase.logout().then(
 			() => {
-				this.navCtrl.push('CategoriesPage');
+				this.navCtrl.setRoot('CategoriesPage');
 			},
 			(error) => {
 				console.log(error.message);
