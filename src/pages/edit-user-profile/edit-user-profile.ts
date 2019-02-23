@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, LoadingController,ToastController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 /**
  * Generated class for the EditUserProfilePage page.
@@ -37,7 +38,12 @@ export class EditUserProfilePage implements OnInit {
 	downloadurl;
 	EditProfileArr = [];
 	loader: string;
-	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {}
+	upsucc: string;
+	d = 1;
+	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider,
+		public loadingCtrl: LoadingController,
+		public toastCtrl: ToastController,
+	    public alertCtrl :AlertController) {}
 
 	ngOnInit() {
 		this.loader = 'false';
@@ -69,12 +75,12 @@ export class EditUserProfilePage implements OnInit {
 	}
 
 	submit(form: NgForm) {
-		this.loader = 'true';
+		this.upsucc = 'true';
 		this.PulsedbDatabase
 			.updateProfile(form.value.fullname, form.value.gender, form.value.city, form.value.bio, this.img)
 			.then((data) => {
 				console.log(data);
-				this.loader = 'false';
+				this.upsucc = 'true';
 				this.navCtrl.pop();
 			});
 	}
@@ -91,16 +97,8 @@ export class EditUserProfilePage implements OnInit {
 
 
 	remove() {
-		// const loader = this.loadingCtrl.create({
-		//   content: "Deleteing Picture...",
-		//   duration: 800
-		// });
-		// loader.present();
-		this.img = "../../assets/imgs/user.png";
+		this.img = "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w";
 		this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
-		  // loader.dismiss();
 		})
-		
-		
 	  }
 }

@@ -36,7 +36,7 @@
         12    Comments
       </ion-segment-button>
       <ion-segment-button value="bookings">
-        Inbox
+       <span class="noti">{{userinboxArray.length}}</span> Inbox
       </ion-segment-button>
   </ion-segment>
 
@@ -116,13 +116,13 @@
           <ion-item-sliding class="segcontainer__seg__cardcontainer" *ngFor="let x of inboxArray;let a of index" >
               <ion-item no-lines class="segcontainer__seg__cardcontainer__cards" (click)="viewBooking(a)">
                   <ion-avatar item-start>
-                      <img src="{{x.userImage}}">
+                      <img src="{{x.image}}">
                   </ion-avatar>
                   <!-- sender name goes here -->
                   <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.username}}</strong>, has requested
                       to chat with you.</p>
                       <!-- date goes here -->
-                  <p class="segcontainer__seg__cardcontainer__cards--datetext">23062017</p>
+                  <p class="segcontainer__seg__cardcontainer__cards--datetext">{{x.date}}{{x.time}}</p>
               </ion-item>
               <!-- <ion-item-options side="right" (click)="delete(a)">
                   <button ion-button color="danger">
@@ -135,10 +135,10 @@
           <ion-item-sliding class="segcontainer__seg__cardcontainer" *ngFor="let x of userinboxArray;let a of index" >
               <ion-item no-lines class="segcontainer__seg__cardcontainer__cards" (click)="viewMessage(a)">
                   <ion-avatar item-start>
-                      <!-- <img src="{{x.userImage}}"> -->
+                      <img src="{{x.image}}">
                   </ion-avatar>
                   <!-- sender name goes here -->
-                  <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.message}}</strong></p>
+                  <p class="segcontainer__seg__cardcontainer__cards--text"><strong>{{x.name}}, has Sent you a message.</strong></p>
                       <!-- date goes here -->
                   <p class="segcontainer__seg__cardcontainer__cards--datetext">{{x.date}}{{x.time}}</p>
               </ion-item>

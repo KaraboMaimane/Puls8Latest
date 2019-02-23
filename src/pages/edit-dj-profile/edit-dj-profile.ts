@@ -95,9 +95,9 @@ export class EditDjProfilePage {
 			)
 			.then((data) => {
 				console.log(data);
-				this.navCtrl.pop().then(() => {
-					this.navCtrl.push('DjProfilePage');
-				});
+				this.navCtrl.pop();
+					// this.navCtrl.push('DjProfilePage');
+				// });
 				this.loader = 'false';
 			});
   }

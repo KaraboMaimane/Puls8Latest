@@ -65,6 +65,7 @@ export class LoginPage {
         if (data.user.emailVerified == true) {
         this.logloader = 'false';
         this.logsucc = 'true';
+        this.navCtrl.setRoot('CategoriesPage');
         } else {
           this.message = 'You are not verified';
           this.logloader = 'false';
@@ -98,25 +99,9 @@ export class LoginPage {
           console.log(value)
           this.PulsedbDatabase.resetPassword(value).then((email) => {
             console.log(email);
-            swal.fire({
-              position: 'center',
-              type: 'success',
-              title: 'email has been sent,please check your emails',
-              showConfirmButton: false,
-              timer: 2500
-            }).catch((error)=>{
-              swal.fire({
-                type: 'error',
-                title: 'Oh Snap!',
-                text: error.message
-              })
-            })
+         
           }).catch((error)=>{
-            swal.fire({
-              type: 'error',
-              title: 'Oh snap!',
-              text: error.message
-            })
+             error.message
           })
         }
         return !value && 'You need to write something!';

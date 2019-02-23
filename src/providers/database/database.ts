@@ -158,7 +158,8 @@ export class DatabaseProvider {
 					});
 					alert.present();
 				} else if (email != null || email != undefined) {
-					firebase.auth().sendPasswordResetEmail(email).then(
+					firebase.auth().sendPasswordResetEmail(email)
+					.then(
 						() => {
 							const alert = this.alertCtrl.create({
 								title: 'Password request Sent',
@@ -290,8 +291,8 @@ export class DatabaseProvider {
 									this.allDjSArray.push(obj);
 									console.log(obj);
 								}
-              }
-              loading.dismiss();
+								loading.dismiss();
+							}          
 						} else {
 							this.allDjSArray = null;
 							console.log(null);
@@ -466,12 +467,12 @@ export class DatabaseProvider {
 		});
 	}
 	getDjInbox(key) {
-		this.userInbox.length = 0;
 		return new Promise((accpt, rej) => {
 			this.userInbox.length = 0;
 			firebase.database().ref('Bookings/' + key).on('value', (data: any) => {
 				console.log(data.val());
-        var djComments = data.val();
+				this.userInbox.length = 0;
+				var djComments = data.val();
         if(data.val() !=null || data.val() !=null){
           var k = Object.keys(djComments);
           console.log(k);
@@ -705,24 +706,27 @@ export class DatabaseProvider {
       accpt("message sent")
     })
   }
-	createUserInbox(key, date, time, message, djKey) {
+	createUserInbox(key, date, time, message, djKey,djStageName,djImage) {
 		return new Promise((accpt, rej) => {
 			firebase.database().ref('userInbox/' + key).push({
 				date: date,
 				time: time,
 				message: message,
-				djKey: djKey
+				djKey: djKey,
+				djStageName: djStageName,
+				djImg: djImage
 			});
 			accpt('userInboxSent');
 		});
 	}
 
 	getUserInbox(key) {
-		this.userInbox.length = 0;
+		this.userInboxArray.length = 0;
 		return new Promise((accpt, rej) => {
 			this.userInboxArray.length = 0;
 			firebase.database().ref('userInbox/' + key).on('value', (data: any) => {
 				console.log(data.val());
+				this.userInboxArray.length = 0;
 				var userInbox = data.val();
 				var k = Object.keys(userInbox);
 				console.log(k);
@@ -735,8 +739,11 @@ export class DatabaseProvider {
 						userKey: userInbox[keys].djKey,
 						time: userInbox[keys].time,
 						date: userInbox[keys].date,
+						name: userInbox[keys].djStageName,
+						image: userInbox[keys].djImg,
 						check: false
 					};
+					this.userInboxArray.length = 0;
 					this.userInboxArray.push(obj);
 				}
 			});

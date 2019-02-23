@@ -27,6 +27,7 @@ export class UserprofilePage implements OnInit{
 	pic;
 	track;
 	profileArr = new Array();
+	profile2 = new Array();
 	trackarray = [];
 	bio;
 	city;
@@ -40,17 +41,34 @@ export class UserprofilePage implements OnInit{
 	stagename;
 	profile: string;
 	state;
+	userKey2: any;
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public actionSheetCtrl: ActionSheetController,
 		public PulsedbDatabase: DatabaseProvider,
 		public modalCtrl: ModalController
-	) {}
+	) {
+		this.ngOnInit()
+	}
 
 
   ngOnInit() {
 		this.profile = 'infor';
+		this.PulsedbDatabase.getProfile().then((data:any)=>{
+			console.log(data)
+			this.profile2 = data
+			this.userKey2 = this.profile2[0].user
+			
+		this.PulsedbDatabase.getUserInbox(this.userKey2).then((data:any)=>{
+			this.userinboxArray.length =0;
+			this.userinboxArray = [];
+			console.log(data)
+			this.userinboxArray = data;
+		})
+
+		})
+		
 	}
 	ionViewDidEnter() {
 		this.PulsedbDatabase.getProfile().then((data: any) => {
@@ -72,32 +90,35 @@ export class UserprofilePage implements OnInit{
 			console.log(this.userKey);
 
 			
-			if(this.role == "Dj"){
-				this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
-					console.log(data);
-					this.commentsArray = data;
-				});
-				this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
-					console.log(data);
-					this.inboxArray = data;
-				});
-			}
-			else{
-				 this.PulsedbDatabase.getUserInbox(this.userKey).then((data:any)=>{
-					 console.log(data)
-					 this.userinboxArray = data;
-				 })
-			}
+			// if(this.role == "Dj"){
+			// 	this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+			// 		console.log(data);
+			// 		this.commentsArray.length =0;
+			// 		this.commentsArray = data;
+			// 	});
+			// 	this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
+			// 		console.log(data);
+			// 		this.inboxArray.length =0;
+			// 		this.inboxArray = data;
+			// 	});
+			// }
+			// else{
+				 
+			// }
 			
 
-			if (this.role != 'Dj') {
-			}
+			// if (this.role != 'Dj') {
+			// }
 		});
 	}
 	edit(page: string) {
 		this.navCtrl.push('EditUserProfilePage');
 	}
-	ionViewDidLoad() {}
+	ionViewDidLoad() {
+		
+		
+		
+	}
 
 	viewBooking(i) {
 		console.log(i);
@@ -132,8 +153,10 @@ export class UserprofilePage implements OnInit{
 		this.navCtrl.push('TrackUploadPage');
 	}
 	changeRole() {
-		const modal = this.modalCtrl.create('InstructionsPage');
-		modal.present();
+		// this.navCtrl.pop().then(()=>{
+		this.navCtrl.push('InstructionsPage');
+		// })
+		
 	}
 
 }

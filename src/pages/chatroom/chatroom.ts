@@ -34,6 +34,10 @@ export class ChatroomPage {
   side;
   userArray: any[];
   role: any;
+  img: any;
+  fullname: any;
+  stagename: any;
+  image: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
     this.Usermessage = "You have a new message, please check your inbox."
   }
@@ -109,6 +113,9 @@ export class ChatroomPage {
       console.log("data found",data)
       this.currentUserName = data.fullname
       this.role = data.role
+      this.stagename = data.stagename
+      this.image = data.img
+      console.log(this.image)
       
       
     })
@@ -122,10 +129,10 @@ export class ChatroomPage {
     let dateObj = new Date
     let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
     let date = dateObj.toDateString();
-    
+    let image =  this.image
     this.database.replyMessage(this.path,this.message2,time,date,this.side,this.currentUserName).then((data:any)=>{
       if(this.role != "Audience"){
-        this.database.createUserInbox(this.UserKey,date,time,this.Usermessage,this.djKey)
+        this.database.createUserInbox(this.UserKey,date,time,this.Usermessage,this.djKey,this.stagename,image)
         console.log(data)
       }
       

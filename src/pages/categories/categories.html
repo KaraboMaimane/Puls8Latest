@@ -51,7 +51,7 @@
             <ion-option value="Randfontein">Randfontein</ion-option>
           </ion-select>
         </ion-item>
-        <button ion-button icon-only class="refresh" *ngIf="isSet != false" (click)="refreshs()">
+        <button ion-button icon-only class="refresh" *ngIf="isSet != false" (click)="refreshs();call()">
             <ion-icon name="refresh"></ion-icon>
         </button>
   </div>
@@ -60,7 +60,7 @@
 
   <h3 class="heading">Puls List</h3>
   <div class="list">
-    <div class="nocontent" *ngIf="getprofileArr2 == 0">
+    <div class="nocontent" *ngIf="getprofileArr2 == 0 || getprofileArr == undefined ">
       <div class="nocontent__contents">
         
         <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
