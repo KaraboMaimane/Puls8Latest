@@ -31,7 +31,7 @@
         </ion-segment-button>
         <!-- add comment numbers -->
         <ion-segment-button value="reviews">
-           <span class="noti">{{commentsArray.length}}</span> Comments
+           <span class="noti">{{commentsArray.length}}</span> Reviwews
         </ion-segment-button>
 
 
@@ -41,8 +41,8 @@
         <ion-list *ngSwitchCase="'music'" class="segcontainer__seg">
           <!-- add teh list of tracks -->
             <!-- *ngFor="let x of trackarray;let i=index;" -->
-            <ion-item *ngFor="let a of musicArr;let index =i"no-lines  class="segcontainer__seg__listitems">
-                <h2 class="segcontainer__seg__listitems--artistname" (click)="deleteTrack(i)">{{i+1}}{{a.MusicName}}</h2>
+            <ion-item *ngFor="let a of musicArr;let i = index"no-lines  class="segcontainer__seg__listitems">
+                <h2 class="segcontainer__seg__listitems--artistname" (click)="deleteTrack(i)">{{i+1}}.{{a.MusicName}}</h2>
                 <h3 class="segcontainer__seg__listitems--artisttrack">{{a.MusicName}}</h3>
                 <p class="segcontainer__seg__listitems--artistlink">Listen to the song
                     <a (click)="openLink(a.name)">here......</a>
@@ -147,10 +147,22 @@
           </div>
         </div>
       </div>
+
+      <div class="warncontainer" *ngIf="warntoast2 == 'true'">
+        <div class="alertbox">
+          <img src="../../assets/thinking.svg" alt="" class="alertimg">
+          <div class="messagebox">
+              <p class="alertmessagehead">Whoa, Hey There...</p>
+              <p class="alertmessage">Your Cant Send A Blank Message</p>
+              <button class="alertbutton" (click)="warntoast2 = 'false'">Okay</button>
+          </div>
+        </div>
+      </div>
+      
 </ion-content>
 
-<ion-footer *ngIf="profile == 'infor' && userkey !== djKey">
-    <ion-toolbar color="primary" (click)="booking()">
-        <ion-title align="center">Request Booking</ion-title>
-    </ion-toolbar>
-</ion-footer>
+<div class="buttonbox" *ngIf="userkey !== djKey && profile == 'infor'">
+    <button ion-button color="primary" (click)="booking()">
+        Request Booking
+    </button>
+</div>

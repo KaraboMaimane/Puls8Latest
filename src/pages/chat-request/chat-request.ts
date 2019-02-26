@@ -31,6 +31,9 @@ export class ChatRequestPage {
   name;
   message2;
   chatsucc: string;
+  pendingMessage2: any;
+  djImage: any;
+  check = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public database: DatabaseProvider) {
     let profile = this.navParams.get("Djkey")
 
@@ -45,7 +48,8 @@ export class ChatRequestPage {
 
     this.djName = this.DjProfile.djName;
     this.djKey = this.DjProfile.djKey;
-    this.djEmail = this.DjProfile.djEmail
+    this.djEmail = this.DjProfile.djEmail;
+    this.djImage = this.DjProfile.djImage;
 
 
     this.database.getuser().then((data: any) => {
@@ -64,23 +68,24 @@ export class ChatRequestPage {
     //   console.log(data)
     //   this.commentsArray = data;
     // })
-    let message = "I am intrested in booking you for a possible event, would you please accept my chat request."
+    let message = "I am interested in booking you for a possible event, would you please accept my chat request."
+    let pendingMessage = "Pending response from: "
     this.message2 = message
+    this.pendingMessage2 =  pendingMessage;
     console.log(this.message2)
   }
 
   send() {
     
-    let dateObj = new Date
-    let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
-    let date = dateObj.toDateString();
-
-    this.database.createRequest(this.djKey,this.userKey,this.UserName,this.userEmail,date,time,this.message2,this.userImage).then((data:any)=>{
+    this.database.createRequest(this.djKey,this.userKey,this.UserName,this.userEmail,this.message2,this.userImage).then((data:any)=>{
       console.log("data saved",data)
-      this.database.createInbox(this.djKey,this.UserName,this.userEmail,date,time).then((data)=>{
+      this.database.createInbox(this.djKey,this.UserName,this.userEmail).then((data)=>{
         console.log("inbox created",data)
-        this.database.StartChat(this.djKey,this.userKey,this.UserName,this.userEmail,date,time,this.message2,this.userImage,this.userKey).then((data:any)=>{
+        this.database.StartChat(this.djKey,this.userKey,this.UserName,this.userEmail,this.message2,this.userImage,this.userKey).then((data:any)=>{
           console.log("Chat started")
+          this.database.createUserInbox(this.userKey,this.pendingMessage2,this.djKey,this.djName,this.djImage,this.check).then((data:any)=>{
+            console.log("inbox sent", data)
+          })
         })
       })
       // this.database.createChatRoom(this.userKey,this.djKey).then((data)=>{

@@ -319,7 +319,7 @@ $chat-bubble:(
               // background: #2fff63; 
               .alertmessagehead{
                   
-                  color: orange;
+                  color: $color-primary-dark;
                   font-size: 3rem;
                   text-align: center;
                   margin-bottom: 0;
@@ -335,7 +335,7 @@ $chat-bubble:(
     
               .alertbutton{
                   margin: 0 auto;
-                  background: orange;
+                  background: $color-primary-dark;
                   border: none;
                   border-radius: 10rem;
                   padding: 1rem 3rem;
@@ -454,7 +454,7 @@ $chat-bubble:(
         height: 7rem;
         position: absolute;
         bottom: 0;
-        background: orange;
+        background: $color-primary-dark;
         color: white;
         display: flex;
         align-items: center;

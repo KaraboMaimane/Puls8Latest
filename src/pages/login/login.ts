@@ -65,7 +65,7 @@ export class LoginPage {
         if (data.user.emailVerified == true) {
         this.logloader = 'false';
         this.logsucc = 'true';
-        this.navCtrl.setRoot('CategoriesPage');
+        // this.navCtrl.setRoot('CategoriesPage');
         } else {
           this.message = 'You are not verified';
           this.logloader = 'false';

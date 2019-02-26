@@ -36,26 +36,24 @@ export class ViewProfilePage implements OnInit{
 
   getcomments=0;
   warntoast: string;
+  warntoast2: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
     this.profile = this.navParams.get("Djkey")
     console.log(this.profile)
     // this.profile = 'infor';
+
+     
+
   }
 
   ionViewDidEnter(){
     this.profile = 'infor';
-
-
-
   }
   ngOnInit(){
     this.profile = 'infor';
     console.log(this.profile);
-    this.database.retrieveMusic().then((data:any) => {
-      this.musicArr.length =0;
-      this.musicArr =data
-			console.log(this.musicArr)
-		})
+	
+	
   }
 
   ionViewDidLoad() {
@@ -75,7 +73,6 @@ export class ViewProfilePage implements OnInit{
     console.log(this.djKey)
     console.log(this.djKey)
 
-
     
     this.database.getComments(this.djKey).then((data:any)=>{
       console.log(data)
@@ -85,6 +82,12 @@ export class ViewProfilePage implements OnInit{
       this.commentsArray.reverse();
       console.log(this.getcomments)
     })
+
+    this.database.retrieveMusic(this.djKey).then((data:any) => {
+			this.musicArr=[];		
+			this.musicArr =data
+			console.log(this.musicArr)
+		})
 
     this.database.getuser().then((data:any)=>{
       console.log(data)
@@ -96,9 +99,8 @@ export class ViewProfilePage implements OnInit{
       console.log(this.UserName)
     })
 
-    // this.database.retrieveMusic().then((data) => {
-		// 	console.log(data)
-		// })
+   
+
   }
   
   
@@ -115,14 +117,14 @@ export class ViewProfilePage implements OnInit{
     console.log(profile.key)
     console.log(djKey)
 
-    this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message,time,date).then((data:any)=>{
+    this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message).then((data:any)=>{
       console.log(data)
       console.log("data saved")
     })
     }
     else{
       // alert("comments cannot be left empty")
-      this.warntoast = 'true';
+      this.warntoast2 = 'true';
       let timer = setInterval(()=>{
         this.warntoast = 'false';
       }, 4000);
@@ -134,6 +136,7 @@ export class ViewProfilePage implements OnInit{
       djName: this.djName,
       djEmail:  this.djEmail,
       djKey: this.djKey,
+      djImage: this.djImage
     }
     console.log(Obj.djKey)
     if(this.userKey != Obj.djKey){

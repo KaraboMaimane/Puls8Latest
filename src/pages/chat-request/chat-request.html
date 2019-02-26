@@ -3,9 +3,9 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-content>
 
-    <ion-navbar color="transparent">
+    <!-- <ion-navbar color="transparent">
       <ion-title>Request Chat</ion-title>
     </ion-navbar>
    
@@ -22,16 +22,38 @@
         <div class="messages">
           <p><span class="title">To:</span> <span class="text">{{djName}}</span></p>
           <p><span class="title">Receiver:</span> <span class="text">{{UserName}}</span> </p>
-          <!-- <p><span class="title">Sender:</span> <span class="text">{{email}}</span> </p> -->
           <p><span class="title">Message:</span> <span class="text">{{message2}}</span> </p>
         </div>
       </div>
    
       <button class="button" type="submit" ion-button block (click)="send()">Send</button>
-    </div>
+    </div> -->
 
     <div class="succtoast" *ngIf="chatsucc == 'true'">
       <img src="../../assets/happy.svg" alt="" class="icon">
       <p class="message">Success! Check your inbox.</p>
+    </div>
+
+    <div class="content">
+      <div class="content__hero">
+        <img class="content__hero--image" src="{{djImage}}">
+      </div>
+      <div class="content__maincontent">
+        <!-- requesters name -->
+        <h1 class="content__maincontent--name">{{djName}}</h1>
+        <hr>
+        <!-- personal details -->
+        
+        <p class="content__maincontent--email">from: {{UserName}}</p>
+        <p class="content__maincontent--message">{{message2}}</p>
+        <!-- <p class="content__maincontent--time">12 jan 2018 20:30</p> -->
+      </div>
+  
+  
+      <div class="buttoncontainer">
+          <button ion-buttton ion-button (click)="send()">
+              Send Request
+          </button>
+        </div>
     </div>
    </ion-content>

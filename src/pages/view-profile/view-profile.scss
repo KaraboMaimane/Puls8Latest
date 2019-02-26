@@ -384,4 +384,21 @@ page-view-profile {
         position: fixed;
         z-index: 999;
     }
+
+    .buttonbox{
+        position: absolute;
+        bottom: 3rem;
+        // margin: 0 auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        button{
+            border-radius: 10rem;
+            font-size: 1.6rem;
+            padding: 1.5rem 3rem;
+            background: linear-gradient($color-primary-dark, $color-primary-light);
+            animation: showup .3s ease;
+        }
+    }
 }

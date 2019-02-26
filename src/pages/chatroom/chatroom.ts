@@ -38,8 +38,9 @@ export class ChatroomPage {
   fullname: any;
   stagename: any;
   image: any;
+  check = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
-    this.Usermessage = "You have a new message, please check your inbox."
+    this.Usermessage = "You have a new message from :"
   }
 
   ionViewDidLoad() {
@@ -126,13 +127,10 @@ export class ChatroomPage {
   }
 
   reply(){
-    let dateObj = new Date
-    let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
-    let date = dateObj.toDateString();
     let image =  this.image
-    this.database.replyMessage(this.path,this.message2,time,date,this.side,this.currentUserName).then((data:any)=>{
+    this.database.replyMessage(this.path,this.message2,this.side,this.currentUserName).then((data:any)=>{
       if(this.role != "Audience"){
-        this.database.createUserInbox(this.UserKey,date,time,this.Usermessage,this.djKey,this.stagename,image)
+        this.database.createUserInbox(this.UserKey,this.Usermessage,this.djKey,this.stagename,image,this.check)
         console.log(data)
       }
       

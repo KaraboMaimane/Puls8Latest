@@ -13,7 +13,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 	selector: 'page-dj-profile',
 	templateUrl: 'dj-profile.html',
 })
-export class DjProfilePage {
+export class DjProfilePage implements OnInit {
 	commentsArray = [];
 	inboxArray = [];
 	musicArr=[];
@@ -43,16 +43,6 @@ export class DjProfilePage {
 		public actionSheetCtrl: ActionSheetController,
 		public PulsedbDatabase: DatabaseProvider,
 		public modalCtrl: ModalController) {
-
-
-
-
-			this.PulsedbDatabase.retrieveMusic().then((data:any) => {
-				this.musicArr.length=0;
-				this.musicArr =data
-				console.log(this.musicArr)
-				console.log(data)
-			})
 	}
 
 
@@ -74,12 +64,15 @@ export class DjProfilePage {
 				this.img = this.profileArr[0].img;
 				this.stagename = this.profileArr[0].stagename;
 				this.userKey = this.profileArr[0].user;
-			console.log(this.email);
+			console.log(this.userKey);
 
-			// this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
-			// 	console.log(data);
-			// 	this.commentsArray = data;
-			// });
+			this.PulsedbDatabase.retrieveMusic(this.userKey).then((data:any) => {
+				this.musicArr=[];		
+				this.musicArr =data
+				console.log(this.musicArr)
+			})
+
+
 			this.PulsedbDatabase.getDjInbox(this.userKey).then((data: any) => {
 				console.log(data);
 				this.inboxArray = data;
@@ -94,8 +87,12 @@ export class DjProfilePage {
 			}
 		});
 
+		
 	
+	}
 
+	ngOnInit(){
+		
 	}
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad DjProfilePage');
@@ -104,10 +101,10 @@ export class DjProfilePage {
 			console.log(data);
 			this.inboxArray = data;
 		});
-
-		
-		
-		
+		this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
+			console.log(data);
+			this.commentsArray = data;
+		})	
 	}
 
 	viewBooking(i) {

@@ -5,7 +5,7 @@ import { ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 
 import swal from 'sweetalert2';
-import * as moment from 'moment';
+import moment from "moment";
 import { EmailValidator } from '@angular/forms';
 /*
   Generated class for the DatabaseProvider provider.
@@ -118,6 +118,7 @@ export class DatabaseProvider {
 
 	getDjcomments() {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			let userID = firebase.auth().currentUser;
 			firebase.database().ref('Comments/' + userID).on('value', (data: any) => {
 				let details = data.val();
@@ -127,6 +128,7 @@ export class DatabaseProvider {
 				console.log(this.djCommentsArray);
 			});
 			accpt(this.djCommentsArray);
+		})
 		});
 	}
 
@@ -198,12 +200,6 @@ export class DatabaseProvider {
 	}
 
 	loginx(email, password) {
-		// let loading = this.loadingCtrl.create({
-		//   spinner: 'bubbles',
-		//   content: 'Sign in....',
-		//   duration: 1000
-		// });
-		// loading.present();
 		return firebase.auth().signInWithEmailAndPassword(email, password);
 	}
 
@@ -220,30 +216,7 @@ export class DatabaseProvider {
 			});
 		});
 	}
-	// Register(fullname, email, password) {
-	//   return new Promise((accpt, rej) => {
-	//     firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-	//       var user = firebase.auth().currentUser;
-	//       firebase.database().ref("Registration/" + user.uid).push({
-	//         fullname: fullname,
-	//         email: email,
-	//         role: "Audience",
-	//         userType: "user",
-	//         img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
-	//         key: user.uid
-	//       })
-	//       accpt("user registered")
-
-	//     }, Error => {
-	//       let alert = this.alertCtrl.create({
-	//         title: 'Credentials Error',
-	//         message: Error.message,
-	//         buttons: ['Dismiss']
-	//       });
-	//       alert.present();
-	//     })
-	//   })
-	// }
+	
 
 	getAllDjs() {
 		let loading = this.loadingCtrl.create({
@@ -253,6 +226,7 @@ export class DatabaseProvider {
 		});
 		loading.present();
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			this.allDjSArray.length = 0;
 			firebase.database().ref('Registration/').on('value', (data: any) => {
 				this.allDjSArray.length = 0;
@@ -286,12 +260,11 @@ export class DatabaseProvider {
 									key: k,
 									key2: x
 								};
-
+								loading.dismiss();
 								if (obj.role == 'Dj') {
 									this.allDjSArray.push(obj);
 									console.log(obj);
 								}
-								loading.dismiss();
 							}          
 						} else {
 							this.allDjSArray = null;
@@ -301,173 +274,29 @@ export class DatabaseProvider {
 					accpt(this.allDjSArray);
 				}
 			});
+		})
 		});
 	}
 
-	// SelectDj(genre) {
-	// 	return new Promise((accpt, rej) => {
-	// 		// this.allDjSArray.length =0;
-	// 		firebase.database().ref('Registration/').on('value', (data: any) => {
-	// 			var Djs = data.val();
-  //       var keys: any = Object.keys(Djs);
-  //       			// this.allDjSArray.length =0;
-	// 			for (var i = 0; i < keys.length; i++) {
-	// 				var x = keys[i];
-	// 				var y = 'Registration/' + x;
-	// 				firebase.database().ref(y).on('value', (data2: any) => {
-			
-	// 					var djInfomation = data2.val();
-	// 					var keys2: any = Object.keys(djInfomation);
-	// 					console.log(djInfomation);
-  //           console.log(keys2);
-  //           console.log(keys.length);
-            
-	// 					for (var j = 0; j < keys2.length; j++) {
-	// 						var k = keys2[j];
-  //             console.log(k);
-  //             console.log(djInfomation[k].genre());
-              
-	// 						if (genre == djInfomation[k].genre) {
-	// 							let obj = {
-	// 								bio: djInfomation[k].bio,
-	// 								city: djInfomation[k].city,
-	// 								email: djInfomation[k].email,
-	// 								fullname: djInfomation[k].fullname,
-	// 								gender: djInfomation[k].gender,
-	// 								genre: djInfomation[k].genre,
-	// 								payment: djInfomation[k].payment,
-	// 								price: djInfomation[k].price,
-	// 								role: djInfomation[k].role,
-	// 								img: djInfomation[k].img,
-	// 								stagename: djInfomation[k].stagename,
-	// 								key: k,
-	// 								key2: x
-	// 							};
 
-	// 							if (obj.role == 'Dj') {
-	// 								this.allDjSArray.push(obj);
-	// 								console.log(this.allDjSArray);
-	// 							}
-	// 						}
-	// 					}
-	// 				});
-	// 			}
-	// 		}),
-	// 			accpt(this.allDjSArray);
-	// 	});
-	// }
-
-	SelectDjj(gender) {
+	makeComment(key, username, userKey, userPic, userComment) {
 		return new Promise((accpt, rej) => {
-			// this.allDjSArray.length =0;
-			firebase.database().ref('Registration/').on('value', (data: any) => {
-				var Djs = data.val();
-				var keys: any = Object.keys(Djs);
-				for (var i = 0; i < keys.length; i++) {
-					var x = keys[i];
-					var y = 'Registration/' + x;
-					firebase.database().ref(y).on('value', (data2: any) => {
-						// this.allDjSArray.length =0;
-						var djInfomation = data2.val();
-						var keys2: any = Object.keys(djInfomation);
-						console.log(djInfomation);
-						console.log(keys2);
-						for (var j = 0; j < keys2.length; j++) {
-							var k = keys2[j];
-							console.log(k);
-							if (gender == djInfomation[k].gender) {
-								let obj = {
-									bio: djInfomation[k].bio,
-									city: djInfomation[k].city,
-									email: djInfomation[k].email,
-									fullname: djInfomation[k].fullname,
-									gender: djInfomation[k].gender,
-									genre: djInfomation[k].genre,
-									payment: djInfomation[k].payment,
-									price: djInfomation[k].price,
-									role: djInfomation[k].role,
-									img: djInfomation[k].img,
-									stagename: djInfomation[k].stagename,
-									key: k,
-									key2: x
-								};
-
-								if (obj.role == 'Dj') {
-									this.allDjSArray.push(obj);
-									console.log(this.allDjSArray);
-								}
-							}
-						}
-					});
-				}
-			});
-			accpt(this.allDjSArray);
-		});
-	}
-
-	SelectDjjj(city) {
-		return new Promise((accpt, rej) => {
-			// this.allDjSArray.length =0;
-			firebase.database().ref('Registration/').on('value', (data: any) => {
-				var Djs = data.val();
-				var keys: any = Object.keys(Djs);
-				for (var i = 0; i < keys.length; i++) {
-					var x = keys[i];
-					var y = 'Registration/' + x;
-					firebase.database().ref(y).on('value', (data2: any) => {
-						// this.allDjSArray.length =0;
-						var djInfomation = data2.val();
-						var keys2: any = Object.keys(djInfomation);
-						console.log(djInfomation);
-						console.log(keys2);
-						for (var j = 0; j < keys2.length; j++) {
-							var k = keys2[j];
-							console.log(k);
-							if (city == djInfomation[k].city) {
-								let obj = {
-									bio: djInfomation[k].bio,
-									city: djInfomation[k].city,
-									email: djInfomation[k].email,
-									fullname: djInfomation[k].fullname,
-									gender: djInfomation[k].gender,
-									genre: djInfomation[k].genre,
-									payment: djInfomation[k].payment,
-									price: djInfomation[k].price,
-									role: djInfomation[k].role,
-									img: djInfomation[k].img,
-									stagename: djInfomation[k].stagename,
-									key: k,
-									key2: x
-								};
-
-								if (obj.role == 'Dj') {
-									this.allDjSArray.push(obj);
-									console.log(this.allDjSArray);
-								}
-							}
-						}
-					});
-				}
-			});
-			accpt(this.allDjSArray);
-		});
-	}
-
-	makeComment(key, username, userKey, userPic, userComment, time, date) {
-		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
 			firebase.database().ref('Comments/' + key).push({
 				comment: userComment,
 				userKey: userKey,
 				username: username,
 				userImage: userPic,
-				time: time,
 				date: date
 			});
 			accpt('Comment sent');
+		})
 		});
 	}
 	getDjInbox(key) {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			this.userInbox.length = 0;
 			firebase.database().ref('Bookings/' + key).on('value', (data: any) => {
 				console.log(data.val());
@@ -484,8 +313,7 @@ export class DatabaseProvider {
 							userImage: djComments[keys].image,
 							userKey: djComments[keys].key,
 							username: djComments[keys].name,
-							time: djComments[keys].time,
-							date: djComments[keys].date,
+							date: moment(djComments[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
 							userEmail: djComments[keys].email
 						}
 						console.log(obj);
@@ -495,11 +323,13 @@ export class DatabaseProvider {
         }
 			});
 			accpt(this.userInbox);
+		})
 		});
 	}
 
 	getComments(key) {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			firebase.database().ref('Comments/' + key).on('value', (data: any) => {
 				this.userCommentsArray2.length = 0;
 				console.log(data.val());
@@ -514,8 +344,7 @@ export class DatabaseProvider {
 						let obj2 = {
 							comment: djComments[keys].comment,
 							name: djComments[keys].username,
-							time: djComments[keys].time,
-							date: djComments[keys].date
+							date: moment(djComments[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow()
 						};
 						this.userCommentsArray2.push(obj2);
 						console.log(this.userCommentsArray2);
@@ -523,11 +352,13 @@ export class DatabaseProvider {
 				}
 			});
 			accpt(this.userCommentsArray2);
+		})
 		});
 	}
 
 	getuser() {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			firebase.database().ref('Registration').on('value', (data: any) => {
 				var users = data.val();
 				var user = firebase.auth().currentUser;
@@ -554,6 +385,7 @@ export class DatabaseProvider {
 					}
 				}
 			});
+		})
 		});
 	}
 
@@ -581,51 +413,58 @@ export class DatabaseProvider {
 		this.currentUserID = uid;
 	}
 
-	createRequest(key,Userkey,userName,userEmail,date,time,message,userKey){
+	createRequest(key,Userkey,userName,userEmail,message,userKey){
     return new Promise((accpt,rej)=>{
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
       firebase.database().ref('Bookings/' + key).push({
         name: userName,
         email: userEmail,
         key: Userkey,
         date: date,
-        time: time, 
         message: message,
         image: userKey,
         check: false,
         side: "right"
       })
-      accpt("Request sent")
+			accpt("Request sent")
+		})
     })
   }
 
 	retrieveChats(key) {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			firebase.database().ref('Chatroom/' + key).on('value', (data: any) => {
 				console.log(data);
 			});
 			accpt('data Found');
+		})
 		});
 	}
 
-	StartChat(djKey,key,userName,userEmail,date,time,message,image,userKey){
+	StartChat(djKey,key,userName,userEmail,message,image,userKey){
     return new Promise((accpt,rej)=>{
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
       firebase.database().ref('Chatroom/' + djKey).child(key).push({
         check: false,
         date: date,
         userkey: userKey,
-        time: time,
         name: userName,
         image: image,
         email: userEmail,
         message: message,
         side: "right"
       })
-      accpt("chat started") 
+			accpt("chat started") 
+		})
     })
   }
 
 	getChats(path){
     return new Promise((accpt,rej)=>{
+			this.ngzone.run(() => {
       firebase.database().ref('Chatroom/' + path).on('value',(data)=>{
         this.chatroomArray.length = 0;
         console.log(data.val())
@@ -639,8 +478,7 @@ export class DatabaseProvider {
           message: chatDetails[k].message,
           userKey: chatDetails[k].userkey,
           djKey: chatDetails[k].uid,
-          date: chatDetails[k].date,
-          time: chatDetails[k].time,
+					date: moment(chatDetails[k].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
           side: chatDetails[k].side
         }
         this.chatroomArray.length;
@@ -650,19 +488,22 @@ export class DatabaseProvider {
         }
       }
       })
-      accpt(this.chatroomArray)
+			accpt(this.chatroomArray)
+		})
     })
   }
-	createInbox(key, userName, userEmail, date, time) {
+	createInbox(key, userName, userEmail) {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
 			firebase.database().ref('inbox/' + key).push({
 				name: userName,
 				email: userEmail,
 				date: date,
-				time: time,
 				check: false
 			});
 			accpt('inbox sent');
+		})
 		});
 	}
 
@@ -691,38 +532,44 @@ export class DatabaseProvider {
 		});
 	}
 
-	replyMessage(path,message,time,date,side,name){
+	replyMessage(path,message,side,name){
     return new Promise((accpt,rej)=>{
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
       let currentUser = firebase.auth().currentUser.uid;
       firebase.database().ref('Chatroom/' + path).push({
         message:message,
         uid: currentUser,
-        time: time,
         artKey: currentUser,
         date: date,
         side: side,
         name: name
       })
-      accpt("message sent")
+			accpt("message sent")
+		})
     })
   }
-	createUserInbox(key, date, time, message, djKey,djStageName,djImage) {
+	createUserInbox(key, message, djKey,djStageName,djImage,check) {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
+			var date = moment().format("MMMM Do YYYY, h:mm:ss a");
 			firebase.database().ref('userInbox/' + key).push({
 				date: date,
-				time: time,
 				message: message,
 				djKey: djKey,
 				djStageName: djStageName,
-				djImg: djImage
+				djImg: djImage,
+				check: check
 			});
 			accpt('userInboxSent');
+		})
 		});
 	}
 
 	getUserInbox(key) {
 		this.userInboxArray.length = 0;
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			this.userInboxArray.length = 0;
 			firebase.database().ref('userInbox/' + key).on('value', (data: any) => {
 				console.log(data.val());
@@ -737,8 +584,7 @@ export class DatabaseProvider {
 					let obj = {
 						message: userInbox[keys].message,
 						userKey: userInbox[keys].djKey,
-						time: userInbox[keys].time,
-						date: userInbox[keys].date,
+						date: moment(userInbox[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
 						name: userInbox[keys].djStageName,
 						image: userInbox[keys].djImg,
 						check: false
@@ -748,70 +594,11 @@ export class DatabaseProvider {
 				}
 			});
 			accpt(this.userInboxArray);
+		})
 		});
 	}
 
-	getUserID() {
-		return new Promise((accpt, rejc) => {
-			this.ngzone.run(() => {
-				var user = firebase.auth().currentUser;
-				firebase.database().ref('Registration').on(
-					'value',
-					(data: any) => {
-						var a = data.val();
-						if (a !== null) {
-						}
-						accpt(user.uid);
-					},
-					(Error) => {
-						rejc(Error.message);
-					}
-				);
-			});
-		});
-	}
 
-	viewPicGallery1() {
-		return new Promise((accpt, rejc) => {
-			this.ngzone.run(() => {
-				var user = firebase.auth().currentUser;
-				firebase.database().ref('Registration').on(
-					'value',
-					(data: any) => {
-						var b = data.val();
-						var keys = Object.keys(b);
-						if (b !== null) {
-						}
-						// this.storeImgur(b[keys[0]].downloadurl);
-						accpt(b);
-					},
-					(Error) => {
-						rejc(Error.message);
-					}
-				);
-			});
-		});
-	}
-	uploadProfilePic(pic, name) {
-		const toast = this.toastCtrl.create({
-			message: 'Successfully updated!',
-			duration: 3000
-		});
-		return new Promise((accpt, rejc) => {
-			this.ngzone.run(() => {
-				toast.present();
-				firebase.storage().ref(name).putString(pic, 'data_url').then(
-					() => {
-						accpt(name);
-						console.log(name);
-					},
-					(Error) => {
-						rejc(Error.message);
-					}
-				);
-			});
-		});
-	}
 
 	logout() {
 		return new Promise((resolve, reject) => {
@@ -837,29 +624,31 @@ export class DatabaseProvider {
 	}
 
 	uploadMusic(trackLink, trackName) {
-		this.userCommentsArray2.length =0;
 		return new Promise((resolve, reject) => {
+			this.ngzone.run(() => {
 			var user = firebase.auth().currentUser;
 			firebase.database().ref('uploadLink/').push({
 				MusicName: trackLink,
 				name: trackName,
 				uid: user.uid
 			});
+		})
 		});
 	}
-
-	retrieveMusic() {
+	retrieveMusic(us) {	
+		console.log(us);
 		return new Promise((resolve, reject) => {
-			this.userCommentsArray2.length =0;
+			this.ngzone.run(() => {
+			// this.getTruckArray.length =0;
 			var user = firebase.auth().currentUser.uid;
 			firebase.database().ref('uploadLink/').on('value', (data: any) => {
+				this.getTruckArray.length =0;
 				var UploadDetails = data.val();
-				this.userCommentsArray2.length =0;
 				console.log(UploadDetails);
 				var k2 = Object.keys(UploadDetails);
-				for (var a = 0; a < k2.length; a++) {
-					var key2 = k2[a];
-					if (UploadDetails[key2].uid == user) {
+				for(var i =0 ;i<k2.length;i++){
+					var key2 = k2[i];
+					if (UploadDetails[key2].uid == us) {
 						let obj = {
 							MusicName: UploadDetails[key2].MusicName,
 							name: UploadDetails[key2].name,
@@ -873,18 +662,21 @@ export class DatabaseProvider {
 			});
 			resolve(this.getTruckArray);
 		});
+		});
 	}
+	
 
 	removeProfilePicture(userImage) {
-	
 		var user = firebase.auth().currentUser.uid;
 		console.log(this.userKey);
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
 			firebase.database().ref('Registration/' + user + '/' + this.userKey).set({
 				img: userImage
 			});
 			accpt('scccessful');
 			console.log('success');
+		})
 		});
 	}
 }

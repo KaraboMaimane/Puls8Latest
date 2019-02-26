@@ -28,21 +28,17 @@ export class CategoriesPage implements OnInit {
 	logwarn: string;
 	role;
 	state;
-    isSet: boolean;
+	isSet: boolean;
 
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public PulsedbDatabase: DatabaseProvider,
 		public alertCtrl: AlertController
-	) {
-
-	}
+	) {}
 
 	ionViewDidLoad() {
-	
-        console.log('ionViewDidLoad CategoriesPage');
-        
+		console.log('ionViewDidLoad CategoriesPage');
 	}
 
 	displayDj() {
@@ -71,26 +67,25 @@ export class CategoriesPage implements OnInit {
 					this.logwarn = 'false';
 				}, 3000);
 			}
-        });
-        this.displayDj()
+		});
+		this.displayDj();
 	}
 
 	refreshs() {
-    this.displayDj();
-     
+		this.displayDj();
 	}
 
-    call(){
-        this.getprofileArr2 = [];
-        for (var x = 0; x < this.getprofileArr.length; x++) {
+	call() {
+		this.getprofileArr2 = [];
+		for (var x = 0; x < this.getprofileArr.length; x++) {
 			if (this.role == this.getprofileArr[x].role) {
 				this.getprofileArr2.push(this.getprofileArr[x]);
 				console.log(this.getprofileArr[x]);
 			}
 		}
 
-        this.getprofileArr2 =  this.getprofileArr;
-    }
+		this.getprofileArr2 = this.getprofileArr;
+	}
 
 	selectGenre() {
 		this.getprofileArr2 = [];
@@ -100,17 +95,15 @@ export class CategoriesPage implements OnInit {
 				console.log(this.getprofileArr[x]);
 			}
 		}
-    }
-    refreshMethod(){
-        this.getprofileArr2 = [];
-        for (var x = 0; x < this.getprofileArr.length; x++) {
-			if (this.role == this.getprofileArr[x].role) {
-				this.getprofileArr2.push(this.getprofileArr[x]);
-				console.log(this.getprofileArr[x]);
-			}
+		if (this.genre == 'Genre') {
+			this.PulsedbDatabase.getAllDjs().then((data: any) => {
+				this.getprofileArr = data;
+				this.getprofileArr2 = data;
+				console.log(this.getprofileArr);
+				console.log(this.getprofileArr2);
+			});
 		}
-
-    }
+	}
 
 	selectGender() {
 		this.getprofileArr2 = [];
@@ -120,6 +113,14 @@ export class CategoriesPage implements OnInit {
 				console.log(this.getprofileArr[x]);
 			}
 		}
+		if (this.gender == 'Gender') {
+			this.PulsedbDatabase.getAllDjs().then((data: any) => {
+				this.getprofileArr = data;
+				this.getprofileArr2 = data;
+				console.log(this.getprofileArr);
+				console.log(this.getprofileArr2);
+			});
+		}
 	}
 	selectcity() {
 		this.getprofileArr2 = [];
@@ -128,6 +129,14 @@ export class CategoriesPage implements OnInit {
 				this.getprofileArr2.push(this.getprofileArr[x]);
 				console.log(this.getprofileArr[x]);
 			}
+		}
+		if (this.city == 'City') {
+			this.PulsedbDatabase.getAllDjs().then((data: any) => {
+				this.getprofileArr = data;
+				this.getprofileArr2 = data;
+				console.log(this.getprofileArr);
+				console.log(this.getprofileArr2);
+			});
 		}
 	}
 	ViewProfile(i) {
@@ -142,7 +151,7 @@ export class CategoriesPage implements OnInit {
 			console.log(data);
 		});
 		console.log('in');
-		this.PulsedbDatabase.checkstate().then((state: any) => {
+		this.PulsedbDatabase.checkAuthState().then((state: any) => {
 			console.log(state);
 			this.state = state;
 			console.log(this.state);

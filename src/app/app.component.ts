@@ -13,12 +13,12 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,public PulsedbDatabase:DatabaseProvider) {
     firebase.initializeApp({
-      apiKey: "AIzaSyAYvrGMhnVRLP0j30xzzd-eNzd-Kn1ypvY",
-      authDomain: "puls8-database.firebaseapp.com",
-      databaseURL: "https://puls8-database.firebaseio.com",
-      projectId: "puls8-database",
-      storageBucket: "puls8-database.appspot.com",
-      messagingSenderId: "212472551538"
+      apiKey: "AIzaSyCI9c63kFGLwA6obewlXKUgaYuJa-dIyp8",
+      authDomain: "newpuls8database.firebaseapp.com",
+      databaseURL: "https://newpuls8database.firebaseio.com",
+      projectId: "newpuls8database",
+      storageBucket: "newpuls8database.appspot.com",
+      messagingSenderId: "649926660397"
     })
     
     platform.ready().then(() => {

@@ -29,11 +29,12 @@
           Info
       </ion-segment-button>
       <ion-segment-button value="music" *ngIf="role != 'Audience'">
-        <span class="noti"> {{musicArr.length}}</span>  Music
+        {{musicArr.length}} Music
       </ion-segment-button>
       <!-- comment number here -->
       <ion-segment-button value="reviews" *ngIf="role != 'Audience'">
-        <span class="noti">{{commentsArray.length}}</span>   Comments
+        <span class="noti">{{commentsArray.length}}</span>  
+         Reviews
       </ion-segment-button>
       <ion-segment-button value="bookings">
         <span class="noti">{{inboxArray.length}}</span> Inbox
@@ -159,7 +160,7 @@
                         <div class="message">{{n.comment}}</div>
                         <div class="message-detail">
                             <span style="font-weight:bold;">{{n.name}} </span>,
-                            <span>{{n.time}}{{n.date}}</span>
+                            <span>{{n.date}}</span>
                         </div>
                     </div>
                 </div>
@@ -167,7 +168,7 @@
               <div class="block">&nbsp;</div>
           </div>
           
-          <div class="nocontent" *ngIf="commentArr.length == 0 || commentArr.length == undefined">
+          <div class="nocontent" *ngIf="commentsArray.length == 0 || commentsArray.length == undefined">
               <div class="nocontent__contents">
                   <img class="nocontent__contents--image" src="../../assets/imgs/sound-wavesgrey.png" alt="">
                   <p class="nocontent__contents--text" style="color: white">No Comments</p>

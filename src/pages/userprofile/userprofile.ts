@@ -115,9 +115,19 @@ export class UserprofilePage implements OnInit{
 		this.navCtrl.push('EditUserProfilePage');
 	}
 	ionViewDidLoad() {
-		
-		
-		
+		this.PulsedbDatabase.getProfile().then((data:any)=>{
+			console.log(data)
+			this.profile2 = data
+			this.userKey2 = this.profile2[0].user
+			
+		this.PulsedbDatabase.getUserInbox(this.userKey2).then((data:any)=>{
+			this.userinboxArray.length =0;
+			this.userinboxArray = [];
+			console.log(data)
+			this.userinboxArray = data;
+		})
+
+		})
 	}
 
 	viewBooking(i) {

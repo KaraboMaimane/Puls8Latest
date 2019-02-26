@@ -3,7 +3,7 @@
       <ion-item class="dropdown" no-lines>
           <ion-label class="dropdown--text">Filter By:</ion-label>
           <ion-select name="genre" [(ngModel)]="genre" multiple="false" (ionChange)="selectGenre()" interface="popover">
-              <ion-option value="Genre"selected disabled>Genre</ion-option>
+            <ion-option value="Genre" selected >Genre</ion-option>
             <ion-option value="House">House</ion-option>
             <ion-option value="Hip-Hop">Hip-Hop</ion-option>
             <ion-option value="Rap">Rap</ion-option>
@@ -15,13 +15,13 @@
             <ion-option value="Soul">Soul</ion-option>
           </ion-select>
           <ion-select [(ngModel)]="gender" (ionChange)="selectGender()" interface="popover">
-              <ion-option value="Gender" selected disabled>Gender</ion-option>
+              <ion-option value="Gender" selected >Gender</ion-option>
 
             <ion-option checked="true" value="Male">Male</ion-option>
             <ion-option value="Female">Female</ion-option>
           </ion-select>
           <ion-select [(ngModel)]="city" (ionChange)="selectcity()" interface="popover">
-              <ion-option value="City" selected disabled>City</ion-option>
+              <ion-option value="City" selected >City</ion-option>
 
             <ion-option value="Johannesburg">Johannesburg</ion-option>
             <ion-option value="Pretoria">Pretoria</ion-option>
@@ -51,9 +51,9 @@
             <ion-option value="Randfontein">Randfontein</ion-option>
           </ion-select>
         </ion-item>
-        <button ion-button icon-only class="refresh" *ngIf="isSet != false" (click)="refreshs();call()">
+        <!-- <button ion-button icon-only class="refresh" *ngIf="isSet != false" (click)="refreshs();call()">
             <ion-icon name="refresh"></ion-icon>
-        </button>
+        </button> -->
   </div>
 
 <!-- *ngIf="arrDj.length == 0 || arrDj.length == undefined" -->
@@ -81,7 +81,7 @@
           <i class="fas fa-star"></i>
         </p>
         <!-- R{{x.price | number:'3.2-5'}}/{{x.payment}} -->
-        <button ion-button clear item-end>{{a.price| number:'3.2-5'}}/ <span class="payment">{{a.payment}}</span></button>
+        <button ion-button clear item-end>R{{a.price| number:'3.2-5'}}/ <span class="payment">{{a.payment}}</span></button>
       </ion-item>
     </ion-list>
   </div>
