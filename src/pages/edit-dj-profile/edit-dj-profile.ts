@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
+import { AlertController,ToastController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 /**
  * Generated class for the EditDjProfilePage page.
@@ -37,7 +38,8 @@ export class EditDjProfilePage {
 	userKey;
 	EditProfileArr = [];
 	loader: string;
-	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {
+	d = 1;
+	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public loadingCtrl: LoadingController,  public alertCtrl :AlertController) {
 		// this.retreivePics1();
 	}
 
@@ -52,7 +54,7 @@ export class EditDjProfilePage {
 			this.profileArr = data;
 			console.log(this.profileArr);
 			this.bio = this.profileArr[0].bio;
-			(this.city = this.profileArr[0].city),
+			(this.city = this.profileArr[0].location),
 				(this.email = this.profileArr[0].email),
 				(this.fullname = this.profileArr[0].fullname),
 				(this.gender = this.profileArr[0].gender),
@@ -70,22 +72,46 @@ export class EditDjProfilePage {
 		});
 	}
 	UpdateImage(event: any) {
-		if (event.target.files && event.target.files[0]) {
-			let reader = new FileReader();
-			reader.onload = (event: any) => {
-				this.img = event.target.result;
-			};
-			reader.readAsDataURL(event.target.files[0]);
-		}
+		this.d = 1;
+    let opts = document.getElementsByClassName('options') as HTMLCollectionOf <HTMLElement>;
+    if(this.d == 1){
+      // opts[0].style.top = "10vh";
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+
+      if (event.target.files[0].size > 3500000){
+        let alert = this.alertCtrl.create({
+          title: "Oh no!",
+          subTitle: "your photo is too large, please choose a photo with 1.5MB or less.",
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+      else{
+        reader.onload = (event: any) => {
+          this.img= event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      }
+
+    }
+      
+    }
 	}
 
 	submit(form: NgForm) {
+		let loading = this.loadingCtrl.create({
+			spinner: 'bubbles',
+			content: 'Loading....',
+			duration: 1000
+		});
+		loading.present();
 		this.loader = 'true';
 		this.PulsedbDatabase
 			.updateDjProfile(
 				form.value.fullname,
 				form.value.stagename,
-        form.value.gender,
+                form.value.gender,
 				form.value.genre,
 				form.value.price,
 				form.value.payment,
@@ -95,23 +121,18 @@ export class EditDjProfilePage {
 			)
 			.then((data) => {
 				console.log(data);
+				loading.dismiss()
 				this.navCtrl.pop();
-					// this.navCtrl.push('DjProfilePage');
-				// });
 				this.loader = 'false';
 			});
   }
   
 
   remove() {
-    // const loader = this.loadingCtrl.create({
-    //   content: "Deleteing Picture...",
-    //   duration: 800
-    // });
-    // loader.present();
+   
     this.img = "../../assets/imgs/user.png";
     this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
-      // loader.dismiss();
+
     })
     
     

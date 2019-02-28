@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
@@ -34,20 +34,23 @@ export class CategoriesPage implements OnInit {
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public PulsedbDatabase: DatabaseProvider,
-		public alertCtrl: AlertController
-	) {}
-
-	ionViewDidLoad() {
-		console.log('ionViewDidLoad CategoriesPage');
-	}
-
-	displayDj() {
+		public alertCtrl: AlertController,
+		public loadingCtrl: LoadingController
+	) {
 		this.PulsedbDatabase.getAllDjs().then((data: any) => {
 			this.getprofileArr = data;
 			this.getprofileArr2 = data;
 			console.log(this.getprofileArr);
 			console.log(this.getprofileArr2);
 		});
+	}
+
+	ionViewDidEnter() {
+		
+	}
+
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad CategoriesPage');
 	}
 
 	ngOnInit() {
@@ -68,11 +71,6 @@ export class CategoriesPage implements OnInit {
 				}, 3000);
 			}
 		});
-		this.displayDj();
-	}
-
-	refreshs() {
-		this.displayDj();
 	}
 
 	call() {
@@ -163,9 +161,11 @@ export class CategoriesPage implements OnInit {
 					this.role = profile[0].role;
 					console.log(this.role);
 					if (this.role == 'Audience') {
+						console.log(this.role);
 						this.navCtrl.push('UserprofilePage');
 					} else if (this.role == 'Dj') {
-						this, this.navCtrl.push('DjProfilePage');
+						this.navCtrl.push('DjProfilePage');
+						console.log(this.role);
 					} else {
 						this.navCtrl.push('LoginPage');
 					}

@@ -40,10 +40,6 @@ export class ViewProfilePage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
     this.profile = this.navParams.get("Djkey")
     console.log(this.profile)
-    // this.profile = 'infor';
-
-     
-
   }
 
   ionViewDidEnter(){

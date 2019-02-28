@@ -133,7 +133,7 @@ export class ChatroomPage {
         this.database.createUserInbox(this.UserKey,this.Usermessage,this.djKey,this.stagename,image,this.check)
         console.log(data)
       }
-      
+      this.message2="";
       })
   }
 

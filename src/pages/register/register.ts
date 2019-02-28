@@ -66,13 +66,13 @@ export class RegisterPage {
 
 
   register(form:NgForm){
+
     if(form.valid){
       this.loader = 'true';
       console.log('enter');
       this.PulsedbDatabase.register(form.value.fullname,form.value.email, form.value.password).then((data)=>{
         let user = firebase.auth().currentUser;
         user.sendEmailVerification().then((data)=>{
-          //add user node to the database 
           firebase.database().ref("Registration/" + user.uid).push({
             fullname: form.value.fullname,
             email: form.value.email,
@@ -84,11 +84,12 @@ export class RegisterPage {
           console.log(data);
           this.loader ='false';
           this.regsucc = 'true';
-        }).catch((error)=>{
-          this.loader = 'false';
-          this.regfail = 'true';
-          this.message =  error.message;
         })
+        // }).catch((error)=>{
+        //   this.loader = 'false';
+        //   this.regfail = 'true';
+        //   this.message =  error.message;
+        // })
         
       }).catch((error)=>{
         console.log(error); 
@@ -102,8 +103,12 @@ export class RegisterPage {
 
   }
 
+  
+
+
+
   nextpage(page: string){
-    this.navCtrl.push(page)
+    this.navCtrl.setRoot(page)
   }
 
 

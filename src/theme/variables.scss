@@ -503,6 +503,10 @@ $chat-bubble:(
       }
     }
 
+    .scroll-content{
+        overflow: hidden !important;
+    }
+
 @import "ionic.theme.default";
 
 

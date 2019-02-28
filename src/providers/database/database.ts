@@ -59,7 +59,7 @@ export class DatabaseProvider {
 				console.log(details[k].bio);
 				let obj = {
 					bio: details[k].bio,
-					city: details[k].city,
+					location: details[k].location,
 					email: details[k].email,
 					fullname: details[k].fullname,
 					gender: details[k].gender,
@@ -219,13 +219,13 @@ export class DatabaseProvider {
 	
 
 	getAllDjs() {
-		let loading = this.loadingCtrl.create({
-			spinner: 'bubbles',
-			content: 'Loading....',
-			duration: 1000
-		});
-		loading.present();
 		return new Promise((accpt, rej) => {
+			let loading = this.loadingCtrl.create({
+				spinner: 'bubbles',
+				content: 'Loading....',
+				duration: 22222000
+			});
+			loading.present();
 			this.ngzone.run(() => {
 			this.allDjSArray.length = 0;
 			firebase.database().ref('Registration/').on('value', (data: any) => {
@@ -242,6 +242,7 @@ export class DatabaseProvider {
 							var keys2: any = Object.keys(djInfomation);
 							console.log(djInfomation);
 							console.log(keys2);
+						
 							for (var j = 0; j < keys2.length; j++) {
 								var k = keys2[j];
 								console.log(k);
@@ -270,10 +271,13 @@ export class DatabaseProvider {
 							this.allDjSArray = null;
 							console.log(null);
 						}
+					
 					});
 					accpt(this.allDjSArray);
+	
 				}
 			});
+	
 		})
 		});
 	}
@@ -671,7 +675,7 @@ export class DatabaseProvider {
 		console.log(this.userKey);
 		return new Promise((accpt, rej) => {
 			this.ngzone.run(() => {
-			firebase.database().ref('Registration/' + user + '/' + this.userKey).set({
+			firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
 				img: userImage
 			});
 			accpt('scccessful');

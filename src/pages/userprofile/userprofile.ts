@@ -42,6 +42,7 @@ export class UserprofilePage implements OnInit{
 	profile: string;
 	state;
 	userKey2: any;
+	location: any;
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
@@ -55,19 +56,19 @@ export class UserprofilePage implements OnInit{
 
   ngOnInit() {
 		this.profile = 'infor';
-		this.PulsedbDatabase.getProfile().then((data:any)=>{
-			console.log(data)
-			this.profile2 = data
-			this.userKey2 = this.profile2[0].user
+		// this.PulsedbDatabase.getProfile().then((data:any)=>{
+		// 	console.log(data)
+		// 	this.profile2 = data
+		// 	this.userKey2 = this.profile2[0].user
 			
-		this.PulsedbDatabase.getUserInbox(this.userKey2).then((data:any)=>{
-			this.userinboxArray.length =0;
-			this.userinboxArray = [];
-			console.log(data)
-			this.userinboxArray = data;
-		})
+		// this.PulsedbDatabase.getUserInbox(this.userKey2).then((data:any)=>{
+		// 	this.userinboxArray.length =0;
+		// 	this.userinboxArray = [];
+		// 	console.log(data)
+		// 	this.userinboxArray = data;
+		// })
 
-		})
+		// })
 		
 	}
 	ionViewDidEnter() {
@@ -76,7 +77,6 @@ export class UserprofilePage implements OnInit{
 			this.profileArr = data;
 			console.log(this.profileArr);
 			this.bio = this.profileArr[0].bio;
-			(this.city = this.profileArr[0].city),
 				(this.email = this.profileArr[0].email),
 				(this.fullname = this.profileArr[0].fullname),
 				(this.gender = this.profileArr[0].gender),
@@ -85,9 +85,10 @@ export class UserprofilePage implements OnInit{
 				(this.price = this.profileArr[0].price),
 				(this.role = this.profileArr[0].role),
 				(this.img = this.profileArr[0].img),
+				(this.city = this.profileArr[0].location)
 				(this.stagename = this.profileArr[0].stagename),
 				(this.userKey = this.profileArr[0].user);
-			console.log(this.userKey);
+			console.log(this.location);
 
 			
 			// if(this.role == "Dj"){
@@ -121,8 +122,8 @@ export class UserprofilePage implements OnInit{
 			this.userKey2 = this.profile2[0].user
 			
 		this.PulsedbDatabase.getUserInbox(this.userKey2).then((data:any)=>{
-			this.userinboxArray.length =0;
-			this.userinboxArray = [];
+			// this.userinboxArray.length =0;
+			// this.userinboxArray = [];
 			console.log(data)
 			this.userinboxArray = data;
 		})
@@ -151,7 +152,7 @@ export class UserprofilePage implements OnInit{
 	logout() {
 		this.PulsedbDatabase.logout().then(
 			() => {
-				this.navCtrl.push('CategoriesPage');
+				this.navCtrl.setRoot('LoginPage');
 			},
 			(error) => {
 				console.log(error.message);

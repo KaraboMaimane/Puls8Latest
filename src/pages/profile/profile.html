@@ -166,7 +166,7 @@
 
         <ion-list *ngSwitchCase="'reviews'" class="segcontainer__seg">
         
-            <div class="commentslist">
+            <div class="commentslist" *ngIf="commentsArray.length > 0">
 
                 <!-- adding commnet in the page Right is for sender and Left is for receiver -->
                     <!-- *ngFor="let n of commentArr ; let i = index; let odd = 'left'; let even = 'right'" -->

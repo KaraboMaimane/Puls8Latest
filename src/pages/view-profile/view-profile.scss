@@ -1,4 +1,5 @@
 page-view-profile {
+
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg');
         background-size: cover;
@@ -75,7 +76,9 @@ page-view-profile {
     }
 
     .segcontainer{
+        
         &__seg{
+            overflow-y: scroll;
             margin: 0;
             &__listitems{
                 background: transparent;

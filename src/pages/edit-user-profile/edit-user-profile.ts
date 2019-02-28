@@ -40,6 +40,7 @@ export class EditUserProfilePage implements OnInit {
 	loader: string;
 	upsucc: string;
 	d = 1;
+	location: any;
 	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider,
 		public loadingCtrl: LoadingController,
 		public toastCtrl: ToastController,
@@ -52,7 +53,7 @@ export class EditUserProfilePage implements OnInit {
 			this.profileArr = data;
 			console.log(this.profileArr);
 			this.bio = this.profileArr[0].bio;
-			(this.city = this.profileArr[0].city),
+			(this.city = this.profileArr[0].location),
 				(this.email = this.profileArr[0].email),
 				(this.fullname = this.profileArr[0].fullname),
 				(this.gender = this.profileArr[0].gender),
@@ -63,7 +64,7 @@ export class EditUserProfilePage implements OnInit {
 				(this.img = this.profileArr[0].img),
 				(this.stagename = this.profileArr[0].stagename),
 				(this.userKey = this.profileArr[0].user);
-			console.log(this.fullname);
+			console.log(this.city);
 
 			if (this.role != 'Dj') {
 			}
@@ -75,24 +76,49 @@ export class EditUserProfilePage implements OnInit {
 	}
 
 	submit(form: NgForm) {
+		let loading = this.loadingCtrl.create({
+			spinner: 'bubbles',
+			content: 'Loading....',
+			duration: 1000
+		});
+		loading.present();
 		this.upsucc = 'true';
 		this.PulsedbDatabase
 			.updateProfile(form.value.fullname, form.value.gender, form.value.city, form.value.bio, this.img)
 			.then((data) => {
+				loading.dismiss()
 				console.log(data);
-				this.upsucc = 'true';
+				this.upsucc = 'false';
 				this.navCtrl.pop();
 			});
 	}
 
 	UpdateImage(event: any) {
-		if (event.target.files && event.target.files[0]) {
-			let reader = new FileReader();
-			reader.onload = (event: any) => {
-				this.img = event.target.result;
-			};
-			reader.readAsDataURL(event.target.files[0]);
-		}
+    this.d = 1;
+    let opts = document.getElementsByClassName('options') as HTMLCollectionOf <HTMLElement>;
+    if(this.d == 1){
+      // opts[0].style.top = "10vh";
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+
+      if (event.target.files[0].size > 3500000){
+        let alert = this.alertCtrl.create({
+          title: "Oh no!",
+          subTitle: "your photo is too large, please choose a photo with 1.5MB or less.",
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+      else{
+        reader.onload = (event: any) => {
+          this.img= event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      }
+
+    }
+      
+    }
 	}
 
 

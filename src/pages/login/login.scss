@@ -1,3 +1,34 @@
+
+.swal2-container.swal2-shown{
+    background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
+    background-size: cover !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    // font-size: 90% !important;
+    h2{
+        text-transform: capitalize !important;
+    }
+    button:first-child{
+        background: linear-gradient($color-primary-dark, $color-primary-light) !important;
+    }
+    button:nth-child(2){
+        background: linear-gradient(#aaa, #666)
+    }
+    button{
+        border-radius: 10rem !important;
+        padding: 1rem 3rem;
+        font-size: 1.6rem !important;
+    }
+
+    
+
+    .swal2-popup{
+        background: rgba(white, .9) !important;
+    }
+
+    #swal2-validation-message{
+        font-size: 1.5rem !important;
+    }
+}
 page-login {
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
@@ -19,6 +50,8 @@ page-login {
             animation: pulseate 1s ease infinite;
         }
     }
+
+    
 
 
     .contentflex{
