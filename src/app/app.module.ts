@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
-
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { DatabaseProvider } from '../providers/database/database';
 
  
@@ -17,6 +17,7 @@ import { DatabaseProvider } from '../providers/database/database';
   imports: [
     BrowserModule,
     HttpClientModule,
+    IonicImageViewerModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

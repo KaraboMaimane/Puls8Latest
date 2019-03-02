@@ -220,13 +220,14 @@ export class DatabaseProvider {
 
 	getAllDjs() {
 		return new Promise((accpt, rej) => {
+			this.ngzone.run(() => {
+				this.ngzone.run(() => {
 			let loading = this.loadingCtrl.create({
 				spinner: 'bubbles',
 				content: 'Loading....',
-				duration: 22222000
+				duration: 22000
 			});
 			loading.present();
-			this.ngzone.run(() => {
 			this.allDjSArray.length = 0;
 			firebase.database().ref('Registration/').on('value', (data: any) => {
 				this.allDjSArray.length = 0;
@@ -242,7 +243,7 @@ export class DatabaseProvider {
 							var keys2: any = Object.keys(djInfomation);
 							console.log(djInfomation);
 							console.log(keys2);
-						
+							loading.dismiss();
 							for (var j = 0; j < keys2.length; j++) {
 								var k = keys2[j];
 								console.log(k);
@@ -261,7 +262,6 @@ export class DatabaseProvider {
 									key: k,
 									key2: x
 								};
-								loading.dismiss();
 								if (obj.role == 'Dj') {
 									this.allDjSArray.push(obj);
 									console.log(obj);
@@ -279,6 +279,7 @@ export class DatabaseProvider {
 			});
 	
 		})
+	})
 		});
 	}
 

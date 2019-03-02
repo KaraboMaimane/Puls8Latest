@@ -3,7 +3,7 @@
         <div class="hero__herobanner">
             <div class="hero__herobanner__heroimagecontainer">
               <!-- add image link here -->
-                <img src="{{djImage}}" alt="" class="hero__herobanner__heroimagecontainer--image">
+                <img src="{{djImage}}" alt="" class="hero__herobanner__heroimagecontainer--image" #myImage (click)="presentImage(myImage)" />
             </div>
             <div class="hero__herobanner__herotagcontainer">
                 <div class="hero__herobanner__herotagcontainer__headingcontainer">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,NgZone} from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
@@ -35,13 +35,16 @@ export class CategoriesPage implements OnInit {
 		public navParams: NavParams,
 		public PulsedbDatabase: DatabaseProvider,
 		public alertCtrl: AlertController,
-		public loadingCtrl: LoadingController
+		public loadingCtrl: LoadingController,
+		public ngzone:NgZone
 	) {
 		this.PulsedbDatabase.getAllDjs().then((data: any) => {
+			this.ngzone.run(() => {
 			this.getprofileArr = data;
 			this.getprofileArr2 = data;
 			console.log(this.getprofileArr);
 			console.log(this.getprofileArr2);
+			})
 		});
 	}
 

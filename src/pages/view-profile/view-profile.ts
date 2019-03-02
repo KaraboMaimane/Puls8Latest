@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
+import { ImageViewerController } from 'ionic-img-viewer';
+// import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -36,8 +38,11 @@ export class ViewProfilePage implements OnInit{
 
   getcomments=0;
   warntoast: string;
+  _imageViewerCtrl: ImageViewerController;
   warntoast2: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
+  constructor(imageViewerCtrl: ImageViewerController, public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
+    
+    this._imageViewerCtrl = imageViewerCtrl;
     this.profile = this.navParams.get("Djkey")
     console.log(this.profile)
   }
@@ -99,7 +104,13 @@ export class ViewProfilePage implements OnInit{
 
   }
   
-  
+  presentImage(myImage) {
+    const imageViewer = this._imageViewerCtrl.create(myImage);
+    imageViewer.present();
+ 
+    // setTimeout(() => imageViewer.dismiss(), 1000);
+    // imageViewer.onDidDismiss(() => alert('Viewer dismissed'));
+  }
 
   onMessageAdded(message){
     if(message != "" && message != null && message != undefined){
