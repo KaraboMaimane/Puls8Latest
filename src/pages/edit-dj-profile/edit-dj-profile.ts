@@ -120,12 +120,8 @@ export class EditDjProfilePage {
   
 
   remove() {
-   
     this.img = "../../assets/imgs/user.png";
     this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
-
     })
-    
-    
   }
 }
