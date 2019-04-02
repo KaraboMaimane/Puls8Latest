@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AlertController, LoadingController,ToastController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 /**
  * Generated class for the EditUserProfilePage page.
  *
@@ -44,7 +45,7 @@ export class EditUserProfilePage implements OnInit {
 	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider,
 		public loadingCtrl: LoadingController,
 		public toastCtrl: ToastController,
-	    public alertCtrl :AlertController) {}
+	    public alertCtrl :AlertController,public camera:Camera) {}
 
 	ngOnInit() {
 		this.loader = 'false';
@@ -92,33 +93,23 @@ export class EditUserProfilePage implements OnInit {
 				this.navCtrl.pop();
 			});
 	}
+	
 
-	UpdateImage(event: any) {
-    this.d = 1;
-    let opts = document.getElementsByClassName('options') as HTMLCollectionOf <HTMLElement>;
-    if(this.d == 1){
-      // opts[0].style.top = "10vh";
-    if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
+	uploadImage() {
+  const options: CameraOptions = {
+   quality: 70,
+   destinationType: this.camera.DestinationType.DATA_URL,
 
-      if (event.target.files[0].size > 3500000){
-        let alert = this.alertCtrl.create({
-          title: "Oh no!",
-          subTitle: "your photo is too large, please choose a photo with 1.5MB or less.",
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-      else{
-        reader.onload = (event: any) => {
-          this.img= event.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-      }
+   sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+   saveToPhotoAlbum:false
+ }
 
-    }
-      
-    }
+ this.camera.getPicture(options).then((imageData) => {
+
+  this.img = 'data:image/jpeg;base64,' + imageData;
+ }, (err) => {
+ console.log(err);
+ });
 	}
 
 
@@ -126,5 +117,9 @@ export class EditUserProfilePage implements OnInit {
 		this.img = "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w";
 		this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
 		})
-	  }
+		}
+		
+
+
+		// careers.emh@lifehealthcare.co.za
 }

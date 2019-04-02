@@ -13,8 +13,9 @@
       </div>
       <div class="button">
           <div class="upload-btn-wrapper">
-              <button class="btn">Edit Image</button>
-              <input type="file" type="file" accept="image/*"  (change)="UpdateImage($event)">
+              <!-- <button class="btn">Edit Image</button>
+              <input type="file" accept="image/*"  (click)="UpdateImage()"> -->
+              <button class="btn"(click)="uploadImage()">Edit Image</button>
           </div>
       </div>
 

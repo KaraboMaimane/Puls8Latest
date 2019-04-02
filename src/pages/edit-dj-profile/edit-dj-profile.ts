@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-ang
 import { DatabaseProvider } from '../../providers/database/database';
 import { AlertController,ToastController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 /**
  * Generated class for the EditDjProfilePage page.
  *
@@ -39,7 +40,7 @@ export class EditDjProfilePage {
 	EditProfileArr = [];
 	loader: string;
 	d = 1;
-	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public loadingCtrl: LoadingController,  public alertCtrl :AlertController) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public loadingCtrl: LoadingController,  public alertCtrl :AlertController,public camera:Camera) {
 		// this.retreivePics1();
 	}
 
@@ -71,33 +72,23 @@ export class EditDjProfilePage {
 			}
 		});
 	}
-	UpdateImage(event: any) {
-		this.d = 1;
-    let opts = document.getElementsByClassName('options') as HTMLCollectionOf <HTMLElement>;
-    if(this.d == 1){
-      // opts[0].style.top = "10vh";
-    if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-
-      if (event.target.files[0].size > 3500000){
-        let alert = this.alertCtrl.create({
-          title: "Oh no!",
-          subTitle: "your photo is too large, please choose a photo with 1.5MB or less.",
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-      else{
-        reader.onload = (event: any) => {
-          this.img= event.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-      }
-
-    }
-      
-    }
-	}
+	
+	uploadImage() {
+		const options: CameraOptions = {
+		 quality: 70,
+		 destinationType: this.camera.DestinationType.DATA_URL,
+	
+		 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+		 saveToPhotoAlbum:false
+	 }
+	
+	 this.camera.getPicture(options).then((imageData) => {
+	
+		this.img = 'data:image/jpeg;base64,' + imageData;
+	 }, (err) => {
+	 console.log(err);
+	 });
+		}
 
 	submit(form: NgForm) {
 		let loading = this.loadingCtrl.create({

@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { DatabaseProvider } from '../providers/database/database';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
  
 @NgModule({
@@ -27,6 +28,7 @@ import { DatabaseProvider } from '../providers/database/database';
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider
   ]
