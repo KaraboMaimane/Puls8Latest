@@ -117,4 +117,8 @@ export class LoginPage {
   GoToSignup() {
     this.navCtrl.push('RegisterPage')
   }
+
+  getItems($event: UIEvent) {
+    
+  }
 }

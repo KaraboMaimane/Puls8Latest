@@ -149,4 +149,30 @@ page-edit-user-profile {
         animation: pulseate 1s ease infinite, .3s ease grow;
     }
 
+  .searchbar-input{
+    border-radius: 5rem !important;
+    background: rgba($color-grey-light, .1) !important;
+    //margin-top: .5rem !important;
+    //margin-left: .3rem !important;
+    //padding: 1rem 2rem !important;
+    width: 100% !important;
+    transition: all ease .2s;
+    border-bottom: .3rem solid transparent;
+    width: 100%;
+    display: block;
+    color: $color-grey-light;
+    &:focus{
+      outline: none;
+      box-shadow: 0 1rem 2rem rgba(black, .1);
+      border-bottom: .3rem solid $color-primary-light;
+      animation: pulseate 1s ease infinite;
+    }
+
+    &:focus:invalid{
+      border-bottom: .3rem solid $color-danger;
+    }
+  }
+  .searchbar-search-icon{
+    color: $color-primary-light !important;
+  }
 }

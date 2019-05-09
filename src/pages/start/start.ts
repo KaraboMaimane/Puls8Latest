@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {CategoriesPage} from "../categories/categories";
+import {RegisterPage} from "../register/register";
 
 
 /**
@@ -15,13 +17,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'start.html',
 })
 export class StartPage {
-  file: string = '../../assets/Master_Cheng_Fu_-_Umcimbi_ft_Lelo_Kamau.mp3';
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   
   }
 
-  nextPage(page: string) {
-    this.navCtrl.push(page);
+  registerPage() {
+    this.navCtrl.push(RegisterPage);
+  }
+
+  explorePage(){
+    this.navCtrl.push(CategoriesPage);
   }
 
   ionViewDidEnter() {

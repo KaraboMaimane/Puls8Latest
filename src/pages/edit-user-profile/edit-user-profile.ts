@@ -122,4 +122,7 @@ export class EditUserProfilePage implements OnInit {
 
 
 		// careers.emh@lifehealthcare.co.za
+  getLocations($event: UIEvent) {
+    
+  }
 }
