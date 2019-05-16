@@ -62,15 +62,15 @@ export class LoginPage {
       this.PulsedbDatabase.login(form.value.email, form.value.password).then((data) => {
         console.log(data);
         let userID = firebase.auth().currentUser.uid;
-        // if (data.user.emailVerified == true) {
-        // this.logloader = 'false';
-        // this.logsucc = 'true';
-        // this.navCtrl.setRoot('CategoriesPage');
-        // } else {
-        //   this.message = 'You are not verified';
-        //   this.logloader = 'false';
-        //   this.logfail = 'true';
-        // }
+        if (data.user.emailVerified == true) {
+        this.logloader = 'false';
+        this.logsucc = 'true';
+        this.navCtrl.setRoot('CategoriesPage');
+        } else {
+          this.message = 'You are not verified';
+          this.logloader = 'false';
+          this.logfail = 'true';
+        }
       }).catch((error) => {
         this.message = error.message;
         this.logloader = 'false';
