@@ -42,6 +42,9 @@ export class EditUserProfilePage implements OnInit {
 	upsucc: string;
 	d = 1;
 	location: any;
+	items;
+	searchbar;
+	
 	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider,
 		public loadingCtrl: LoadingController,
 		public toastCtrl: ToastController,
@@ -76,6 +79,58 @@ export class EditUserProfilePage implements OnInit {
 		console.log('ionViewDidLoad EditUserProfilePage');
 	}
 
+	initializeItems() {
+
+
+    this.items = [
+			'Bela-Bela', 'Bloemfontein', 'Cape Town', 'Durban', 'East london', 'Free State', 'Germiston', 'Johannesburg', 'Kimberley', 'Limpopo', 'Mafikeng','Mahikeng', 'Mpumalanga', 'Nelspruit', 'Randfontein', 'Roodepoort', 'Rustenburg', 'Pietermaritzburg', 'Polokwane', 'Portcherstroom', 'Port Elizabeth', 'Soweto', 'Sandton City',
+			'Thohoyandou',
+			'Western Cape',
+			'Vryburg',
+			'Welkom',
+		];
+	}
+	
+	search(item){
+		this.city = item
+		console.log("Ive been clicked",this.city)
+	}
+	getItems(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.items = this.items.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+      console.log(val);
+      if (val == "") {
+        this.searchbar = null;
+        console.log("true");
+      }
+    }
+	}
+	
+	test() {
+		//this is where the array of cities should be hidden
+		//if there has been a selection or no text has been entered
+		console.log(this.getItems);
+		this.searchbar = this.getItems
+
+    if (this.searchbar == "") {
+
+      console.log("nothing");
+       //document.getElementById("hide") = "none";
+    } else {
+      console.log("something");
+      // document.getElementById("hide") = "block";
+      console.log(this.searchbar);
+    }
+    console.log(this.searchbar);
+  }
+
 	submit(form: NgForm) {
 		let loading = this.loadingCtrl.create({
 			spinner: 'bubbles',
@@ -85,7 +140,7 @@ export class EditUserProfilePage implements OnInit {
 		loading.present();
 		this.upsucc = 'true';
 		this.PulsedbDatabase
-			.updateProfile(form.value.fullname, form.value.gender, form.value.city, form.value.bio, this.img)
+			.updateProfile(form.value.fullname, form.value.gender, this.city, form.value.bio, this.img)
 			.then((data) => {
 				loading.dismiss()
 				console.log(data);

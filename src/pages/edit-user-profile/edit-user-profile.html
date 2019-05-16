@@ -90,13 +90,13 @@
 <!--              </ion-item>-->
 
             <ion-item no-lines>
-              <ion-searchbar class="location" (ionInput)="getLocations($event)" placeholder="Location"></ion-searchbar>
+              <ion-searchbar (ionInput)="getItems($event)"  (input)="test()"  placeholder="Location"></ion-searchbar>
             </ion-item>
-<!--            <ion-list>-->
-<!--              <ion-item *ngFor="let location of locations">-->
-<!--                {{ location }}-->
-<!--              </ion-item>-->
-<!--            </ion-list>-->
+            <ion-list class="list" id="hide" >
+                <ion-item *ngFor="let item of items"(click)="search(item)" >
+                  {{ item }}
+                </ion-item>
+              </ion-list>
 
               <ion-item no-lines>
                   <ion-label color="light">

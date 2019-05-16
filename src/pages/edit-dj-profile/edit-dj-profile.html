@@ -106,13 +106,13 @@
                   </ion-select>
               </ion-item>
 
-              <ion-item no-lines>
+              <!-- <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon ios="ios-locate" md="md-locate"></ion-icon>
                       City
-                  </ion-label>
+                  </ion-label> -->
 
-                  <ion-select name="city" [(ngModel)]="city" (change)="input($event)" interface="popover">
+                  <!-- <ion-select name="city" [(ngModel)]="city" (change)="input($event)" interface="popover">
                       <ion-option value="Johannesburg">Johannesburg</ion-option>
                       <ion-option value="Pretoria">Pretoria</ion-option>
                       <ion-option value="Cape Town">Cape Town</ion-option>
@@ -140,7 +140,16 @@
                       <ion-option value="Roodepoort">Roodepoort</ion-option>
                       <ion-option value="Randfontein">Randfontein</ion-option>
                   </ion-select>
+              </ion-item> -->
+
+              <ion-item no-lines>
+                <ion-searchbar (ionInput)="getItems($event)"  (input)="test()"  placeholder="Location"></ion-searchbar>
               </ion-item>
+              <ion-list class="list" id="hide" >
+                  <ion-item *ngFor="let item of items"(click)="search(item)" >
+                    {{ item }}
+                  </ion-item>
+                </ion-list>
 
               <ion-item no-lines>
                   <ion-label color="light">
