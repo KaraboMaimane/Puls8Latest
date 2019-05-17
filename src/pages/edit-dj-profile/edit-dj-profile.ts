@@ -155,11 +155,11 @@ export class EditDjProfilePage {
 			.updateDjProfile(
 				form.value.fullname,
 				form.value.stagename,
-                form.value.gender,
+        form.value.gender,
 				form.value.genre,
 				form.value.price,
 				form.value.payment,
-				form.value.city,
+				this.city,
 				form.value.bio,
 				this.img
 			)
