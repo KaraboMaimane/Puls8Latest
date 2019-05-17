@@ -94,8 +94,9 @@ export class EditUserProfilePage implements OnInit {
 	search(item){
 		this.city = item
 		console.log("Ive been clicked",this.city)
+		this.items = [];
 	}
-	
+
 	getItems(ev: any) {
     // Reset items back to all of the items
     this.initializeItems();
