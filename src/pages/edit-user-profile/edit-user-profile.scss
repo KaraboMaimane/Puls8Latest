@@ -157,6 +157,7 @@ page-edit-user-profile {
     //padding: 1rem 2rem !important;
     width: 100% !important;
     transition: all ease .2s;
+    padding: none;
     border-bottom: .3rem solid transparent;
     width: 100%;
     display: block;
@@ -166,6 +167,7 @@ page-edit-user-profile {
       box-shadow: 0 1rem 2rem rgba(black, .1);
       border-bottom: .3rem solid $color-primary-light;
       animation: pulseate 1s ease infinite;
+      color: $color-grey-light;
     }
 
     &:focus:invalid{

@@ -105,8 +105,10 @@
 
                   </ion-select>
               </ion-item>
-
               <ion-item no-lines>
+                    <ion-searchbar class="location" (ionInput)="getLocations($event)" placeholder="Location"></ion-searchbar>
+                  </ion-item>
+              <!-- <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon ios="ios-locate" md="md-locate"></ion-icon>
                       City
@@ -140,7 +142,7 @@
                       <ion-option value="Roodepoort">Roodepoort</ion-option>
                       <ion-option value="Randfontein">Randfontein</ion-option>
                   </ion-select>
-              </ion-item>
+              </ion-item> -->
 
               <ion-item no-lines>
                   <ion-label color="light">

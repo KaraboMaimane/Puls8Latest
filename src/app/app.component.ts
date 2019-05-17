@@ -33,7 +33,7 @@ export class MyApp {
         this.rootPage =  'CategoriesPage'
       }
       else {
-        this.rootPage = 'LoginPage'
+        this.rootPage = 'StartPage'
       }
      })
   }

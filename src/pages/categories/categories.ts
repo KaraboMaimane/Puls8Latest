@@ -1,4 +1,4 @@
-import { Component, OnInit ,NgZone} from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
@@ -36,20 +36,20 @@ export class CategoriesPage implements OnInit {
 		public PulsedbDatabase: DatabaseProvider,
 		public alertCtrl: AlertController,
 		public loadingCtrl: LoadingController,
-		public ngzone:NgZone
+		public ngzone: NgZone
 	) {
 		this.PulsedbDatabase.getAllDjs().then((data: any) => {
 			this.ngzone.run(() => {
-			this.getprofileArr = data;
-			this.getprofileArr2 = data;
-			console.log(this.getprofileArr);
-			console.log(this.getprofileArr2);
+				this.getprofileArr = data;
+				this.getprofileArr2 = data;
+				console.log(this.getprofileArr);
+				console.log(this.getprofileArr2);
 			})
 		});
 	}
 
 	ionViewDidEnter() {
-		
+
 	}
 
 	ionViewDidLoad() {
@@ -152,7 +152,7 @@ export class CategoriesPage implements OnInit {
 			console.log(data);
 		});
 		console.log('in');
-		this.PulsedbDatabase.checkAuthState().then((state: any) => {
+		this.PulsedbDatabase.checkstate().then((state: any) => {
 			console.log(state);
 			this.state = state;
 			console.log(this.state);
@@ -169,14 +169,50 @@ export class CategoriesPage implements OnInit {
 					} else if (this.role == 'Dj') {
 						this.navCtrl.push('DjProfilePage');
 						console.log(this.role);
-					} else {
-						this.navCtrl.push('LoginPage');
 					}
 				});
 			} else if (this.state == 0) {
 				console.log('user is offline');
-				this.navCtrl.push(LoginPage);
+				swal.fire({
+					title: 'Sign In Required!',
+					text: "You have to sign in before you can view your profile. Would you like to Sign in now?",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, Log In?'
+				  }).then((result) => {
+					if (result.value) {
+						
+						this.navCtrl.push('LoginPage');
+					}
+				  });
+				
+				// let alert = this.alertCtrl.create({
+				// 	// title: 'Email not verified',
+				// 	message: "You have to sign in before you can view your profile. Would you like to Sign in now?",
+				//   //   cssClass: "myAlert",
+				// 	buttons: [
+				// 	  {
+				// 		text: 'Cancel',
+				// 		role: 'cancel',
+				// 		handler: () => {
+				// 		  console.log('Cancel');
+				// 		}
+				// 	  },
+				// 	  {
+				// 		text: 'Sign in',
+				// 		handler: () => {
+				// 		  this.navCtrl.setRoot('LoginPage')
+				// 		}
+				// 	  }
+				// 	]
+				//   });
+				//   alert.present();
 			}
 		});
 	}
+
+
+
 }

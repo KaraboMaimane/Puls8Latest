@@ -22,11 +22,11 @@ export class StartPage {
   }
 
   registerPage() {
-    this.navCtrl.push(RegisterPage);
+    this.navCtrl.setRoot('RegisterPage');
   }
 
   explorePage(){
-    this.navCtrl.push(CategoriesPage);
+    this.navCtrl.setRoot('CategoriesPage');
   }
 
   ionViewDidEnter() {
