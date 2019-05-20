@@ -51,6 +51,18 @@
             <ion-option value="Randfontein">Randfontein</ion-option>
           </ion-select>
         </ion-item>
+
+
+        <div class="searching" no-lines>
+          <ion-searchbar class="location" [(ngModel)]="searchDj"  type="text"  (input)="filterItems(); getItems($event)" placeholder="Search by Location of Dj (e.g johannesburg)"></ion-searchbar>
+        </div>
+
+ <button ion-button icon-only class="con" (click)="fadeOut()" >
+            <ion-icon name="search" class="ico"></ion-icon>
+        </button>
+        <!-- <div class="con">
+          <ion-icon  class="ico" name="search"></ion-icon>
+        </div> -->
         <!-- <button ion-button icon-only class="refresh" *ngIf="isSet != false" (click)="refreshs();call()">
             <ion-icon name="refresh"></ion-icon>
         </button> -->

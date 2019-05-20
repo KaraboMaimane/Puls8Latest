@@ -4,6 +4,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { AlertController } from 'ionic-angular';
+// import * as $ from "jquery";
 // import { ViewProfilePage } from '../view-profile/view-profile';
 import swal from 'sweetalert2';
 /**
@@ -12,6 +13,9 @@ import swal from 'sweetalert2';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+
+declare var $: any;
+
 
 @IonicPage()
 @Component({
@@ -23,13 +27,20 @@ export class CategoriesPage implements OnInit {
 	genre;
 	city;
 	getprofileArr2 = [];
+	categoryArr = new Array();
 	getprofileArr = [];
+	tempArray = [];
 	logsucc: string;
 	logwarn: string;
+	searchDj: string = '';
 	role;
+	storeAllOrgs = [];
+	stateSearch = "search";
+	filtereditems: any;
 	state;
+	items: any;
 	isSet: boolean;
-
+	searchState = 0;
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
@@ -44,8 +55,35 @@ export class CategoriesPage implements OnInit {
 				this.getprofileArr2 = data;
 				console.log(this.getprofileArr);
 				console.log(this.getprofileArr2);
+
+				this.storeCatData(data)
+				this.storeCities(this.PulsedbDatabase.getAllcities())
+				this.initializeItems();
 			})
 		});
+		this.filtereditems = [];
+	}
+
+	fadeOut() {
+		var filters = document.getElementsByClassName("dropdown") as HTMLCollectionOf<HTMLElement>;
+		var searcher = document.getElementsByClassName("searching") as HTMLCollectionOf<HTMLElement>;
+		if (this.searchState == 0) {
+			this.searchState = 1;
+			searcher[0].style.display = "block";
+			filters[0].style.display = "none";
+			this.filtereditems = [];
+			this, this.searchDj = "";
+			this.initializeItems();
+			this.setArrayBack(this.tempArray)
+		}
+		else {
+			this.searchState = 0;
+			searcher[0].style.display = "none";
+			filters[0].style.display = "block";
+			this.filtereditems = [];
+		}
+		console.log(this.searchState);
+
 	}
 
 	ionViewDidEnter() {
@@ -181,37 +219,89 @@ export class CategoriesPage implements OnInit {
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes, Log In?'
-				  }).then((result) => {
+				}).then((result) => {
 					if (result.value) {
-						
+
 						this.navCtrl.push('LoginPage');
 					}
-				  });
-				
-				// let alert = this.alertCtrl.create({
-				// 	// title: 'Email not verified',
-				// 	message: "You have to sign in before you can view your profile. Would you like to Sign in now?",
-				//   //   cssClass: "myAlert",
-				// 	buttons: [
-				// 	  {
-				// 		text: 'Cancel',
-				// 		role: 'cancel',
-				// 		handler: () => {
-				// 		  console.log('Cancel');
-				// 		}
-				// 	  },
-				// 	  {
-				// 		text: 'Sign in',
-				// 		handler: () => {
-				// 		  this.navCtrl.setRoot('LoginPage')
-				// 		}
-				// 	  }
-				// 	]
-				//   });
-				//   alert.present();
+				});
 			}
 		});
 	}
+	assignName(name) {
+		this.PulsedbDatabase.filertUsingCity(name, this.tempArray).then((data: any) => {
+			this.getprofileArr = [];
+			this.getprofileArr = data;
+			console.log(this.getprofileArr)
+		})
+		console.log(name)
+		this.searchDj = name;
+		this.filtereditems = [];
+		this.initializeItems();
+	}
+	   cities = new Array()
+	   storeCities(cities) {
+		this.cities = cities;
+		console.log(this.cities);
+
+	}
+	initializeItems() {
+		this.items = null;
+		this.items = this.cities;
+		console.log(this.items);
+	}
+
+
+
+	filterItems() {
+		console.log(this.searchDj);
+		this.initializeItems();
+		if (this.searchDj != "") {
+			this.filtereditems = this.items.filter((item) => {
+				return item.toLowerCase().indexOf(this.searchDj.toLowerCase()) > -1;
+			});
+		} else if (this.searchDj == "" || this.searchDj == null) {
+			this.filtereditems = [];
+		}
+		console.log(this.filtereditems)
+	}
+
+
+	getItems(ev: any) {
+		// Reset items back to all of the items
+		this.initializeItems();
+		this.setArrayBack(this.tempArray)
+		// set val to the value of the searchbar
+		const val = ev.target.value;
+		// if the value is an empty string don't filter the items
+		if (val && val.trim() != "") {
+			this.items = this.items.filter((item) => {
+
+				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			})
+
+		}
+	}
+
+
+
+
+
+	storeCatData(data) {
+		this.getprofileArr2 = data;
+		console.log(this.getprofileArr)
+		this.tempArray = this.getprofileArr;
+		this.getprofileArr2 = data;
+	}
+
+
+	setArrayBack(data) {
+		this.getprofileArr = data;
+		console.log(this.getprofileArr)
+	}
+
+
+
 
 
 

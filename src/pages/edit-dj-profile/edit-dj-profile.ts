@@ -93,8 +93,6 @@ export class EditDjProfilePage {
 		}
 
 		initializeItems() {
-
-
 			this.items = [
 				'Bela-Bela', 'Bloemfontein', 'Cape Town', 'Durban', 'East london', 'Free State', 'Germiston', 'Johannesburg', 'Kimberley', 'Limpopo', 'Mafikeng','Mahikeng', 'Mpumalanga', 'Nelspruit', 'Randfontein', 'Roodepoort', 'Rustenburg', 'Pietermaritzburg', 'Polokwane', 'Portcherstroom', 'Port Elizabeth', 'Soweto', 'Sandton City',
 				'Thohoyandou',

@@ -65,7 +65,54 @@ page-categories {
             margin-top: 1rem;
         }
     }
- 
+    .con{
+        background: rgba($color-grey-light, .1);
+         display: flex;
+        //  margin: .5rem auto;
+         margin-right: .5rem;
+         justify-content: center;
+         align-items: center;
+         border-radius: 50%;
+         width: 5rem;
+         height: 4.5rem;
+        //  padding: 1rem;
+          .ico{
+              color: whitesmoke;
+              font-size: 2rem;
+          }
+     }
+    .location{
+        // height: 10rem;
+        // border-radius: 50%;
+    }
+ .searchbar-input{
+        margin: -.4rem auto;
+        border-radius: 5rem !important;
+        height: 4.5rem  !important;
+        background: rgba($color-grey-light, .1) !important;
+        //margin-top: .5rem !important;
+        //margin-left: .3rem !important;
+        //padding: 1rem 2rem !important;
+        width: 100% !important;
+        transition: all ease .2s;
+        border-bottom: .3rem solid transparent;
+        width: 100%;
+        display: block;
+        color: white !important;
+    }
+
+
+     .searching{
+        // height: 2rem;
+        // background: rgba($color-grey-light, .1);
+        // margin: 0 auto;
+         display: none;
+        //  border-radius: 50%;
+         animation: moveInRight .5s ease;
+        // ion-searchbar{
+        //     margin-top: -15px;
+        // }
+     }
     // .list{
     //     overflow: scroll !important;
     //     min-height: 85%;

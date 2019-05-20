@@ -218,6 +218,24 @@ export class DatabaseProvider {
 	}
 	
 
+	searchedDJ = new Array()
+	filertUsingCity(city, org) {
+	  return new Promise((pass, fail) => {
+		this.ngzone.run(() => {
+		  this.searchedDJ = [];
+		  for (var x = 0; x < org.length; x++) {
+			console.log(org[x].city);
+			if (org[x].city == city) {
+			  this.searchedDJ.push(org[x])
+			  console.log(this.searchedDJ)
+			}
+		  }
+		  pass(this.searchedDJ);
+		})
+	  })
+	}
+  
+
 	getAllDjs() {
 		return new Promise((accpt, rej) => {
 			this.ngzone.run(() => {
@@ -227,13 +245,13 @@ export class DatabaseProvider {
 				content: 'Loading....',
 				duration: 22000
 			});
-			loading.present();
+			// loading.present();
 			this.allDjSArray.length = 0;
 			firebase.database().ref('Registration/').on('value', (data: any) => {
 				this.allDjSArray.length = 0;
 				var Djs = data.val();
 				var keys: any = Object.keys(Djs);
-				console.log(keys);
+				// console.log(keys);
 				for (var i = 0; i < keys.length; i++) {
 					var x = keys[i];
 					var y = 'Registration/' + x;
@@ -241,12 +259,12 @@ export class DatabaseProvider {
 						var djInfomation = data2.val();
 						if (data2.val() != null || data2.val() != undefined) {
 							var keys2: any = Object.keys(djInfomation);
-							console.log(djInfomation);
-							console.log(keys2);
+							// console.log(djInfomation);
+							// console.log(keys2);
 							loading.dismiss();
 							for (var j = 0; j < keys2.length; j++) {
 								var k = keys2[j];
-								console.log(k);
+								// console.log(k);
 								let obj = {
 									bio: djInfomation[k].bio,
 									city: djInfomation[k].city,
@@ -264,12 +282,12 @@ export class DatabaseProvider {
 								};
 								if (obj.role == 'Dj') {
 									this.allDjSArray.push(obj);
-									console.log(obj);
+									// console.log(obj);
 								}
 							}          
 						} else {
 							this.allDjSArray = null;
-							console.log(null);
+							// console.log(null);
 						}
 					
 					});
@@ -683,5 +701,22 @@ export class DatabaseProvider {
 			console.log('success');
 		})
 		});
+	}
+
+	cities = new Array();
+	SignCities(city) {
+	  var results = "";
+	  for (var x = 0; x < this.cities.length; x++) {
+		if (this.cities[x] == city) {
+		  results = "found";
+		  break
+		}
+	  }
+	  if (results != "found") {
+		this.cities.push(city);
+	  }
+	}
+	getAllcities() {
+	  return this.cities;
 	}
 }
