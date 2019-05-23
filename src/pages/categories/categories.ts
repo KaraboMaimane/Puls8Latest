@@ -67,10 +67,17 @@ export class CategoriesPage implements OnInit {
 	fadeOut() {
 		var filters = document.getElementsByClassName("dropdown") as HTMLCollectionOf<HTMLElement>;
 		var searcher = document.getElementsByClassName("searching") as HTMLCollectionOf<HTMLElement>;
+		var icon1 = document.getElementsByClassName("ico") as HTMLCollectionOf<HTMLElement>;
+		var icon2 = document.getElementsByClassName("ico2") as HTMLCollectionOf<HTMLElement>;
+
+
 		if (this.searchState == 0) {
 			this.searchState = 1;
 			searcher[0].style.display = "block";
 			filters[0].style.display = "none";
+			icon2[0].style.display = "block";
+			icon1[0].style.display = "none";
+
 			this.filtereditems = [];
 			this, this.searchDj = "";
 			this.initializeItems();
@@ -80,6 +87,8 @@ export class CategoriesPage implements OnInit {
 			this.searchState = 0;
 			searcher[0].style.display = "none";
 			filters[0].style.display = "block";
+			icon2[0].style.display = "none";
+			icon1[0].style.display = "block";
 			this.filtereditems = [];
 		}
 		console.log(this.searchState);
