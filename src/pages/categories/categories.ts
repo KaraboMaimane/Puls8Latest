@@ -41,6 +41,7 @@ export class CategoriesPage implements OnInit {
 	items: any;
 	isSet: boolean;
 	searchState = 0;
+
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
@@ -65,10 +66,10 @@ export class CategoriesPage implements OnInit {
 	}
 
 	fadeOut() {
-		var filters = document.getElementsByClassName("dropdown") as HTMLCollectionOf<HTMLElement>;
-		var searcher = document.getElementsByClassName("searching") as HTMLCollectionOf<HTMLElement>;
-		var icon1 = document.getElementsByClassName("ico") as HTMLCollectionOf<HTMLElement>;
-		var icon2 = document.getElementsByClassName("ico2") as HTMLCollectionOf<HTMLElement>;
+		let filters = document.getElementsByClassName("dropdown") as HTMLCollectionOf<HTMLElement>;
+		let searcher = document.getElementsByClassName("searching") as HTMLCollectionOf<HTMLElement>;
+		let icon1 = document.getElementsByClassName("ico") as HTMLCollectionOf<HTMLElement>;
+		let icon2 = document.getElementsByClassName("ico2") as HTMLCollectionOf<HTMLElement>;
 
 
 		if (this.searchState == 0) {
@@ -79,7 +80,7 @@ export class CategoriesPage implements OnInit {
 			icon1[0].style.display = "none";
 
 			this.filtereditems = [];
-			this, this.searchDj = "";
+			this.searchDj = "";
 			this.initializeItems();
 			this.setArrayBack(this.tempArray)
 		}

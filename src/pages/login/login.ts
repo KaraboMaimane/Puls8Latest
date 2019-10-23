@@ -1,23 +1,24 @@
-
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {
   IonicPage,
   NavController,
   NavParams,
   AlertController
 } from "ionic-angular";
-import { NgForm } from "@angular/forms";
-import { DatabaseProvider } from "../../providers/database/database";
+import {FormBuilder, NgForm, Validators, FormGroup} from "@angular/forms";
+import {DatabaseProvider} from "../../providers/database/database";
 import firebase from "firebase";
-import { LoadingController } from "ionic-angular";
+import {LoadingController} from "ionic-angular";
 import swal from 'sweetalert2';
+import {ConfigurationsProvider, Pages, StringsAndMessages} from "../../providers/configurations/configurations";
+import {RegistrationData} from "../../providers/models/models";
 
 /**
-* Generated class for the LoginPage page.
-*
-* See https://ionicframework.com/docs/components/#navigation for more info on
-* Ionic pages and navigation.
-*/
+ * Generated class for the LoginPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @IonicPage()
 @Component({
@@ -29,66 +30,83 @@ export class LoginPage {
   email;
   password;
   logloader: string;
-  logwarn: string;
-  logfail: string;
-  logsucc: string;
+  onLoginWarning: string;
+  onLoginFailure: string;
+  onSuccessfulLogin: string;
   message: string = '';
+  formGroup: FormGroup;
+  strings = StringsAndMessages;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController,
     private PulsedbDatabase: DatabaseProvider,
-    public loadingCtrl: LoadingController
-  ) {}
+    public loadingCtrl: LoadingController,
+    public formBuilder: FormBuilder
+  ) {
+    this.createForm();
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.logloader = 'false';
-    this.logwarn = 'false';
-    this.logfail = 'false';
-    this.logsucc = 'false';
+    this.onLoginWarning = 'false';
+    this.onLoginFailure = 'false';
+    this.onSuccessfulLogin = 'false';
     this.message = 'false';
+  }
+
+  createForm() {
+    const passwordRegex = ConfigurationsProvider.PasswordValidator;
+    const emailRegex = ConfigurationsProvider.RegularExpEmail;
+
+    this.formGroup = this.formBuilder.group({
+      'email': ['', [Validators.required, Validators.pattern(emailRegex)]],
+      'password': ['', [Validators.required, Validators.pattern(passwordRegex)]]
+    })
   }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
 
+  login() {
+    let userLogin = new RegistrationData();
 
-   login(form: NgForm) {
-    this.logloader = 'true';
-    console.log('yellow')
-    if(form.valid){
-      this.PulsedbDatabase.login(form.value.email, form.value.password).then((data) => {
-        console.log(data);
-        let userID = firebase.auth().currentUser.uid;
+    if (this.formGroup.status === 'VALID') {
+
+      userLogin.email = this.formGroup.get('email').value;
+      userLogin.password = this.formGroup.get('password').value;
+
+      this.PulsedbDatabase.login(userLogin.email, userLogin.password).then((data) => {
+
+        userLogin.uid = firebase.auth().currentUser.uid;
+
         if (data.user.emailVerified == true) {
-        this.logloader = 'false';
-        this.logsucc = 'true';
-        this.navCtrl.setRoot('CategoriesPage');
+          this.logloader = 'false';
+          this.onSuccessfulLogin = 'true';
+
+          this.navCtrl.setRoot('CategoriesPage');
         } else {
           this.message = 'You are not verified';
           this.logloader = 'false';
-          this.logfail = 'true';
+          this.onLoginFailure = 'true';
         }
       }).catch((error) => {
         this.message = error.message;
         this.logloader = 'false';
-        this.logfail = 'true';
+        this.onLoginFailure = 'true';
       })
-    }else{
-      this.logwarn;
+    } else {
+      this.onLoginWarning;
     }
-
   }
 
 
-
-  
-
-  cancelmodal(){
+  cancelmodal() {
     // this.navCtrl.setRoot('CategoriesPage');      
   }
+
   passwordReset() {
     swal.fire({
       title: 'Enter your email address',
@@ -99,9 +117,9 @@ export class LoginPage {
           console.log(value)
           this.PulsedbDatabase.resetPassword(value).then((email) => {
             console.log(email);
-         
-          }).catch((error)=>{
-             error.message
+
+          }).catch((error) => {
+            error.message
           })
         }
         return !value && 'You need to write something!';
@@ -110,15 +128,13 @@ export class LoginPage {
 
     })
   }
-  nextpage(page: string){
+
+  nextpage(page: string) {
     this.navCtrl.setRoot(page);
   }
 
   GoToSignup() {
-    this.navCtrl.push('RegisterPage')
+    this.navCtrl.push(Pages.PAGE_REGISTER);
   }
 
-  getItems($event: UIEvent) {
-    
-  }
 }

@@ -1,95 +1,136 @@
 <ion-content>
-    <!-- creating the form  
-    giving the form a template variable of f-->
-    <form #f="ngForm" (ngSubmit)="register(f)">
-      <div class="contentflex">
-        <div class="contentflex__iconcontainer">
-          <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">
-          
-        </div>
-        <div class="contentflex__formcontent">
-          <ion-item no-lines>
-            <ion-label color="light">
-              <ion-icon name="contact"></ion-icon>
-            </ion-label>
-            <!-- input we have
-            name="name" will give our input a variable of "name"
-            required validates that the input is not empty
-            ngModel assigns the name to variable-->
-            <ion-input  maxlength="20" minlength="3" type="name" name="fullname" placeholder="Full Name(20 chars max)" class="contentflex__formcontent--input" id="input" ngModel required></ion-input>
-          </ion-item>
-  
-          <ion-item no-lines>
-            <ion-label color="light">
-              <ion-icon name="mail"></ion-icon>
-            </ion-label>
-            <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
-              required></ion-input>
-          </ion-item>
-  
-  
-          <ion-item no-lines>
-            <ion-label color="light">
-              <ion-icon name="lock"></ion-icon>
-            </ion-label>
-            <ion-input maxlength="20" minlength="6"  type="password" class="contentflex__formcontent--input" placeholder="Password(6 chars min)" name="password" pattern=".{6,30}"
-              id="input" ngModel required></ion-input>
-          </ion-item>
-  
-         
-        </div>
-        <div class="contentflex__buttoncontent">
-          <!-- creating the submission button for the form 
-          -[disabled]="!f.valid" will make the button not work unless valid data is entered
-          -type="submit" triggers the ngsubmit method-->
-          <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Register</button>
-  
-        </div>
-      </div>
-    </form>
+  <form autocomplete="off" [formGroup]="formGroup" (ngSubmit)="register()">
+    <div class="contentflex">
+      <div class="contentflex__iconcontainer">
+        <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="contentflex__iconcontainer__icon">
 
-    <div class="loadcontainer" *ngIf="loader == 'true'">
-        <div class="loadingmod">
-            <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
-            <p class="message">Loggin In
-                <span>.</span>
-                <span>.</span>
-                <span>.</span>
-            </p>
-        </div> 
-    </div>
-  
-    <div class="failcontainer" *ngIf="regfail == 'true'">
-        <div class="alertbox" (click)="regfail = 'false'">
-            <img src="../../assets/sad.svg" alt="" class="alertimg">
-            <div class="messagebox">
-                <p class="alertmessagehead">Ehsan!</p>
-                <p class="alertmessage">{{message}}</p>
-                <button class="alertbutton" (click)="regfail = 'false';">Okay</button>
-            </div>
-        </div>
-    </div>
-    
-    <div class="warncontainer" *ngIf="regwarn == 'true'">
-        <div class="alertbox" (click)="regwarn = 'false'">
-          <img src="../../assets/thinking.svg" alt="" class="alertimg">
-          <div class="messagebox">
-              <p class="alertmessagehead">Whoa, Hey There...</p>
-              <p class="alertmessage">Your Email Cannot Be Empty</p>
-              <button class="alertbutton" (click)="regwarn = 'false'">Okay</button>
-          </div>
-        </div>
       </div>
-  
-    <div class="succcontainer" *ngIf="regsucc == 'true'">
-      <div class="alertbox">
-        <img src="../../assets/happy.svg" alt="" class="alertimg">
-        <div class="messagebox">
-            <p class="alertmessagehead">Yesss!</p>
-            <p class="alertmessage">You Have Successfully Registered. Check Your Email To Verify</p>
-            <button class="alertbutton" (click)="regsucc = 'false'; nextpage('LoginPage')">Okay</button>
-        </div>
-      </div>
-    </div>
+      <div class="contentflex__formcontent">
+        <ion-item no-lines>
+          <ion-label color="light">
+            <ion-icon name="contact"></ion-icon>
+          </ion-label>
 
-  </ion-content>
+          <ion-input
+            maxlength="20"
+            minlength="3"
+            formControlName="fullname"
+            placeholder="Full Name(20 chars max)"
+            class="contentflex__formcontent--input"
+            id="input"
+          ></ion-input>
+        </ion-item>
+
+        <!--  TODO: Style these error messages        -->
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('fullname').hasError('pattern') &&
+             formGroup.get('fullname').touched
+          ">Please enter a valid username</p>
+
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('fullname').hasError('required') &&
+             formGroup.get('fullname').touched
+          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+
+        <ion-item no-lines>
+          <ion-label color="light">
+            <ion-icon name="mail"></ion-icon>
+          </ion-label>
+          <ion-input
+            type="email"
+            class="contentflex__formcontent--input"
+            placeholder="Email Address"
+            formControlName="email"
+            id="input"></ion-input>
+        </ion-item>
+
+        <!--  TODO: Style these error messages        -->
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('email').hasError('pattern') &&
+             formGroup.get('email').touched
+          ">{{strings.ERROR_MESSAGE_INVALID_EMAIL}}</p>
+
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('email').hasError('required') &&
+             formGroup.get('email').touched
+          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+
+        <ion-item no-lines>
+          <ion-label color="light">
+            <ion-icon name="lock"></ion-icon>
+          </ion-label>
+          <ion-input
+            maxlength="20"
+            minlength="6"
+            type="password"
+            class="contentflex__formcontent--input"
+            placeholder="Password(6 chars min)"
+            formControlName="password"
+            id="input"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <!--  TODO: Style these error messages        -->
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('password').hasError('pattern') &&
+             formGroup.get('password').touched
+          ">{{strings.ERROR_MESSAGE_INVALID_PASSWORD}}</p>
+
+        <p class="text-ios-danger text-md-danger"
+           *ngIf="formGroup.get('password').hasError('required') &&
+             formGroup.get('password').touched
+          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+
+      </div>
+      <div class="contentflex__buttoncontent">
+
+        <button class="contentflex__buttoncontent--button" type="submit" ion-button block>Register</button>
+
+      </div>
+    </div>
+  </form>
+
+  <div class="loadcontainer" *ngIf="loader == 'true'">
+    <div class="loadingmod">
+      <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+      <p class="message">Loggin In
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </p>
+    </div>
+  </div>
+
+  <div
+    *ngIf="onRegisterFail === 'true' || onRegisterSuccess === 'true' || onRegisterWarn === 'true'"
+    [class.succcontainer]="onRegisterSuccess === 'true'"
+    [class.warncontainer]="onRegisterWarn === 'true'"
+    [class.failcontainer]="onRegisterFail === 'true'">
+    <div  class="alertbox">
+      <img *ngIf="onRegisterSuccess === 'true'" src="../../assets/happy.svg" alt="" class="alertimg">
+      <img *ngIf="onRegisterWarn === 'true'" src="../../assets/thinking.svg" alt="" class="alertimg">
+      <img *ngIf="onRegisterFail === 'true'" src="../../assets/sad.svg" alt="" class="alertimg">
+      <div class="messagebox">
+        <ng-container *ngIf="onRegisterSuccess">
+          <p class="alertmessagehead">{{strings.REGISTER_SUCCESS_HEADING}}</p>
+          <p class="alertmessage">{{strings.REGISTER_SUCCESS}}</p>
+          <button class="alertbutton" (click)="onRegisterSuccess = 'false'; nextpage('CategoriesPage')">Okay</button>
+        </ng-container>
+
+        <ng-container *ngIf="onRegisterWarn === 'true'">
+          <p class="alertmessagehead">{{strings.LOGIN_EMAIL_WARNING_HEADING}}</p>
+          <p class="alertmessage">{{strings.LOGIN_EMAIL_WARNING}}</p>
+          <button class="alertbutton" (click)="onRegisterWarn = 'false'">Okay</button>
+        </ng-container>
+
+        <ng-container *ngIf="onRegisterFail === 'true'">
+          <p class="alertmessagehead">{{strings.LOGIN_FAIL_HEADING}}</p>
+          <p class="alertmessage">{{message}}</p>
+          <button class="alertbutton" (click)="onRegisterFail = 'false';">Okay</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

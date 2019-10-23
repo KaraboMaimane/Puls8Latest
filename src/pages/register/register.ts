@@ -1,5 +1,4 @@
-
-import { Component, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {
   IonicPage,
   NavController,
@@ -7,17 +6,18 @@ import {
   LoadingController,
   AlertController
 } from "ionic-angular";
-import { DatabaseProvider } from "../../providers/database/database";
-import { NgForm } from "@angular/forms";
+import {DatabaseProvider} from "../../providers/database/database";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import firebase from "firebase";
-// import swal from 'sweetalert2';
+import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
+import {RegistrationData, User} from "../../providers/models/models";
 
 @IonicPage()
 @Component({
   selector: "page-register",
   templateUrl: "register.html"
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
   role: any;
   name;
   email;
@@ -27,87 +27,92 @@ export class RegisterPage {
   profileArr = new Array();
   trackarray = [];
   bio;
-  city
-  fullname
-  gender
-  genre
-  payment
-  price
-  img
-  stagename
+  city;
+  fullname;
+  stagename;
   loader: string;
-  regwarn: string;
-  regsucc: string;
-  regfail: string;
+  onRegisterWarn: string;
+  onRegisterSuccess: string;
+  onRegisterFail: string;
   message: string;
+  formGroup: FormGroup;
+  strings = StringsAndMessages;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController
-  ) {}
+    public alertCtrl: AlertController,
+    public formBuilder: FormBuilder
+  ) {
+    this.createForm();
+  }
 
-  ngOnInit(){
-    // if(this.navParams.get('role')){
-    //   this.role = this.navParams.get('role');
-    //   console.log(this.role);
-    // }else{
-    //   console.log('nothing here')
-    // }
-
+  ngOnInit() {
     this.loader = 'false';
-    this.regwarn = 'false';
-    this.regfail = 'false';
-    this.regsucc = 'false';
+    this.onRegisterWarn = 'false';
+    this.onRegisterFail = 'false';
+    this.onRegisterSuccess = 'false';
     this.message = 'false';
+
+  }
+
+  createForm() {
+    const passwordRegex = ConfigurationsProvider.PasswordValidator;
+    const emailRegex = ConfigurationsProvider.RegularExpEmail;
+    const nameRegex = ConfigurationsProvider.RegularExpName;
+
+    this.formGroup = this.formBuilder.group({
+      'fullname': ['', [Validators.required, Validators.pattern(nameRegex)]],
+      'email': ['', [Validators.required, Validators.pattern(emailRegex)]],
+      'password': ['', [Validators.required, Validators.pattern(passwordRegex)]]
+    })
   }
 
 
-  register(form:NgForm){
+  register() {
+    let newUser = new RegistrationData();
 
-    if(form.valid){
+    if (this.formGroup.status === 'VALID') {
+
+      newUser.fullname = this.formGroup.get('fullname').value;
+      newUser.email = this.formGroup.get('email').value;
+      newUser.password = this.formGroup.get('password').value;
       this.loader = 'true';
-      console.log('enter');
-      this.PulsedbDatabase.register(form.value.fullname,form.value.email, form.value.password).then((data)=>{
+      console.log({registerUser: newUser, formgroup: this.formGroup});
+
+      this.PulsedbDatabase.register(newUser.fullname, newUser.email, newUser.password).then((data) => {
         let user = firebase.auth().currentUser;
-        user.sendEmailVerification().then((data)=>{
+
+
+        user.sendEmailVerification().then((data) => {
           firebase.database().ref("Registration/" + user.uid).push({
-            fullname: form.value.fullname,
-            email: form.value.email,
+            fullname: newUser.fullname,
+            email: newUser.email,
             role: "Audience",
             userType: "user",
             img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
             key: user.uid
-          })
+          });
           console.log(data);
-          this.loader ='false';
-          this.regsucc = 'true';
+          this.loader = 'false';
+          this.onRegisterSuccess = 'true';
         })
-        // }).catch((error)=>{
-        //   this.loader = 'false';
-        //   this.regfail = 'true';
-        //   this.message =  error.message;
-        // })
-        
-      }).catch((error)=>{
-        console.log(error); 
+
+      }).catch((error) => {
+        console.log(error);
         this.loader = 'false';
-        this.regfail = 'true';
+        this.onRegisterFail = 'true';
         this.message = error.message;
       });
-    }else{
-      this.regwarn = 'true';
+    } else {
+      this.onRegisterWarn = 'true';
     }
 
   }
 
-  
-
-
-
-  nextpage(page: string){
+  nextpage(page: string) {
     this.navCtrl.setRoot(page)
   }
 
