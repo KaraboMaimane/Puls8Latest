@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import firebase from 'firebase';
-import * as $ from "jquery";
+// import * as $ from "jquery";
 import { CategoriesPage } from '../pages/categories/categories';
 import { DatabaseProvider } from '../providers/database/database';
 @Component({
