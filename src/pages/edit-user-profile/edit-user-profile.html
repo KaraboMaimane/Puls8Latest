@@ -21,23 +21,34 @@
 
   </div>
 
-  <form #f="ngForm" (ngSubmit)="submit(f)">
+  <form autocomplete="off" [formGroup]="formGroup" (ngSubmit)="submit()">
       <div class="contentflex">
           <div class="contentflex__formcontent">
               <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon name="contact"></ion-icon>
                   </ion-label>
-                  <ion-input maxlength="20" minlength="3" type="name" name="fullname" [value]="fullname" placeholder="Full Name"
-                      class="contentflex__formcontent--input" id="input" ngModel required></ion-input>
+                  <ion-input
+                    type="name"
+                    formControlName="fullname"
+                    placeholder="Full Name"
+                    class="contentflex__formcontent--input"
+                    id="input"
+                  ></ion-input>
               </ion-item>
 
               <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon name="mail"></ion-icon>
                   </ion-label>
-                  <ion-input type="name" name="email" disabled [value]="email" placeholder="Email" class="contentflex__formcontent--input"
-                      id="input" ngModel required></ion-input>
+                  <ion-input
+                    type="name"
+                    formControlName="email"
+                    readonly
+                    placeholder="Email"
+                    class="contentflex__formcontent--input"
+                    id="input"
+                  ></ion-input>
               </ion-item>
 
               <ion-item no-lines>
@@ -45,65 +56,60 @@
                       <ion-icon ios="ios-transgender" md="md-transgender"></ion-icon>
                       Gender
                   </ion-label>
-                  <ion-select name="gender" [(ngModel)]="gender" multiple="false">
-                      <ion-option value="None" (change)="input($event)">None</ion-option>
+                  <ion-select formControlName="gender" multiple="false">
+                      <ion-option value="None">None</ion-option>
                       <ion-option value="Female">Female</ion-option>
                       <ion-option value="Male">Male</ion-option>
                   </ion-select>
               </ion-item>
 
+<!--            <ion-item no-lines>-->
+<!--              <ion-searchbar formControlName="location"  placeholder="Location"></ion-searchbar>-->
+<!--            </ion-item>-->
+<!--            <ion-list [class.d-none]="!locationList" class="list" id="hide" >-->
+<!--                <ion-item *ngFor="let location of locationList">-->
+<!--                  {{ location.title }}-->
+<!--                </ion-item>-->
+<!--              </ion-list>-->
+            <ng-container>
+              <ion-item no-lines>
+                <ion-label color="light">
+                  <ion-icon name="search"></ion-icon>
+                </ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="location"
+                  placeholder="Location"
+                  class="contentflex__formcontent--input"
+                ></ion-input>
+              </ion-item>
 
-<!--              <ion-item no-lines>-->
-<!--                  <ion-label color="light">-->
-<!--                      <ion-icon ios="ios-locate" md="md-locate"></ion-icon>-->
-<!--                      City-->
-<!--                  </ion-label>-->
+              <div class="loadercontainer" [class.d-none]="!isSearching">
+                <div class="loader">Loading...</div>
+              </div>
 
-<!--                  <ion-select name="city" [(ngModel)]="city" (change)="input($event)" interface="popover">-->
-<!--                      <ion-option value="Johannesburg">Johannesburg</ion-option>-->
-<!--                      <ion-option value="Pretoria">Pretoria</ion-option>-->
-<!--                      <ion-option value="Cape Town">Cape Town</ion-option>-->
-<!--                      <ion-option value="limpopo">limpopo</ion-option>-->
-<!--                      <ion-option value="Durban">Durban</ion-option>-->
-<!--                      <ion-option value="Mafikeng">Mafikeng</ion-option>-->
-<!--                      <ion-option value="Bloemfontein">Bloemfontein</ion-option>-->
-<!--                      <ion-option value="Pietermaritzburg">Pietermaritzburg</ion-option>-->
-<!--                      <ion-option value="East london">East london</ion-option>-->
-<!--                      <ion-option value="Mbombela">Mbombela</ion-option>-->
-<!--                      <ion-option value="Kimberley">Kimberley</ion-option>-->
-<!--                      <ion-option value="Rustenburg">Rustenburg</ion-option>-->
-<!--                      <ion-option value="George">George</ion-option>-->
-<!--                      <ion-option value="Paarl">Paarl</ion-option>-->
-<!--                      <ion-option value="Vereeniging">Vereeniging</ion-option>-->
-<!--                      <ion-option value="Mahikeng">Mahikeng</ion-option>-->
-<!--                      <ion-option value="Welkom">Welkom</ion-option>-->
-<!--                      <ion-option value="Bhisho">Bhisho</ion-option>-->
-<!--                      <ion-option value="Potchefstroom">Potchefstroom</ion-option>-->
-<!--                      <ion-option value="Newcastle">Newcastle</ion-option>-->
-<!--                      <ion-option value="Vanderbijlpark">Vanderbijlpark</ion-option>-->
-<!--                      <ion-option value="Boksburg">Boksburg</ion-option>-->
-<!--                      <ion-option value="Klerksdorp">Klerksdorp</ion-option>-->
-<!--                      <ion-option value="Krugersdrop">Krugersdrop</ion-option>-->
-<!--                      <ion-option value="Roodepoort">Roodepoort</ion-option>-->
-<!--                      <ion-option value="Randfontein">Randfontein</ion-option>-->
-<!--                  </ion-select>-->
-<!--              </ion-item>-->
+              <ion-item no-lines [class.d-none]="!locationList || locationList.length === 0">
+                <ion-label color="light">
+                  <ion-icon ios="ios-search" md="md-search"></ion-icon>
+                </ion-label>
+                <ion-select formControlName="location" multiple="false">
+                  <ion-option *ngFor="let location of locationList" (select)="setLocation(location.title)">{{location.title}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ng-container>
 
-            <ion-item no-lines>
-              <ion-searchbar (ionInput)="getItems($event)"  (input)="test()"  placeholder="Location"></ion-searchbar>
-            </ion-item>
-            <ion-list class="list" id="hide" >
-                <ion-item *ngFor="let item of items"(click)="search(item)" >
-                  {{ item }}
-                </ion-item>
-              </ion-list>
 
               <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon name="contact"></ion-icon>
                   </ion-label>
-                  <ion-textarea minlength="10" type="name" name="bio" placeholder="Bio" [value]="bio" class="contentflex__formcontent--input"
-                      id="input" ngModel required></ion-textarea>
+                  <ion-textarea
+                    type="name"
+                    formControlName="bio"
+                    placeholder="Bio"
+                    class="contentflex__formcontent--input"
+                    id="input"
+                  ></ion-textarea>
               </ion-item>
 
 
@@ -113,7 +119,7 @@
               <!-- creating the submission button for the form 
     [disabled]="!f.valid" will make the button not work unless valid data is entered
     type="submit" triggers the ngsubmit method -->
-              <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Save</button>
+              <button class="contentflex__buttoncontent--button" type="submit" ion-button block>Save</button>
 
           </div>
       </div>

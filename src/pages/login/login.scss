@@ -29,6 +29,19 @@
         font-size: 1.5rem !important;
     }
 }
+
+
+#ErroMsg{
+    text-align: center;
+    // font-weight: 600;
+    font-size: 1.5rem;
+    padding: 0;
+    animation: moveInRight .5s ease;
+    .ex{
+        padding: 0 0 0 .7rem;
+    }
+}
+
 page-login {
     ion-content{
         background: linear-gradient(rgba($color-dark, .9), rgba($color-dark, .8)),url('../../assets/imgs/7.jpg') !important;
@@ -52,7 +65,7 @@ page-login {
     }
 
     
-
+ 
 
     .contentflex{
         display: flex;

@@ -2,8 +2,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AlertController,ToastController } from 'ionic-angular';
-import { NgForm } from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import {debounceTime} from "rxjs/operators";
+import {CitySearchResult} from "../../providers/models/models";
+import {BehaviorSubject} from "rxjs";
+import {ConfigurationsProvider} from "../../providers/configurations/configurations";
 /**
  * Generated class for the EditDjProfilePage page.
  *
@@ -42,8 +46,27 @@ export class EditDjProfilePage {
 	d = 1;
 	items;
 	searchbar;
-	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider, public loadingCtrl: LoadingController,  public alertCtrl :AlertController,public camera:Camera) {
-		// this.retreivePics1();
+
+  formGroup: FormGroup;
+  locationList: CitySearchResult[];
+
+  profileSubject = new BehaviorSubject<any>({});
+  isSearching: boolean;
+  cityOnSet: boolean;
+  location: string;
+
+  constructor(
+	  public navCtrl: NavController,
+    public navParams: NavParams,
+    public PulsedbDatabase: DatabaseProvider,
+    public loadingCtrl: LoadingController,
+    public alertCtrl :AlertController,
+    public camera:Camera,
+    public formBuilder: FormBuilder,
+  ) {
+    this.createForm();
+
+    // this.retreivePics1();
 	}
 
 	ionViewDidLoad() {
@@ -53,27 +76,55 @@ export class EditDjProfilePage {
 	ngOnInit() {
 		this.loader = 'false';
 		this.PulsedbDatabase.getProfile().then((data: any) => {
-			console.log(data);
-			this.profileArr = data;
-			console.log(this.profileArr);
-			this.bio = this.profileArr[0].bio;
-			(this.city = this.profileArr[0].location),
-				(this.email = this.profileArr[0].email),
-				(this.fullname = this.profileArr[0].fullname),
-				(this.gender = this.profileArr[0].gender),
-				(this.genre = this.profileArr[0].genre),
-				(this.payment = this.profileArr[0].payment),
-				(this.price = this.profileArr[0].price),
-				(this.role = this.profileArr[0].role),
-				(this.img = this.profileArr[0].img),
-				(this.stagename = this.profileArr[0].stagename),
-				(this.userKey = this.profileArr[0].user);
-			console.log(this.fullname);
+      console.log({responseData: data});
+      this.profileArr = data;
+      console.log(this.profileArr);
+      this.bio = this.profileArr[0].bio || '';
+      this.city = this.profileArr[0].city || '';
+      this.email = this.profileArr[0].email || '';
+      this.fullname = this.profileArr[0].fullname || '';
+      this.gender = this.profileArr[0].gender || '';
+      this.genre = this.profileArr[0].genre || '';
+      this.payment = this.profileArr[0].payment || '';
+      this.price = this.profileArr[0].price || '';
+      this.role = this.profileArr[0].role || '';
+      this.img = this.profileArr[0].img || '';
+      this.stagename = this.profileArr[0].stagename || '';
+      this.userKey = this.profileArr[0].user || '';
 
-			if (this.role != 'Dj') {
-			}
+
+      this.formGroup.controls['fullname'].setValue(this.fullname);
+      this.formGroup.controls['stagename'].setValue(this.stagename);
+      this.formGroup.controls['email'].setValue(this.email);
+      this.formGroup.controls['gender'].setValue(this.gender);
+      this.formGroup.controls['genre'].setValue(this.genre);
+      this.formGroup.controls['payment'].setValue(this.payment);
+      this.formGroup.controls['price'].setValue(this.price);
+      this.formGroup.controls['location'].setValue(this.location);
+      this.formGroup.controls['bio'].setValue(this.profileArr[0].bio);
 		});
 	}
+
+  createForm() {
+    const passwordRegex = ConfigurationsProvider.PasswordValidator;
+    const emailRegex = ConfigurationsProvider.RegularExpEmail;
+    const nameRegex = ConfigurationsProvider.RegularExpName;
+    const numberRegex = ConfigurationsProvider.NumericRegex4;
+
+    this.formGroup = this.formBuilder.group({
+      'fullname': [this.fullname, [Validators.required, Validators.pattern(nameRegex)]],
+      'bio': [this.bio, [Validators.required, Validators.minLength(10), Validators.maxLength(120)]],
+      'email': [this.email],
+      'gender': [this.gender, [Validators.required]],
+      'genre': [this.genre, [Validators.required]],
+      'location': [this.location, [Validators.required]],
+      'payment': [this.payment, [Validators.required]],
+      'price': [this.price, [Validators.required, Validators.min(500), Validators.max(1000), Validators.pattern(numberRegex)]],
+      'stagename': [this.stagename, [Validators.required, Validators.pattern(nameRegex)]]
+    });
+
+    this.generateAutocomplete();
+  }
 	
 	uploadImage() {
 		const options: CameraOptions = {
@@ -142,7 +193,7 @@ export class EditDjProfilePage {
 			}
 			console.log(this.searchbar);
 		}
-	submit(form: NgForm) {
+	submit() {
 		let loading = this.loadingCtrl.create({
 			spinner: 'bubbles',
 			content: 'Loading....',
@@ -150,16 +201,29 @@ export class EditDjProfilePage {
 		});
 		loading.present();
 		this.loader = 'true';
+		// console.log({formGroupPostData: 'Here is our post data: '},
+		//   this.formGroup.get('fullname').value,
+    //   this.formGroup.get('stagename').value,
+    //   this.formGroup.get('gender').value,
+    //   this.formGroup.get('genre').value,
+    //   this.formGroup.get('price').value,
+    //   this.formGroup.get('payment').value,
+    //   this.formGroup.get('location').value,
+    //   this.formGroup.get('bio').value,
+    //   this.img
+    //
+    // )
 		this.PulsedbDatabase
 			.updateDjProfile(
-				form.value.fullname,
-				form.value.stagename,
-        form.value.gender,
-				form.value.genre,
-				form.value.price,
-				form.value.payment,
-				this.city,
-				form.value.bio,
+        this.formGroup.get('fullname').value,
+        this.formGroup.get('stagename').value,
+        this.formGroup.get('gender').value,
+        this.formGroup.get('genre').value,
+        this.formGroup.get('price').value,
+        this.formGroup.get('payment').value,
+        this.formGroup.get('location').value,
+        this.formGroup.get('bio').value,
+
 				this.img
 			)
 			.then((data) => {
@@ -175,5 +239,40 @@ export class EditDjProfilePage {
     this.img = "../../assets/imgs/user.png";
     this.PulsedbDatabase.removeProfilePicture(this.img).then(()=>{
     })
+  }
+
+  setLocation(location: string) {
+    console.log('location');
+    this.city = location;
+    this.location = location;
+    this.cityOnSet = true;
+
+    this.formGroup.controls['location'].setValue(location);
+  }
+
+  generateAutocomplete() {
+    this.formGroup
+      .get('location')
+      .valueChanges
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe((location) => {
+        this.isSearching = true;
+        if(location){
+          this.PulsedbDatabase.hereApiGetPlaceByCityName(location).subscribe(
+            (locationGetResults: CitySearchResult) => {
+              this.isSearching = false;
+
+              this.locationList = locationGetResults.results;
+              this.locationList = this.locationList.slice(0, 5);
+              console.log({resultSearchData: locationGetResults, locationList: this.locationList})
+            }
+          )
+        } else {
+          this.isSearching = false;
+          this.locationList = [];
+        }
+      });
   }
 }

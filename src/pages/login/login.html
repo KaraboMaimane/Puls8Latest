@@ -1,96 +1,108 @@
 <ion-content>
+  <div class="contentflex">
+    <form [formGroup]="formGroup" (ngSubmit)="login()">
+      <div class="contentflex__iconcontainer">
+        <img src="../../assets/imgs/sound-wavesdard.png" class="contentflex__iconcontainer__icon">
+      </div>
+      <div class="contentflex__formcontent">
+        <ion-item no-lines>
+          <ion-label color="light">
+            <ion-icon name="mail"></ion-icon>
+          </ion-label>
+          <ion-input
+            type="email"
+            class="contentflex__formcontent--input"
+            placeholder="Email Address"
+            formControlName="email"
+            id="input"
+          ></ion-input>
+        </ion-item>
 
-        <div class="contentflex">
-                <form #f="ngForm" (ngSubmit)="login(f)">
-                    <div class="contentflex__iconcontainer">
-                        <img src="../../assets/imgs/sound-wavesdard.png" class="contentflex__iconcontainer__icon">
-                    </div>
-                    <div class="contentflex__formcontent">
-                        <ion-item no-lines>
-                            <ion-label color="light">
-                                <ion-icon name="mail"></ion-icon>
-                            </ion-label>
-                            <ion-input type="email" class="contentflex__formcontent--input" placeholder="Email Address" name="email" id="input" ngModel
-                                required></ion-input>
-                        </ion-item>
-        
-                        <ion-item no-lines>
-                            <ion-label color="light">
-                                <ion-icon name="lock"></ion-icon>
-                            </ion-label>
-                            <ion-input type="password" class="contentflex__formcontent--input" placeholder="Password" name="password" pattern=".{6,30}"
-                                id="input" ngModel required></ion-input>
-                        </ion-item>
-                    </div>
-                    <div class="contentflex__buttoncontent">
-                        <button class="contentflex__buttoncontent--button" type="submit" ion-button block [disabled]="!f.valid">Sign In</button>
-                    </div>
-                </form>
-                <div class="contentflex__buttoncontent2">
-                    <p class="contentflex__buttoncontent2--button" ion-button block (click)="GoToSignup()">Create Account</p>
-                    <p class="contentflex__buttoncontent2--button" ion-button block (click)="passwordReset()">Forgot Password?</p>
-                </div>
-            </div>
+        <!--  TODO: Style these error messages        -->
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
+           *ngIf="formGroup.get('email').hasError('pattern') &&
+             formGroup.get('email').touched
+          ">{{strings.ERROR_MESSAGE_INVALID_EMAIL}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
-                <!-- <div class="errmodal">
-        <div class="icon">
-            <ion-icon name="alert"></ion-icon>
-        </div>
-        <div class="textconainer">
-          <p class="message">A There Was An Error Logging You In</p>
-        </div>
-      </div> -->
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
+           *ngIf="formGroup.get('email').hasError('required') &&
+             formGroup.get('email').touched
+          ">{{strings.ERROR_MESSAGE_EMPTY}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
-    <!-- <div class="succmodal">
-        <div class="icon">
-            <ion-icon name="alert"></ion-icon>
-        </div>
-        <div class="textconainer">
-          <p class="message">You Have Been Successfully Logged In!</p>
-        </div>
-      </div> -->
-        
-        <div class="loadcontainer" *ngIf="logloader == 'true'">
-                <div class="loadingmod">
-                    <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
-                    <p class="message">Loggin In
-                        <span>.</span>
-                        <span>.</span>
-                        <span>.</span>
-                    </p>
-                </div> 
-            </div>
-          
-           <div class="failcontainer" *ngIf="logfail == 'true'">
-                <div class="alertbox" (click)="logfail = 'false'">
-                    <img src="../../assets/sad.svg" alt="" class="alertimg">
-                    <div class="messagebox">
-                        <p class="alertmessagehead">Oh Snap!</p>
-                        <p class="alertmessage">{{message}}</p>
-                        <button class="alertbutton" (click)="logfail = 'false';">Okay</button>
-                    </div>
-                </div>
-            </div> 
-            
-            <div class="warncontainer" *ngIf="logwarn == 'true'">
-                <div class="alertbox" (click)="logwarn = 'false'">
-                  <img src="../../assets/thinking.svg" alt="" class="alertimg">
-                  <div class="messagebox">
-                      <p class="alertmessagehead">Whoa, Hey There...</p>
-                      <p class="alertmessage">Your Email Cannot Be Empty</p>
-                      <button class="alertbutton" (click)="logwarn = 'false'">Okay</button>
-                  </div>
-                </div>
-              </div>
-          
-            <div class="succcontainer" *ngIf="logsucc == 'true'">
-              <div class="alertbox">
-                <img src="../../assets/happy.svg" alt="" class="alertimg">
-                <div class="messagebox">
-                    <p class="alertmessagehead">Yesss!</p>
-                    <p class="alertmessage">You Have Successfully Logged In</p>
-                    <button class="alertbutton" (click)="logsucc = 'false'; nextpage('CategoriesPage')">Okay</button>
-                </div>
-              </div>
-            </div> 
-    </ion-content>
+        <ion-item no-lines>
+          <ion-label color="light">
+            <ion-icon name="lock"></ion-icon>
+          </ion-label>
+          <ion-input
+            type="password"
+            class="contentflex__formcontent--input"
+            placeholder="Password"
+            formControlName="password"
+            id="input"
+          ></ion-input>
+        </ion-item>
+
+        <!--  TODO: Style these error messages        -->
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
+           *ngIf="formGroup.get('password').hasError('pattern') &&
+             formGroup.get('password').touched
+          ">{{strings.ERROR_MESSAGE_INVALID_PASSWORD}}<ion-icon name="alert" class="ex"></ion-icon></p>
+
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
+           *ngIf="formGroup.get('password').hasError('required') &&
+             formGroup.get('password').touched
+          ">{{strings.ERROR_MESSAGE_EMPTY}}<ion-icon name="md-alert" class="ex"></ion-icon></p>
+
+      </div>
+      <div class="contentflex__buttoncontent">
+        <button class="contentflex__buttoncontent--button" type="submit" ion-button block>Sign In</button>
+      </div>
+    </form>
+    <div class="contentflex__buttoncontent2">
+      <p class="contentflex__buttoncontent2--button" ion-button block (click)="GoToSignup()">Create Account</p>
+      <p class="contentflex__buttoncontent2--button" ion-button block (click)="passwordReset()">Forgot Password?</p>
+    </div>
+  </div>
+
+  <div class="loadcontainer" *ngIf="logloader == 'true'">
+    <div class="loadingmod">
+      <img src="../../assets/imgs/sound-wavesdard.png" alt="" class="icon">
+      <p class="message">Loggin In
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="onLoginFailure === 'true' || onLoginWarning === 'true' || onLoginFailure === 'true' "
+    [class.succcontainer]="onSuccessfulLogin === 'true'"
+    [class.warncontainer]="onLoginWarning === 'true'"
+    [class.failcontainer]="onLoginFailure === 'true'"
+  >
+    <div class="alertbox">
+      <img *ngIf="onSuccessfulLogin === 'true'" src="../../assets/happy.svg" alt="" class="alertimg">
+      <img *ngIf="onLoginWarning === 'true'" src="../../assets/thinking.svg" alt="" class="alertimg">
+      <img *ngIf="onLoginFailure === 'true'" src="../../assets/sad.svg" alt="" class="alertimg">
+      <div class="messagebox">
+        <ng-container *ngIf="onSuccessfulLogin === 'true'">
+          <p class="alertmessagehead">{{strings.LOGIN_SUCCESS_HEADING}}</p>
+          <p class="alertmessage">{{strings.LOGIN_SUCCESS}}</p>
+          <button class="alertbutton" (click)="onSuccessfulLogin = 'false'; nextpage('CategoriesPage')">Okay</button>
+        </ng-container>
+
+        <ng-container *ngIf="onLoginWarning === 'true'">
+          <p class="alertmessagehead">{{strings.LOGIN_EMAIL_WARNING_HEADING}}</p>
+          <p class="alertmessage">{{strings.LOGIN_EMAIL_WARNING}}</p>
+          <button class="alertbutton" (click)="onLoginWarning = 'false'">Okay</button>
+        </ng-container>
+
+        <ng-container *ngIf="onLoginFailure === 'true'">
+          <p class="alertmessagehead">{{strings.LOGIN_FAIL_HEADING}}</p>
+          <p class="alertmessage">{{message}}</p>
+          <button class="alertbutton" (click)="onLoginFailure = 'false';">Okay</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ion-content>

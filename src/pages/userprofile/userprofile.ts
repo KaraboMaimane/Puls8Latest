@@ -73,24 +73,21 @@ export class UserprofilePage implements OnInit{
 	}
 	ionViewDidEnter() {
 		this.PulsedbDatabase.getProfile().then((data: any) => {
-			console.log(data);
-			this.profileArr = data;
-			console.log(this.profileArr);
-			this.bio = this.profileArr[0].bio;
-				(this.email = this.profileArr[0].email),
-				(this.fullname = this.profileArr[0].fullname),
-				(this.gender = this.profileArr[0].gender),
-				(this.genre = this.profileArr[0].genre),
-				(this.payment = this.profileArr[0].payment),
-				(this.price = this.profileArr[0].price),
-				(this.role = this.profileArr[0].role),
-				(this.img = this.profileArr[0].img),
-				(this.city = this.profileArr[0].location)
-				(this.stagename = this.profileArr[0].stagename),
-				(this.userKey = this.profileArr[0].user);
-			console.log(this.location);
-
-			
+      console.log({responseData: data});
+      this.profileArr = data;
+      console.log(this.profileArr);
+      this.bio = this.profileArr[0].bio;
+      this.city = this.profileArr[0].location;
+      this.email = this.profileArr[0].email;
+      this.fullname = this.profileArr[0].fullname;
+      this.gender = this.profileArr[0].gender;
+      this.genre = this.profileArr[0].genre;
+      this.payment = this.profileArr[0].payment;
+      this.price = this.profileArr[0].price;
+      this.role = this.profileArr[0].role;
+      this.img = this.profileArr[0].img;
+      this.stagename = this.profileArr[0].stagename;
+      this.userKey = this.profileArr[0].user;
 			// if(this.role == "Dj"){
 			// 	this.PulsedbDatabase.getComments(this.userKey).then((data: any) => {
 			// 		console.log(data);
