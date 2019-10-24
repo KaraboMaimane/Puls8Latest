@@ -22,15 +22,15 @@
         </ion-item>
 
         <!--  TODO: Style these error messages        -->
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('fullname').hasError('pattern') &&
              formGroup.get('fullname').touched
-          ">Please enter a valid username</p>
+          ">Please enter a valid username<ion-icon name="alert" class="ex"></ion-icon></p>
 
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('fullname').hasError('required') &&
              formGroup.get('fullname').touched
-          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+          ">{{strings.ERROR_MESSAGE_EMPTY}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
         <ion-item no-lines>
           <ion-label color="light">
@@ -45,15 +45,15 @@
         </ion-item>
 
         <!--  TODO: Style these error messages        -->
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('email').hasError('pattern') &&
              formGroup.get('email').touched
-          ">{{strings.ERROR_MESSAGE_INVALID_EMAIL}}</p>
+          ">{{strings.ERROR_MESSAGE_INVALID_EMAIL}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('email').hasError('required') &&
              formGroup.get('email').touched
-          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+          ">{{strings.ERROR_MESSAGE_EMPTY}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
         <ion-item no-lines>
           <ion-label color="light">
@@ -72,15 +72,15 @@
         </ion-item>
 
         <!--  TODO: Style these error messages        -->
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('password').hasError('pattern') &&
              formGroup.get('password').touched
-          ">{{strings.ERROR_MESSAGE_INVALID_PASSWORD}}</p>
+          ">{{strings.ERROR_MESSAGE_INVALID_PASSWORD}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
-        <p class="text-ios-danger text-md-danger"
+        <p class="text-ios-danger text-md-danger" id="ErroMsg"
            *ngIf="formGroup.get('password').hasError('required') &&
              formGroup.get('password').touched
-          ">{{strings.ERROR_MESSAGE_EMPTY}}</p>
+          ">{{strings.ERROR_MESSAGE_EMPTY}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
       </div>
       <div class="contentflex__buttoncontent">
