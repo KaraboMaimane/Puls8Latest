@@ -112,7 +112,7 @@
       <img *ngIf="onRegisterWarn === 'true'" src="../../assets/thinking.svg" alt="" class="alertimg">
       <img *ngIf="onRegisterFail === 'true'" src="../../assets/sad.svg" alt="" class="alertimg">
       <div class="messagebox">
-        <ng-container *ngIf="onRegisterSuccess">
+        <ng-container *ngIf="onRegisterSuccess === 'true'">
           <p class="alertmessagehead">{{strings.REGISTER_SUCCESS_HEADING}}</p>
           <p class="alertmessage">{{strings.REGISTER_SUCCESS}}</p>
           <button class="alertbutton" (click)="onRegisterSuccess = 'false'; nextpage('CategoriesPage')">Okay</button>
