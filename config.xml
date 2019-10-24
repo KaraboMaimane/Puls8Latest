@@ -1,5 +1,5 @@
-<?xml version='1.1' encoding='utf-8'?>
-<widget id="com.tobeornottobe.pulseight" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.tobeornottobe.pulseight" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Puls8</name>
     <description>The booking DJ app is called pulse8. Event planners can book the DJ that fits their style and budget for an event that they have upcoming and listen to the music on the app, we provide access to the DJs music. The Djs can also book other Djs on the app. The aim to find the local raw talent that is not recognised and market them into the music industry, where they can grow and better themselves.
 This a platform designed to connect the DJs directly with event organizers or clients who are looking for a DJ any other occasion. Cutting out the need for booking agents and other artist representatives in the process of booking available Djs. Event planners are able to communicate with the DJ on the app.</description>

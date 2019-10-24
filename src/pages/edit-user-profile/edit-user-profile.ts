@@ -4,7 +4,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AlertController, LoadingController, ToastController} from 'ionic-angular';
 import {DatabaseProvider} from '../../providers/database/database';
 import {Camera, CameraOptions} from '@ionic-native/camera';
-import {ConfigurationsProvider} from "../../providers/configurations/configurations";
+import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
 import {debounceTime} from "rxjs/operators";
 import {CitySearchResult} from "../../providers/models/models";
 import {BehaviorSubject} from "rxjs";
@@ -55,6 +55,7 @@ export class EditUserProfilePage implements OnInit {
   profileSubject = new BehaviorSubject<any>({});
   isSearching: boolean;
   cityOnSet: boolean;
+  strings = StringsAndMessages;
 
   constructor(
     public navCtrl: NavController,
@@ -110,15 +111,15 @@ export class EditUserProfilePage implements OnInit {
 
     this.formGroup = this.formBuilder.group({
       'fullname': [this.fullname, [Validators.required, Validators.pattern(nameRegex)]],
-      'bio': [this.bio, [Validators.required, Validators.minLength(10), Validators.maxLength(120)]],
+      'bio': [this.bio, [Validators.minLength(10), Validators.maxLength(120)]],
       'email': [this.email],
-      'gender': [this.gender, [Validators.required, Validators.pattern(nameRegex)]],
-      'genre': [this.genre, [Validators.required]],
-      'location': [this.location, [Validators.required]],
+      'gender': [this.gender, [Validators.required]],
+      'genre': [this.genre],
+      'location': [this.location],
       'select': [''],
-      'payment': [this.payment, [Validators.required]],
-      'price': [this.price, [Validators.required, Validators]],
-      'stagename': [this.stagename, [Validators.required]]
+      'payment': [this.payment],
+      'price': [this.price],
+      'stagename': [this.stagename]
     });
 
     this.generateAutocomplete();
@@ -183,26 +184,43 @@ export class EditUserProfilePage implements OnInit {
   }
 
   submit() {
-    let loading = this.loadingCtrl.create({
-      spinner: 'bubbles',
-      content: 'Loading....',
-      duration: 1000
-    });
-    loading.present();
-    this.upsucc = 'true';
-    this.PulsedbDatabase
-      .updateProfile(
-        this.formGroup.get('fullname').value,
-        this.formGroup.get('gender').value,
-        this.formGroup.get('location').value,
-        this.formGroup.get('bio').value,
-        this.img
-      ).then((data) => {
+    console.log({uhOh: this.formGroup});
+
+      const location = this.formGroup.get('location').value || '';
+      const bio = this.formGroup.get('bio').value || '';
+
+      if (this.formGroup.status === 'VALID') {
+      let loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+        content: 'Loading....',
+        duration: 1000
+      });
+      loading.present();
+
+      this.upsucc = 'true';
+      this.PulsedbDatabase
+        .updateProfile(
+          this.formGroup.get('fullname').value,
+          this.formGroup.get('gender').value,
+          location,
+          bio,
+          this.img
+        ).then((data) => {
         loading.dismiss()
         console.log(data);
         this.upsucc = 'false';
         this.navCtrl.pop();
       });
+    }else {
+      console.log('sumthing went wong');
+      const toast = this.toastCtrl.create({
+        message: this.strings.INVALID_FORM,
+        duration: 1500
+      });
+
+      toast.present();
+    }
+
   }
 
 

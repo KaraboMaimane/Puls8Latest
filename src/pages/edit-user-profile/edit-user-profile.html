@@ -37,6 +37,11 @@
                   ></ion-input>
               </ion-item>
 
+            <p class="text-ios-danger text-md-danger" id="ErroMsg"
+               *ngIf="formGroup.get('fullname').hasError('pattern') &&
+             formGroup.get('fullname').touched
+          ">{{strings.INVALID_NAME}}<ion-icon name="alert" class="ex"></ion-icon></p>
+
               <ion-item no-lines>
                   <ion-label color="light">
                       <ion-icon name="mail"></ion-icon>
@@ -62,6 +67,11 @@
                       <ion-option value="Male">Male</ion-option>
                   </ion-select>
               </ion-item>
+
+            <p class="text-ios-danger text-md-danger" id="ErroMsg"
+               *ngIf="formGroup.get('gender').hasError('required') &&
+             formGroup.get('gender').touched
+          ">{{strings.ERROR_MESSAGE_NOT_SELECTED}}<ion-icon name="alert" class="ex"></ion-icon></p>
 
 <!--            <ion-item no-lines>-->
 <!--              <ion-searchbar formControlName="location"  placeholder="Location"></ion-searchbar>-->
@@ -90,7 +100,7 @@
 
               <ion-item no-lines [class.d-none]="!locationList || locationList.length === 0">
                 <ion-label color="light">
-                  <ion-icon ios="ios-search" md="md-search"></ion-icon>
+                  <ion-icon ios="ios-locate" md="md-locate"></ion-icon>
                 </ion-label>
                 <ion-select formControlName="location" multiple="false">
                   <ion-option *ngFor="let location of locationList" (select)="setLocation(location.title)">{{location.title}}</ion-option>
@@ -112,6 +122,15 @@
                   ></ion-textarea>
               </ion-item>
 
+<!--            <p class="text-ios-danger text-md-danger" id="ErroMsg"-->
+<!--               *ngIf="formGroup.get('bio').hasError('minlength') &&-->
+<!--             formGroup.get('bio').touched-->
+<!--          ">{{strings.BIO_TOO_SHORT}}<ion-icon name="alert" class="ex"></ion-icon></p>-->
+
+<!--            <p class="text-ios-danger text-md-danger" id="ErroMsg"-->
+<!--               *ngIf="formGroup.get('bio').hasError('maxlength') &&-->
+<!--             formGroup.get('bio').touched-->
+<!--          ">{{strings.BIO_TOO_LONG}}<ion-icon name="alert" class="ex"></ion-icon></p>-->
 
           </div>
           <div class="contentflex__buttoncontent">

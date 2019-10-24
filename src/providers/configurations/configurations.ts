@@ -25,10 +25,14 @@ export class StringsAndMessages{
   static readonly ERROR_MESSAGE_INVALID_PASSWORD = 'Please enter a alphanumeric password (min 6 char)';
   static readonly ERROR_MESSAGE_INVALID_NUMERIC_NUMBER = 'Please enter a numeric value';
   static readonly ERROR_MESSAGE_EMPTY = 'Field cannot be empty';
+  static readonly ERROR_MESSAGE_NOT_SELECTED = 'Select a gender';
 
   static readonly REGISTER_SUCCESS_HEADING = "Yesss!";
   static readonly REGISTER_SUCCESS = "You Have Successfully Registered. Check Your Email To Verify";
 
+  static readonly INVALID_NAME = 'Please enter valid alphabets';
+  static readonly BIO_TOO_SHORT = 'Too short...';
+  static readonly BIO_TOO_LONG = 'Too long...';
 
   static readonly LOGIN_SUCCESS_HEADING = "Yesss!";
   static readonly LOGIN_EMAIL_WARNING_HEADING = 'Whoa, Hey There...';
@@ -36,6 +40,8 @@ export class StringsAndMessages{
 
   static readonly LOGIN_SUCCESS = 'You Have Successfully Logged In';
   static readonly LOGIN_EMAIL_WARNING = 'Your Email Cannot Be Empty';
+
+  static readonly INVALID_FORM = 'Your information doesnt seem to be valid please try again';
 
 }
 
