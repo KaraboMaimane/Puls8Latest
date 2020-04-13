@@ -198,7 +198,8 @@ page-edit-user-profile {
 
   .loadercontainer{
     position: absolute;
-    bottom:17rem;
+    bottom:16.5rem;
+  
   }
 
   .loader {
@@ -206,6 +207,7 @@ page-edit-user-profile {
     margin: 80px auto;
     text-indent: -9999em;
     width: 3rem;
+    left:.5rem;
     height: 3rem;
     border-radius: 50%;
     background: #ffffff;
@@ -228,7 +230,7 @@ page-edit-user-profile {
     border-radius: 100% 0 0 0;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 0 ;
     content: '';
   }
   .loader:after {
