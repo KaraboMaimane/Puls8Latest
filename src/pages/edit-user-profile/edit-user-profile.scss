@@ -33,6 +33,7 @@ page-edit-user-profile {
     top: 10vh;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
+  
   }
 
   .iconcontainer {
@@ -73,6 +74,7 @@ page-edit-user-profile {
       padding: 1rem 2rem;
       font-weight: bold;
       margin-bottom: 1rem;
+
       // margin: 0 auto;
     }
   }
@@ -175,6 +177,7 @@ page-edit-user-profile {
     display: block;
     color: $color-grey-light;
 
+
     &:focus {
       outline: none;
       box-shadow: 0 1rem 2rem rgba(black, .1);
@@ -198,7 +201,7 @@ page-edit-user-profile {
 
   .loadercontainer{
     position: absolute;
-    bottom:16.5rem;
+    bottom:16rem;
   
   }
 
