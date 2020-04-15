@@ -140,6 +140,7 @@
                   formControlName="location"
                   placeholder="Location"
                   class="contentflex__formcontent--input"
+                  [readonly]="locationList.length !> 0"
                 ></ion-input>
               </ion-item>
 
@@ -152,7 +153,7 @@
                   <ion-icon ios="ios-search" md="md-search"></ion-icon>
                 </ion-label>
                 <ion-select formControlName="location" multiple="false">
-                  <ion-option *ngFor="let location of locationList" (select)="setLocation(location.title)">{{location.title}}</ion-option>
+                  <ion-option *ngFor="let location of locationList" (click)="setLocation(location.title)">{{location.title}}</ion-option>
                 </ion-select>
               </ion-item>
             </ng-container>

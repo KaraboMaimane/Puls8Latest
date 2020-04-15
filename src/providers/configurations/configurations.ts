@@ -22,7 +22,7 @@ export class ConfigurationsProvider {
 
 export class StringsAndMessages{
   static readonly ERROR_MESSAGE_INVALID_EMAIL = 'Please enter a valid email address';
-  static readonly ERROR_MESSAGE_INVALID_PASSWORD = 'Please enter a alphanumeric password (min 6 char)';
+  static readonly ERROR_MESSAGE_INVALID_PASSWORD = 'Please enter a alphanumeric password and at least 1 special character (min 6 char)';
   static readonly ERROR_MESSAGE_INVALID_NUMERIC_NUMBER = 'Please enter a numeric value';
   static readonly ERROR_MESSAGE_EMPTY = 'Field cannot be empty';
   static readonly ERROR_MESSAGE_NOT_SELECTED = 'Select a gender';
