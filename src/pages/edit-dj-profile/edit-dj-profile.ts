@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-ang
 import { DatabaseProvider } from '../../providers/database/database';
 import { AlertController,ToastController } from 'ionic-angular';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {debounceTime} from "rxjs/operators";
 import {CitySearchResult} from "../../providers/models/models";
 import {BehaviorSubject} from "rxjs";
@@ -61,12 +61,9 @@ export class EditDjProfilePage {
     public PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController,
     public alertCtrl :AlertController,
-    public camera:Camera,
     public formBuilder: FormBuilder,
   ) {
     this.createForm();
-
-    // this.retreivePics1();
 	}
 
 	ionViewDidLoad() {
@@ -126,22 +123,14 @@ export class EditDjProfilePage {
     this.generateAutocomplete();
   }
 	
-	uploadImage() {
-		const options: CameraOptions = {
-		 quality: 70,
-		 destinationType: this.camera.DestinationType.DATA_URL,
-	
-		 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		 saveToPhotoAlbum:false
-	 }
-	
-	 this.camera.getPicture(options).then((imageData) => {
-	
-		this.img = 'data:image/jpeg;base64,' + imageData;
-	 }, (err) => {
-	 console.log(err);
-	 });
-		}
+	async uploadImage() {
+		const image = await Camera.getPhoto({
+			quality: 70,
+			resultType: CameraResultType.Base64,
+			source: CameraSource.Photos
+		});
+		this.img = 'data:image/jpeg;base64,' + image.base64String;
+	}
 
 		initializeItems() {
 			this.items = [

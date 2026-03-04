@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import * as firebase from 'firebase'
 import { DatabaseProvider } from '../../providers/database/database';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 /**
  * Generated class for the ChatroomPage page.
@@ -51,79 +49,75 @@ export class ChatroomPage {
     this.key2 = djKey2
     this.djKey = djKey
     this.key = profileKey;
-    if(this.key != undefined){
-      console.log(this.key)
-    this.name = this.key.username;
-    this.UserKey = this.key.userKey;
-    this.time = this.key.time;
-    this.date = this.key.date;
-    this.email = this.key.userEmail;
-    this.message = this.key.message
-    console.log(this.djKey)
-    let currentId = firebase.auth().currentUser.uid;
-    console.log(currentId);
-    this.path = this.djKey + '/' + this.UserKey
-    this.side = "left"
-    this.database.getChats(this.path).then((data:any)=>{
-      console.log(data.djKey)
-      this.chatArray = [];
-      this.chatArray.length = 0;
-      this.chatArray = data;
-      var index = Object.keys(this.chatArray)
-      console.log(index)
-      for(var x = 0; x <this.chatArray.length;x++){
-        var k = this.chatArray[x]
-        console.log(k)
+
+    this.database.getuser().then((userData: any) => {
+      const currentId = userData ? userData.key : null;
+      console.log(currentId);
+
+      if(this.key != undefined){
+        console.log(this.key)
+        this.name = this.key.username;
+        this.UserKey = this.key.userKey;
+        this.time = this.key.time;
+        this.date = this.key.date;
+        this.email = this.key.userEmail;
+        this.message = this.key.message
+        console.log(this.djKey)
+        this.path = this.djKey + '/' + this.UserKey
+        this.side = "left"
+        this.database.getChats(this.path).then((data:any)=>{
+          console.log(data.djKey)
+          this.chatArray = [];
+          this.chatArray.length = 0;
+          this.chatArray = data;
+          var index = Object.keys(this.chatArray)
+          console.log(index)
+          for(var x = 0; x <this.chatArray.length;x++){
+            var k = this.chatArray[x]
+            console.log(k)
+          }
+        })
       }
-    })
-    }
-    else if(this.key2 != undefined){
-      console.log(this.key2)
-      let djDetails = this.key2;
-      this.djKey = djDetails.userKey
-      this.side = "right"
-      console.log(this.djKey)
+      else if(this.key2 != undefined){
+        console.log(this.key2)
+        let djDetails = this.key2;
+        this.djKey = djDetails.userKey
+        this.side = "right"
+        console.log(this.djKey)
+        this.UserKey = currentId;
+        console.log(this.UserKey)
+        this.path =  this.djKey + '/' + this.UserKey;
+        this.database.getChats(this.path).then((data:any)=>{
+          console.log(data.djKey)
+          this.chatArray = [];
+          this.chatArray.length = 0;
+          this.chatArray = data;
+          var index = Object.keys(this.chatArray)
+          console.log(index)
+          for(var x = 0; x <this.chatArray.length;x++){
+            var k = this.chatArray[x]
+            console.log(k)
+          }
+        })
+      }else{
+        this.chatArray.length = 0;
+        this.chatArray = []
+        this.database.getChats(this.djKey).then((data:any)=>{
+          console.log(data);
+          this.chatArray.length = 0;
+          this.chatArray = data
+        })
+      }
 
-      this.UserKey = firebase.auth().currentUser.uid;
-      console.log(this.UserKey)
-       this.path =  this.djKey + '/' + this.UserKey;
-       this.database.getChats(this.path).then((data:any)=>{
-        console.log(data.djKey)
-        this.chatArray = [];
-        this.chatArray.length = 0;
-        this.chatArray = data;
-        var index = Object.keys(this.chatArray)
-        console.log(index)
-        for(var x = 0; x <this.chatArray.length;x++){
-          var k = this.chatArray[x]
-          console.log(k)
-        }
-      })
-    }else{
-      this.chatArray.length = 0;
-      this.chatArray = []
-      this.database.getChats(this.djKey).then((data:any)=>{
-        console.log(data);
-        this.chatArray.length = 0;
-        this.chatArray = data
-  
-      })
-    }
-    
-    this.database.getuser().then((data:any)=>{
-      console.log("data found",data)
-      this.currentUserName = data.fullname
-      this.role = data.role
-      this.stagename = data.stagename
-      this.image = data.img
+      this.currentUserName = userData ? userData.fullname : '';
+      this.role = userData ? userData.role : '';
+      this.stagename = userData ? userData.stagename : '';
+      this.image = userData ? userData.img : '';
       console.log(this.image)
-      
-      
-    })
-   
 
-    console.log(this.path)
-    this.database.getChats(this.path)
+      console.log(this.path)
+      this.database.getChats(this.path)
+    })
   }
 
   reply(){

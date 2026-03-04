@@ -7,7 +7,6 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { DatabaseProvider } from '../providers/database/database';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ConfigurationsProvider } from '../providers/configurations/configurations';
 import { ModelsProvider } from '../providers/models/models';
 
@@ -29,7 +28,6 @@ import { ModelsProvider } from '../providers/models/models';
   providers: [
     StatusBar,
     SplashScreen,
-    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider,
     ConfigurationsProvider,

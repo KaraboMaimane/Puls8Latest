@@ -3,7 +3,7 @@ import {NgForm, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AlertController, LoadingController, ToastController} from 'ionic-angular';
 import {DatabaseProvider} from '../../providers/database/database';
-import {Camera, CameraOptions} from '@ionic-native/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
 import {debounceTime} from "rxjs/operators";
 import {CitySearchResult} from "../../providers/models/models";
@@ -64,8 +64,7 @@ export class EditUserProfilePage implements OnInit {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    public formBuilder: FormBuilder,
-    public camera: Camera) {
+    public formBuilder: FormBuilder) {
     this.createForm();
   }
 
@@ -224,21 +223,13 @@ export class EditUserProfilePage implements OnInit {
   }
 
 
-  uploadImage() {
-    const options: CameraOptions = {
+  async uploadImage() {
+    const image = await Camera.getPhoto({
       quality: 70,
-      destinationType: this.camera.DestinationType.DATA_URL,
-
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      saveToPhotoAlbum: false
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-
-      this.img = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      console.log(err);
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos
     });
+    this.img = 'data:image/jpeg;base64,' + image.base64String;
   }
 
 

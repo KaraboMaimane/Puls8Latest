@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
 
 /**
  * Generated class for the UserprofilePage page.

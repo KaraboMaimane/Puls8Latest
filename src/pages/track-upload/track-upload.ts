@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
-import firebase from 'firebase';
 import { DatabaseProvider } from '../../providers/database/database';
-import { ProfilePage } from '../profile/profile';
 /**
  * Generated class for the TrackUploadPage page.
  *

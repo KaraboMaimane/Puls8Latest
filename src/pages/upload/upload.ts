@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
 import { NgForm } from '@angular/forms';
 
 /**
