@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { database } from 'firebase';
 import { DatabaseProvider } from '../../providers/database/database';
 
 /**

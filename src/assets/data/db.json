@@ -1,0 +1,155 @@
+{
+  "users": [
+    {
+      "uid": "user1",
+      "email": "user@example.com",
+      "password": "User@123",
+      "fullname": "Jane Doe",
+      "role": "Audience",
+      "userType": "user",
+      "img": "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w",
+      "key": "userKey1",
+      "bio": "Music enthusiast based in Johannesburg.",
+      "location": "Johannesburg",
+      "city": "Johannesburg",
+      "gender": "Female",
+      "genre": "",
+      "payment": 0,
+      "price": 0,
+      "stagename": ""
+    },
+    {
+      "uid": "dj1",
+      "email": "dj1@example.com",
+      "password": "Dj@12345",
+      "fullname": "Karabo Maimane",
+      "role": "Dj",
+      "userType": "dj",
+      "img": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300",
+      "key": "djKey1",
+      "bio": "Award-winning DJ with over 10 years of experience in house and Afrobeat music.",
+      "location": "Cape Town",
+      "city": "Cape Town",
+      "gender": "Male",
+      "genre": "House",
+      "payment": 1,
+      "price": 2500,
+      "stagename": "DJ K-Flow"
+    },
+    {
+      "uid": "dj2",
+      "email": "dj2@example.com",
+      "password": "Dj@12345",
+      "fullname": "Thabo Nkosi",
+      "role": "Dj",
+      "userType": "dj",
+      "img": "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=300",
+      "key": "djKey2",
+      "bio": "Amapiano and Gqom specialist representing Durban vibes.",
+      "location": "Durban",
+      "city": "Durban",
+      "gender": "Male",
+      "genre": "Amapiano",
+      "payment": 1,
+      "price": 1800,
+      "stagename": "DJ T-Nkosi"
+    },
+    {
+      "uid": "dj3",
+      "email": "dj3@example.com",
+      "password": "Dj@12345",
+      "fullname": "Lerato Dlamini",
+      "role": "Dj",
+      "userType": "dj",
+      "img": "https://images.unsplash.com/photo-1541992007804-2e553bd6c29c?w=300",
+      "key": "djKey3",
+      "bio": "Deep house and soulful music curator from Pretoria.",
+      "location": "Pretoria",
+      "city": "Pretoria",
+      "gender": "Female",
+      "genre": "Deep House",
+      "payment": 0,
+      "price": 1500,
+      "stagename": "DJ Lerato"
+    }
+  ],
+  "comments": [
+    {
+      "key": "commentKey1",
+      "djKey": "djKey1",
+      "comment": "Amazing set at the festival last weekend!",
+      "username": "Jane Doe",
+      "userKey": "userKey1",
+      "userImage": "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w",
+      "date": "March 1st 2025, 8:00:00 pm"
+    },
+    {
+      "key": "commentKey2",
+      "djKey": "djKey1",
+      "comment": "Best house DJ in Cape Town, highly recommend!",
+      "username": "Music Fan",
+      "userKey": "userKey2",
+      "userImage": "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w",
+      "date": "February 20th 2025, 10:30:00 am"
+    }
+  ],
+  "bookings": [
+    {
+      "key": "bookingKey1",
+      "djKey": "djKey1",
+      "message": "I am interested in booking you for a possible event, would you please accept my chat request.",
+      "name": "Jane Doe",
+      "email": "user@example.com",
+      "image": "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w",
+      "userKey": "userKey1",
+      "check": false,
+      "side": "right",
+      "date": "March 1st 2025, 9:00:00 am"
+    }
+  ],
+  "inbox": [],
+  "userInbox": [
+    {
+      "key": "userInboxKey1",
+      "userKey": "userKey1",
+      "message": "Pending response from: ",
+      "djKey": "djKey1",
+      "djStageName": "DJ K-Flow",
+      "djImg": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300",
+      "check": false,
+      "date": "March 1st 2025, 9:00:00 am"
+    }
+  ],
+  "chatroom": [
+    {
+      "path": "djKey1/userKey1",
+      "messages": [
+        {
+          "key": "msgKey1",
+          "check": false,
+          "date": "March 1st 2025, 9:00:00 am",
+          "userkey": "userKey1",
+          "name": "Jane Doe",
+          "image": "https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w",
+          "email": "user@example.com",
+          "message": "I am interested in booking you for a possible event, would you please accept my chat request.",
+          "side": "right"
+        }
+      ]
+    }
+  ],
+  "music": [
+    {
+      "key": "musicKey1",
+      "MusicName": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "name": "Summer Vibes Mix",
+      "uid": "dj1"
+    },
+    {
+      "key": "musicKey2",
+      "MusicName": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "name": "Amapiano Nights",
+      "uid": "dj2"
+    }
+  ]
+}

@@ -1,13 +1,4 @@
 export class ConfigurationsProvider {
-  static readonly FirebaseDatabase = {
-    apiKey: "AIzaSyCI9c63kFGLwA6obewlXKUgaYuJa-dIyp8",
-    authDomain: "newpuls8database.firebaseapp.com",
-    databaseURL: "https://newpuls8database.firebaseio.com",
-    projectId: "newpuls8database",
-    storageBucket: "newpuls8database.appspot.com",
-    messagingSenderId: "649926660397"
-  };
-
   static getCity(cityName): string{
     return `https://places.cit.api.here.com/places/v1/autosuggest?at=-26.2591%2C27.9428&q=${cityName}&Accept-Language=en-US%2Cen%3Bq%3D0.9&app_id=tbylbo0FK0CPFikUrD5y&app_code=ClHE1xBVokmQpsOGeaj67A`
   }

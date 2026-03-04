@@ -8,7 +8,6 @@ import {
 } from "ionic-angular";
 import {DatabaseProvider} from "../../providers/database/database";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import firebase from "firebase";
 import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
 import {RegistrationData, User} from "../../providers/models/models";
 
@@ -83,22 +82,9 @@ export class RegisterPage implements OnInit {
       console.log({registerUser: newUser, formgroup: this.formGroup});
 
       this.PulsedbDatabase.register(newUser.fullname, newUser.email, newUser.password).then((data) => {
-        let user = firebase.auth().currentUser;
-
-
-        user.sendEmailVerification().then((data) => {
-          firebase.database().ref("Registration/" + user.uid).push({
-            fullname: newUser.fullname,
-            email: newUser.email,
-            role: "Audience",
-            userType: "user",
-            img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
-            key: user.uid
-          });
-          console.log(data);
-          this.loader = 'false';
-          this.onRegisterSuccess = 'true';
-        })
+        console.log(data);
+        this.loader = 'false';
+        this.onRegisterSuccess = 'true';
 
       }).catch((error) => {
         console.log(error);

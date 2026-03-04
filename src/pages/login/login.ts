@@ -7,7 +7,6 @@ import {
 } from "ionic-angular";
 import {FormBuilder, NgForm, Validators, FormGroup} from "@angular/forms";
 import {DatabaseProvider} from "../../providers/database/database";
-import firebase from "firebase";
 import {LoadingController} from "ionic-angular";
 import swal from 'sweetalert2';
 import {ConfigurationsProvider, Pages, StringsAndMessages} from "../../providers/configurations/configurations";
@@ -80,7 +79,7 @@ export class LoginPage {
 
       this.PulsedbDatabase.login(userLogin.email, userLogin.password).then((data) => {
 
-        userLogin.uid = firebase.auth().currentUser.uid;
+        userLogin.uid = data.user.uid;
 
         if (data.user.emailVerified == true) {
           this.logloader = 'false';
