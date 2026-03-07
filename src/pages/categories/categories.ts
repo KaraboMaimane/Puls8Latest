@@ -1,24 +1,12 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController } from '@ionic/angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import { LoginPage } from '../login/login';
-import { ProfilePage } from '../profile/profile';
-import { AlertController } from 'ionic-angular';
-// import * as $ from "jquery";
-// import { ViewProfilePage } from '../view-profile/view-profile';
-import swal from 'sweetalert2';
-/**
- * Generated class for the CategoriesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Dialog } from '@capacitor/dialog';
 
 declare var $: any;
 
-
-@IonicPage()
 @Component({
+	standalone: false,
 	selector: 'page-categories',
 	templateUrl: 'categories.html'
 })
@@ -35,7 +23,7 @@ export class CategoriesPage implements OnInit {
 	searchDj: string = '';
 	role;
 	storeAllOrgs = [];
-	stateSearch = "search";
+	stateSearch = 'search';
 	filtereditems: any;
 	state;
 	items: any;
@@ -44,10 +32,7 @@ export class CategoriesPage implements OnInit {
 
 	constructor(
 		public navCtrl: NavController,
-		public navParams: NavParams,
 		public PulsedbDatabase: DatabaseProvider,
-		public alertCtrl: AlertController,
-		public loadingCtrl: LoadingController,
 		public ngzone: NgZone
 	) {
 		this.PulsedbDatabase.getAllDjs().then((data: any) => {
@@ -192,7 +177,7 @@ export class CategoriesPage implements OnInit {
 		console.log(i);
 		let dj = i;
 		console.log(dj);
-		this.navCtrl.push('ViewProfilePage', { Djkey: dj });
+		this.navCtrl.navigateForward(['/view-profile'], { state: { Djkey: dj } });
 	}
 
 	profilePage() {
@@ -213,26 +198,22 @@ export class CategoriesPage implements OnInit {
 					console.log(this.role);
 					if (this.role == 'Audience') {
 						console.log(this.role);
-						this.navCtrl.push('UserprofilePage');
+						this.navCtrl.navigateForward(['/userprofile']);
 					} else if (this.role == 'Dj') {
-						this.navCtrl.push('DjProfilePage');
+						this.navCtrl.navigateForward(['/dj-profile']);
 						console.log(this.role);
 					}
 				});
 			} else if (this.state == 0) {
 				console.log('user is offline');
-				swal.fire({
+				Dialog.confirm({
 					title: 'Sign In Required!',
-					text: "You have to sign in before you can view your profile. Would you like to Sign in now?",
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Yes, Log In?'
+					message: 'You have to sign in before you can view your profile. Would you like to Sign in now?',
+					okButtonTitle: 'Yes, Log In',
+					cancelButtonTitle: 'Cancel'
 				}).then((result) => {
 					if (result.value) {
-
-						this.navCtrl.push('LoginPage');
+						this.navCtrl.navigateForward(['/login']);
 					}
 				});
 			}

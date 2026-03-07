@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { SplashPage } from './splash';
 
 @NgModule({
-  declarations: [
-    SplashPage,
-  ],
+  declarations: [SplashPage],
   imports: [
-    IonicPageModule.forChild(SplashPage),
-  ],
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild([{ path: '', component: SplashPage }])
+  ]
 })
 export class SplashPageModule {}

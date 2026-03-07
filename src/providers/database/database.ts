@@ -1,15 +1,10 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable, NgZone} from '@angular/core';
-import {AlertController, LoadingController} from 'ionic-angular';
-import {ToastController} from 'ionic-angular';
-import firebase from 'firebase';
-
-import swal from 'sweetalert2';
-import moment from "moment";
-import {EmailValidator} from '@angular/forms';
-import {ConfigurationsProvider} from "../configurations/configurations";
-import {Observable} from "rxjs";
-import {CitySearchResult, ModelsProvider, User} from "../models/models";
+import { HttpClient } from '@angular/common/http';
+import { Injectable, NgZone } from '@angular/core';
+import { Dialog } from '@capacitor/dialog';
+import { formatDistanceToNow } from 'date-fns';
+import { ConfigurationsProvider } from '../configurations/configurations';
+import { Observable, of } from 'rxjs';
+import { CitySearchResult, ModelsProvider, User } from '../models/models';
 
 /*
   Generated class for the DatabaseProvider provider.
@@ -43,190 +38,164 @@ export class DatabaseProvider {
   userInbox = new Array();
   userInboxArray = new Array();
 
+  // --- Dummy session & data ---
+  mockCurrentUser: any = null;
+
+  private dummyDJs = [
+    {
+      bio: 'High energy sets guaranteed.',
+      city: 'Johannesburg',
+      email: 'djspark@example.com',
+      fullname: 'John Spark',
+      gender: 'Male',
+      genre: 'House',
+      payment: 'EFT',
+      price: 2000,
+      role: 'Dj',
+      img: 'https://i.pravatar.cc/150?img=11',
+      stagename: 'DJ Spark',
+      key: 'dummy-key-1',
+      key2: 'dummy-uid-1'
+    },
+    {
+      bio: 'Afro beats specialist.',
+      city: 'Cape Town',
+      email: 'djafro@example.com',
+      fullname: 'Amara Beats',
+      gender: 'Female',
+      genre: 'Afrobeats',
+      payment: 'Cash',
+      price: 1500,
+      role: 'Dj',
+      img: 'https://i.pravatar.cc/150?img=20',
+      stagename: 'DJ Afro',
+      key: 'dummy-key-2',
+      key2: 'dummy-uid-2'
+    },
+    {
+      bio: 'Hip Hop & RnB all night.',
+      city: 'Johannesburg',
+      email: 'djflow@example.com',
+      fullname: 'Mike Flow',
+      gender: 'Male',
+      genre: 'Hip Hop',
+      payment: 'EFT',
+      price: 1800,
+      role: 'Dj',
+      img: 'https://i.pravatar.cc/150?img=33',
+      stagename: 'DJ Flow',
+      key: 'dummy-key-3',
+      key2: 'dummy-uid-3'
+    }
+  ];
+
+  private dummyProfile = {
+    bio: 'Music lover.',
+    location: 'Johannesburg',
+    email: 'user@example.com',
+    fullname: 'Demo User',
+    gender: 'Male',
+    genre: '',
+    payment: '',
+    price: 0,
+    role: 'Audience',
+    img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
+    stagename: '',
+    key: 'dummy-profile-key',
+    user: 'dummy-current-user-uid'
+  };
+  // --- End dummy data ---
+
   constructor(
     public http: HttpClient,
-    public alertCtrl: AlertController,
-    private ngzone: NgZone,
-    public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController
+    private ngzone: NgZone
   ) {
     console.log('Hello DatabaseProvider Provider');
-    // this.hereApiGetPlaceByCityName().subscribe(
-    //   response => {
-    //     console.log({cities: response});
-    //   }
-    // )
   }
 
   getProfile() {
     return new Promise((resolve, reject) => {
-      let userID = firebase.auth().currentUser;
-      firebase.database().ref('Registration/' + userID.uid).on('value', (data: any) => {
-        let details = data.val();
-        console.log(details)
-        this.ProfileArr.length = 0;
-        let keys = Object.keys(details);
-        let k = keys[0];
-        console.log(details[k].bio);
-        let obj = {
-          bio: details[k].bio,
-          location: details[k].location,
-          email: details[k].email,
-          fullname: details[k].fullname,
-          gender: details[k].gender,
-          genre: details[k].genre,
-          payment: details[k].payment,
-          price: details[k].price,
-          role: details[k].role,
-          img: details[k].img,
-          stagename: details[k].stagename,
-          key: k,
-          user: userID.uid
-        };
-        this.ProfileArr.push(obj);
-
-        console.log(this.ProfileArr);
-        this.userKey = this.ProfileArr[0].key;
-        console.log(this.userKey);
-      });
+      this.ProfileArr.length = 0;
+      const profile = Object.assign({}, this.dummyProfile);
+      if (this.mockCurrentUser) {
+        profile.email = this.mockCurrentUser.email;
+        profile.fullname = this.mockCurrentUser.fullname || this.dummyProfile.fullname;
+        profile.user = this.mockCurrentUser.uid;
+      }
+      this.ProfileArr.push(profile);
+      this.userKey = profile.key;
       resolve(this.ProfileArr);
     });
   }
 
   updateProfile(fullname, gender, location, bio, pic) {
-    var user = firebase.auth().currentUser.uid;
-    console.log(this.userKey);
     return new Promise((accpt, rej) => {
-      firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
-        fullname: fullname,
-        gender: gender,
-        location: location,
-        bio: bio,
-        img: pic
-      });
-      accpt('scccessful');
+      // Dummy: update local profile
+      Object.assign(this.dummyProfile, { fullname, gender, location, bio, img: pic });
+      accpt('successful');
     });
   }
 
   updateDjProfile(fullname, stagename, gender, genre, price, payment, city, bio, pic) {
-    var user = firebase.auth().currentUser.uid;
-    console.log(this.userKey);
     return new Promise((accpt, rej) => {
-      firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
-        fullname: fullname,
-        stagename: stagename,
-        gender: gender,
-        genre: genre,
-        price: price,
-        payment: payment,
-        city: city,
-        bio: bio,
-        img: pic,
-        role: 'Dj'
-      });
-      accpt('scccessful');
+      // Dummy: update local profile
+      Object.assign(this.dummyProfile, { fullname, stagename, gender, genre, price, payment, city, bio, img: pic, role: 'Dj' });
+      accpt('successful');
     });
   }
 
   getDjcomments() {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        let userID = firebase.auth().currentUser;
-        firebase.database().ref('Comments/' + userID).on('value', (data: any) => {
-          let details = data.val();
-          this.djCommentsArray.length = 0;
-          console.log(details);
-          this.djCommentsArray.push(details);
-          console.log(this.djCommentsArray);
-        });
-        accpt(this.djCommentsArray);
-      })
+      this.djCommentsArray.length = 0;
+      this.djCommentsArray.push({ comment: 'Great DJ!', username: 'Fan1', date: 'a moment ago' });
+      accpt(this.djCommentsArray);
     });
   }
 
   checkstate() {
     return new Promise((resolve, reject) => {
-      this.ngzone.run(() => {
-        firebase.auth().onAuthStateChanged((user) => {
-          if (user != null) {
-            this.stayLoggedIn = 1;
-          } else {
-            this.stayLoggedIn = 0;
-          }
-          resolve(this.stayLoggedIn);
-        });
-      });
+      // Dummy: return 1 if a mock session exists, otherwise 0
+      this.stayLoggedIn = this.mockCurrentUser ? 1 : 0;
+      resolve(this.stayLoggedIn);
     });
   }
 
   login(email: string, password: string) {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    // Dummy login: accept any credentials
+    return new Promise<any>((resolve, reject) => {
+      const dummyUser = {
+        uid: 'dummy-current-user-uid',
+        email: email,
+        emailVerified: true,
+        fullname: 'Demo User'
+      };
+      this.mockCurrentUser = dummyUser;
+      resolve({ user: dummyUser });
+    });
   }
 
   resetPassword(email) {
-    return new Promise((resolve, reject) => {
-      this.ngzone.run(() => {
-        if (email == null || email == undefined) {
-          const alert = this.alertCtrl.create({
-            subTitle: 'Please enter your Email.',
-            buttons: ['OK']
-          });
-          alert.present();
-        } else if (email != null || email != undefined) {
-          firebase.auth().sendPasswordResetEmail(email)
-            .then(
-              () => {
-                const alert = this.alertCtrl.create({
-                  title: 'Password request Sent',
-                  subTitle:
-                    "We've sent you and email with a reset link, go to your email to recover your account.",
-                  buttons: ['OK']
-                });
-                alert.present();
-                resolve();
-              },
-              (Error) => {
-                const alert = this.alertCtrl.create({
-                  subTitle: Error.message,
-                  buttons: ['OK']
-                });
-                alert.present();
-                resolve();
-              }
-            );
-        }
-      });
-    }).catch((error) => {
-      const alert = this.alertCtrl.create({
-        subTitle: error.message,
-        buttons: [
-          {
-            text: 'ok',
-            handler: (data) => {
-              console.log('Cancel clicked');
-            }
-          }
-        ]
-      });
-      alert.present();
+    return new Promise(async (resolve, reject) => {
+      if (email == null || email == undefined) {
+        await Dialog.alert({ title: 'Reset Password', message: 'Please enter your Email.' });
+        resolve(null);
+      } else {
+        await Dialog.alert({
+          title: 'Password Request Sent',
+          message: "We've sent you an email with a reset link (demo mode — no email is actually sent)."
+        });
+        resolve(null);
+      }
     });
   }
 
   loginx(email, password) {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    return this.login(email, password);
   }
 
   checkAuthState() {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.auth().onAuthStateChanged(function (user) {
-          if (user) {
-            accpt(true);
-          } else {
-            accpt(false);
-          }
-        });
-      });
+      accpt(this.mockCurrentUser != null);
     });
   }
 
@@ -252,178 +221,58 @@ export class DatabaseProvider {
 
   getAllDjs() {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        this.ngzone.run(() => {
-          let loading = this.loadingCtrl.create({
-            spinner: 'bubbles',
-            content: 'Loading....',
-            duration: 22000
-          });
-          // loading.present();
-          this.allDjSArray.length = 0;
-          firebase.database().ref('Registration/').on('value', (data: any) => {
-            this.allDjSArray.length = 0;
-            var Djs = data.val();
-            var keys: any = Object.keys(Djs);
-            // console.log(keys);
-            for (var i = 0; i < keys.length; i++) {
-              var x = keys[i];
-              var y = 'Registration/' + x;
-              firebase.database().ref(y).on('value', (data2: any) => {
-                var djInfomation = data2.val();
-                if (data2.val() != null || data2.val() != undefined) {
-                  var keys2: any = Object.keys(djInfomation);
-                  // console.log(djInfomation);
-                  // console.log(keys2);
-                  loading.dismiss();
-                  for (var j = 0; j < keys2.length; j++) {
-                    var k = keys2[j];
-                    // console.log(k);
-                    let obj = {
-                      bio: djInfomation[k].bio,
-                      city: djInfomation[k].city,
-                      email: djInfomation[k].email,
-                      fullname: djInfomation[k].fullname,
-                      gender: djInfomation[k].gender,
-                      genre: djInfomation[k].genre,
-                      payment: djInfomation[k].payment,
-                      price: djInfomation[k].price,
-                      role: djInfomation[k].role,
-                      img: djInfomation[k].img,
-                      stagename: djInfomation[k].stagename,
-                      key: k,
-                      key2: x
-                    };
-                    if (obj.role == 'Dj') {
-                      this.allDjSArray.push(obj);
-                      // console.log(obj);
-                    }
-                  }
-                } else {
-                  this.allDjSArray = null;
-                  // console.log(null);
-                }
-
-              });
-              accpt(this.allDjSArray);
-
-            }
-          });
-
-        })
-      })
+      this.allDjSArray.length = 0;
+      this.dummyDJs.forEach(dj => this.allDjSArray.push(Object.assign({}, dj)));
+      accpt(this.allDjSArray);
     });
   }
 
 
   makeComment(key, username, userKey, userPic, userComment) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        firebase.database().ref('Comments/' + key).push({
-          comment: userComment,
-          userKey: userKey,
-          username: username,
-          userImage: userPic,
-          date: date
-        });
-        accpt('Comment sent');
-      })
+      console.log('Dummy comment stored', { key, username, userComment });
+      accpt('Comment sent');
     });
   }
 
   getDjInbox(key) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        this.userInbox.length = 0;
-        firebase.database().ref('Bookings/' + key).on('value', (data: any) => {
-          console.log(data.val());
-          this.userInbox.length = 0;
-          var djComments = data.val();
-          if (data.val() != null || data.val() != null) {
-            var k = Object.keys(djComments);
-            console.log(k);
-            console.log(key);
-            for (var x = 0; x < k.length; x++) {
-              var keys = k[x];
-              let obj = {
-                message: djComments[keys].message,
-                userImage: djComments[keys].image,
-                userKey: djComments[keys].key,
-                username: djComments[keys].name,
-                date: moment(djComments[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
-                userEmail: djComments[keys].email
-              }
-              console.log(obj);
-              this.userInbox.push(obj);
-            }
-
-          }
-        });
-        accpt(this.userInbox);
-      })
+      this.userInbox.length = 0;
+      const dummyBookings = [
+        {
+          message: 'Hey, I would like to book you for my event!',
+          userImage: 'https://i.pravatar.cc/150?img=5',
+          userKey: 'user-key-abc',
+          username: 'Jane Doe',
+          date: 'a few minutes ago',
+          userEmail: 'jane@example.com'
+        }
+      ];
+      dummyBookings.forEach(b => this.userInbox.push(b));
+      accpt(this.userInbox);
     });
   }
 
   getComments(key) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.database().ref('Comments/' + key).on('value', (data: any) => {
-          this.userCommentsArray2.length = 0;
-          console.log(data.val());
-          var djComments = data.val();
-          if (data.val() != null || data.val() != undefined) {
-            var k = Object.keys(djComments)
-            console.log(k);
-            console.log(key);
-            for (var x = 0; x < k.length; x++) {
-              var keys = k[x];
-              console.log(keys);
-              let obj2 = {
-                comment: djComments[keys].comment,
-                name: djComments[keys].username,
-                date: moment(djComments[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow()
-              };
-              this.userCommentsArray2.push(obj2);
-              console.log(this.userCommentsArray2);
-            }
-          }
-        });
-        accpt(this.userCommentsArray2);
-      })
+      this.userCommentsArray2.length = 0;
+      const dummyComments = [
+        { comment: 'Amazing performance!', name: 'Alice', date: '2 hours ago' },
+        { comment: 'Would definitely book again.', name: 'Bob', date: '1 day ago' }
+      ];
+      dummyComments.forEach(c => this.userCommentsArray2.push(c));
+      accpt(this.userCommentsArray2);
     });
   }
 
   getuser() {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.database().ref('Registration').on('value', (data: any) => {
-          var users = data.val();
-          var user = firebase.auth().currentUser;
-          var userIDs = Object.keys(users);
-          for (var x = 0; x < userIDs.length; x++) {
-            var str1 = new String(userIDs[x]);
-            var index = str1.indexOf(':');
-            var currentUserID = userIDs[x].substr(index + 1);
-            if (user.uid == currentUserID) {
-              this.storeUsername(userIDs[x].substr(0, index));
-              firebase.database().ref('Registration/' + userIDs[x]).on('value', (data: any) => {
-                var Userdetails = data.val();
-                this.storeUserID(userIDs[x]);
-                var keys2: any = Object.keys(Userdetails);
-                var user = firebase.auth().currentUser;
-                this.storeCurrentUserImage(Userdetails[keys2[0]].img);
-                this.storeCurrentUsername(Userdetails[keys2[0]].Username);
-                this.storeUserKey(keys2[0]);
-                this.storeCurrentUserPath(userIDs[x]);
-                accpt(Userdetails[keys2]);
-              });
-
-              break;
-            }
-          }
-        });
-      })
+      const user = this.mockCurrentUser || { uid: 'dummy-current-user-uid', email: 'user@example.com', fullname: 'Demo User' };
+      this.storeCurrentUserImage(this.dummyProfile.img);
+      this.storeCurrentUsername(user.fullname || 'Demo User');
+      this.storeUserKey('dummy-profile-key');
+      this.storeCurrentUserPath(user.uid);
+      accpt(user);
     });
   }
 
@@ -453,96 +302,40 @@ export class DatabaseProvider {
 
   createRequest(key, Userkey, userName, userEmail, message, userKey) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        firebase.database().ref('Bookings/' + key).push({
-          name: userName,
-          email: userEmail,
-          key: Userkey,
-          date: date,
-          message: message,
-          image: userKey,
-          check: false,
-          side: "right"
-        })
-        accpt("Request sent")
-      })
-    })
+      console.log('Dummy booking request sent', { key, userName, message });
+      accpt('Request sent');
+    });
   }
 
   retrieveChats(key) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.database().ref('Chatroom/' + key).on('value', (data: any) => {
-          console.log(data);
-        });
-        accpt('data Found');
-      })
+      accpt('data Found');
     });
   }
 
   StartChat(djKey, key, userName, userEmail, message, image, userKey) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        firebase.database().ref('Chatroom/' + djKey).child(key).push({
-          check: false,
-          date: date,
-          userkey: userKey,
-          name: userName,
-          image: image,
-          email: userEmail,
-          message: message,
-          side: "right"
-        })
-        accpt("chat started")
-      })
-    })
+      console.log('Dummy chat started', { djKey, userName, message });
+      accpt('chat started');
+    });
   }
 
   getChats(path) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.database().ref('Chatroom/' + path).on('value', (data) => {
-          this.chatroomArray.length = 0;
-          console.log(data.val())
-          var chatDetails = data.val()
-          var key = Object.keys(chatDetails);
-          for (var x = 0; x < key.length; x++) {
-            var k = key[x]
-            let obj = {
-              name: chatDetails[k].name,
-              email: chatDetails[k].email,
-              message: chatDetails[k].message,
-              userKey: chatDetails[k].userkey,
-              djKey: chatDetails[k].uid,
-              date: moment(chatDetails[k].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
-              side: chatDetails[k].side
-            }
-            this.chatroomArray.length;
-            if (obj.djKey != undefined || obj.userKey != undefined) {
-              this.chatroomArray.push(obj)
-              console.log(this.chatroomArray)
-            }
-          }
-        })
-        accpt(this.chatroomArray)
-      })
-    })
+      this.chatroomArray.length = 0;
+      const dummyChats = [
+        { name: 'Demo User', email: 'user@example.com', message: 'Hi, are you available?', userKey: 'dummy-current-user-uid', djKey: undefined, date: 'a few seconds ago', side: 'right' },
+        { name: 'DJ Spark', email: 'djspark@example.com', message: 'Yes, I am!', userKey: undefined, djKey: 'dummy-uid-1', date: 'just now', side: 'left' }
+      ];
+      dummyChats.forEach(c => this.chatroomArray.push(c));
+      accpt(this.chatroomArray);
+    });
   }
 
   createInbox(key, userName, userEmail) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        firebase.database().ref('inbox/' + key).push({
-          name: userName,
-          email: userEmail,
-          date: date,
-          check: false
-        });
-        accpt('inbox sent');
-      })
+      console.log('Dummy inbox created', { key, userName });
+      accpt('inbox sent');
     });
   }
 
@@ -558,165 +351,96 @@ export class DatabaseProvider {
   update(name, email, downloadurl, address, surname) {
     this.ProfileArr.length = 0;
     return new Promise((pass, fail) => {
-      this.ngzone.run(() => {
-        var user = firebase.auth().currentUser;
-        firebase.database().ref('Registration/' + user.uid).update({
-          name: name,
-          email: email,
-          downloadurl: downloadurl,
-          address: address,
-          surname: surname
-        });
-      });
+      Object.assign(this.dummyProfile, { fullname: name, email, img: downloadurl, location: address });
+      pass(null);
     });
   }
 
   replyMessage(path, message, side, name) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        let currentUser = firebase.auth().currentUser.uid;
-        firebase.database().ref('Chatroom/' + path).push({
-          message: message,
-          uid: currentUser,
-          artKey: currentUser,
-          date: date,
-          side: side,
-          name: name
-        })
-        accpt("message sent")
-      })
-    })
+      console.log('Dummy reply sent', { path, message, side, name });
+      accpt('message sent');
+    });
   }
 
   createUserInbox(key, message, djKey, djStageName, djImage, check) {
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        var date = moment().format("MMMM Do YYYY, h:mm:ss a");
-        firebase.database().ref('userInbox/' + key).push({
-          date: date,
-          message: message,
-          djKey: djKey,
-          djStageName: djStageName,
-          djImg: djImage,
-          check: check
-        });
-        accpt('userInboxSent');
-      })
+      console.log('Dummy user inbox created', { key, message });
+      accpt('userInboxSent');
     });
   }
 
   getUserInbox(key) {
     this.userInboxArray.length = 0;
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        this.userInboxArray.length = 0;
-        firebase.database().ref('userInbox/' + key).on('value', (data: any) => {
-          console.log(data.val());
-          this.userInboxArray.length = 0;
-          var userInbox = data.val();
-          var k = Object.keys(userInbox);
-          console.log(k);
-          console.log(key);
-          for (var x = 0; x < k.length; x++) {
-            var keys = k[x];
-            console.log(keys);
-            let obj = {
-              message: userInbox[keys].message,
-              userKey: userInbox[keys].djKey,
-              date: moment(userInbox[keys].date, "MMMM Do YYYY, h:mm:ss a").startOf("minutes").fromNow(),
-              name: userInbox[keys].djStageName,
-              image: userInbox[keys].djImg,
-              check: false
-            };
-            this.userInboxArray.length = 0;
-            this.userInboxArray.push(obj);
-          }
-        });
-        accpt(this.userInboxArray);
-      })
+      const dummyInbox = [
+        {
+          message: 'Your booking request has been received.',
+          userKey: 'dummy-key-1',
+          date: 'a moment ago',
+          name: 'DJ Spark',
+          image: 'https://i.pravatar.cc/150?img=11',
+          check: false
+        }
+      ];
+      this.userInboxArray.length = 0;
+      dummyInbox.forEach(i => this.userInboxArray.push(i));
+      accpt(this.userInboxArray);
     });
   }
 
 
   logout() {
     return new Promise((resolve, reject) => {
-      this.ngzone.run(() => {
-        firebase.auth().signOut().then(
-          () => {
-            resolve();
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      });
+      this.mockCurrentUser = null;
+      resolve(null);
     });
   }
 
   register(fullname, email: string, password: string) {
-    return firebase.auth().createUserWithEmailAndPassword(email, password);
+    return new Promise<any>((resolve, reject) => {
+      const dummyUser = {
+        uid: 'dummy-reg-uid-' + Date.now(),
+        email: email,
+        emailVerified: false,
+        fullname: fullname,
+        sendEmailVerification: () => Promise.resolve()
+      };
+      this.mockCurrentUser = dummyUser;
+      resolve({ user: dummyUser });
+    });
   }
 
   resetpassword(email: string) {
-    return firebase.auth().sendPasswordResetEmail(email);
+    return this.resetPassword(email);
   }
 
   uploadMusic(trackLink, trackName) {
     return new Promise((resolve, reject) => {
-      this.ngzone.run(() => {
-        var user = firebase.auth().currentUser;
-        firebase.database().ref('uploadLink/').push({
-          MusicName: trackLink,
-          name: trackName,
-          uid: user.uid
-        });
-      })
+      console.log('Dummy music upload', { trackLink, trackName });
+      resolve(null);
     });
   }
 
   retrieveMusic(us) {
     console.log(us);
     return new Promise((resolve, reject) => {
-      this.ngzone.run(() => {
-        // this.getTruckArray.length =0;
-        var user = firebase.auth().currentUser.uid;
-        firebase.database().ref('uploadLink/').on('value', (data: any) => {
-          this.getTruckArray.length = 0;
-          var UploadDetails = data.val();
-          console.log(UploadDetails);
-          var k2 = Object.keys(UploadDetails);
-          for (var i = 0; i < k2.length; i++) {
-            var key2 = k2[i];
-            if (UploadDetails[key2].uid == us) {
-              let obj = {
-                MusicName: UploadDetails[key2].MusicName,
-                name: UploadDetails[key2].name,
-                uid: UploadDetails[key2].uid
-              };
-              console.log(obj);
-              this.getTruckArray.push(obj);
-              console.log(this.getTruckArray);
-            }
-          }
-        });
-        resolve(this.getTruckArray);
-      });
+      this.getTruckArray.length = 0;
+      const dummyTracks = [
+        { MusicName: 'https://example.com/track1.mp3', name: 'Demo Track 1', uid: us },
+        { MusicName: 'https://example.com/track2.mp3', name: 'Demo Track 2', uid: us }
+      ];
+      dummyTracks.forEach(t => this.getTruckArray.push(t));
+      resolve(this.getTruckArray);
     });
   }
 
 
   removeProfilePicture(userImage) {
-    var user = firebase.auth().currentUser.uid;
-    console.log(this.userKey);
     return new Promise((accpt, rej) => {
-      this.ngzone.run(() => {
-        firebase.database().ref('Registration/' + user + '/' + this.userKey).update({
-          img: userImage
-        });
-        accpt('scccessful');
-        console.log('success');
-      })
+      this.dummyProfile.img = userImage;
+      accpt('successful');
+      console.log('success');
     });
   }
 
@@ -749,16 +473,8 @@ export class DatabaseProvider {
   }
 
   firebaseGettingUserData() {
-    let response: Observable<User>;
-    let userID;
-    userID = firebase.auth().currentUser;
-
-    response = this.http
-      .get<User>(`${ConfigurationsProvider.FirebaseDatabase.databaseURL}/${userID.uid}`);
-
-    console.log({userId: userID, responseResponse: response});
-
-    return response;
+    const dummyUser: User = Object.assign(new User(), this.dummyProfile);
+    return of(dummyUser);
   }
 
 }

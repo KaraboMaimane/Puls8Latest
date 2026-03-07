@@ -62,9 +62,9 @@
                       Gender
                   </ion-label>
                   <ion-select formControlName="gender" multiple="false">
-                      <ion-option value="None">None</ion-option>
-                      <ion-option value="Female">Female</ion-option>
-                      <ion-option value="Male">Male</ion-option>
+                      <ion-select-option value="None">None</ion-select-option>
+                      <ion-select-option value="Female">Female</ion-select-option>
+                      <ion-select-option value="Male">Male</ion-select-option>
                   </ion-select>
               </ion-item>
 
@@ -102,8 +102,8 @@
                 <ion-label color="light">
                   <ion-icon ios="ios-locate" md="md-locate"></ion-icon>
                 </ion-label>
-                <ion-select formControlName="location" multiple="false">
-                  <ion-option *ngFor="let location of locationList" (select)="setLocation(location.title)">{{location.title}}</ion-option>
+                <ion-select formControlName="location" multiple="false" (ionChange)="setLocation($event.detail.value)">
+                  <ion-select-option *ngFor="let location of locationList" [value]="location.title">{{location.title}}</ion-select-option>
                 </ion-select>
               </ion-item>
             </ng-container>

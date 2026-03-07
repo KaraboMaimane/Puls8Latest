@@ -1,25 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { DatabaseProvider } from '../../providers/database/database';
-import { ImageViewerController } from 'ionic-img-viewer';
-// import { IonicImageViewerModule } from 'ionic-img-viewer';
 
-/**
- * Generated class for the ViewProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-view-profile',
   templateUrl: 'view-profile.html',
 })
-export class ViewProfilePage implements OnInit{
+export class ViewProfilePage implements OnInit {
   commentsArray = [];
   userKey: any;
-  musicArr=[];
+  musicArr = [];
   userImage: void;
   UserName: any;
   profile: string;
@@ -36,15 +28,19 @@ export class ViewProfilePage implements OnInit{
   djKey;
   userDetails;
 
-  getcomments=0;
+  getcomments = 0;
   warntoast: string;
-  _imageViewerCtrl: ImageViewerController;
   warntoast2: string;
-  constructor(imageViewerCtrl: ImageViewerController, public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
-    
-    this._imageViewerCtrl = imageViewerCtrl;
-    this.profile = this.navParams.get("Djkey")
-    console.log(this.profile)
+
+  constructor(
+    public navCtrl: NavController,
+    private router: Router,
+    public database: DatabaseProvider
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state || {};
+    this.profile = state['Djkey'] || window.history.state?.['Djkey'];
+    console.log(this.profile);
   }
 
   ionViewDidEnter(){
@@ -59,8 +55,8 @@ export class ViewProfilePage implements OnInit{
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewprofilePage');
-    this.profile = this.navParams.get("Djkey")
-    console.log(this.profile)
+    const djkey = this.profile || window.history.state?.['Djkey'];
+    this.profile = djkey;
     this.DjProfile = this.profile
 
     this.djName = this.DjProfile.fullname;
@@ -105,23 +101,19 @@ export class ViewProfilePage implements OnInit{
   }
   
   presentImage(myImage) {
-    const imageViewer = this._imageViewerCtrl.create(myImage);
-    imageViewer.present();
- 
-    // setTimeout(() => imageViewer.dismiss(), 1000);
-    // imageViewer.onDidDismiss(() => alert('Viewer dismissed'));
+    // Image viewer removed (ionic-img-viewer not compatible with Ionic 8)
+    console.log('presentImage', myImage);
   }
 
-  onMessageAdded(message){
-    if(message != "" && message != null && message != undefined){
-      let profile = this.navParams.get("Djkey")
-    let DjProfile;
-     DjProfile = profile
-    let djKey =  DjProfile.key2;
+  onMessageAdded(message) {
+    if (message != '' && message != null && message != undefined) {
+      const djkeyState = this.profile || window.history.state?.['Djkey'];
+      let DjProfile = djkeyState;
+      let djKey = DjProfile.key2;
     let dateObj = new Date
     let time = dateObj.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
     let date = dateObj.toDateString();
-    console.log(profile.key)
+    console.log(this.djKey)
     console.log(djKey)
 
     this.database.makeComment(djKey,this.UserName,this.userKey,this.userImage,message).then((data:any)=>{
@@ -146,10 +138,10 @@ export class ViewProfilePage implements OnInit{
       djImage: this.djImage
     }
     console.log(Obj.djKey)
-    if(this.userKey != Obj.djKey){
-      this.navCtrl.push('ChatRequestPage', { Djkey:Obj})
-    console.log('true')
-    }else{ 
+    if (this.userKey != Obj.djKey) {
+      this.navCtrl.navigateForward(['/chat-request'], { state: { Djkey: Obj } });
+    console.log('true');
+    } else {
       this.warntoast = 'true';
       let timer = setInterval(()=>{
         clearInterval(timer);

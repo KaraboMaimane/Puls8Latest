@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { ProfilePage } from './profile';
 
 @NgModule({
-  declarations: [
-    ProfilePage,
-  ],
+  declarations: [ProfilePage],
   imports: [
-    IonicPageModule.forChild(ProfilePage),
-  ],
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild([{ path: '', component: ProfilePage }])
+  ]
 })
 export class ProfilePageModule {}

@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { database } from 'firebase';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { DatabaseProvider } from '../../providers/database/database';
 
-/**
- * Generated class for the ChatRequestPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-chat-request',
   templateUrl: 'chat-request.html',
 })
@@ -34,15 +27,21 @@ export class ChatRequestPage {
   pendingMessage2: any;
   djImage: any;
   check = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public database: DatabaseProvider) {
-    let profile = this.navParams.get("Djkey")
 
-    console.log(profile)
+  constructor(
+    public navCtrl: NavController,
+    private router: Router,
+    public database: DatabaseProvider
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state || {};
+    this.profile = state['Djkey'] || window.history.state?.['Djkey'];
+    console.log(this.profile);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatRequestPage');
-    this.profile = this.navParams.get("Djkey")
+    this.profile = this.profile || window.history.state?.['Djkey'];
     console.log(this.profile)
     this.DjProfile = this.profile
 
@@ -94,11 +93,11 @@ export class ChatRequestPage {
     })
 
     this.chatsucc = 'true';
-    let timer = setInterval(()=>{
+    let timer = setInterval(() => {
       this.chatsucc = 'false';
-      this.navCtrl.setRoot('CategoriesPage');
+      this.navCtrl.navigateRoot(['/categories']);
       clearInterval(timer);
-    },3000);
+    }, 3000);
 
   }
 

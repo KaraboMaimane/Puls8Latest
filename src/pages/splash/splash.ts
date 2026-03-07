@@ -1,24 +1,19 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from '@ionic/angular';
 
-/**
- * Generated class for the SplashPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-splash',
   templateUrl: 'splash.html',
 })
 export class SplashPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    let timer = setInterval(()=>{
-      this.navCtrl.setRoot('CategoryPage');clearInterval(timer)
+  constructor(public navCtrl: NavController) {
+    let timer = setInterval(() => {
+      this.navCtrl.navigateRoot(['/categories']);
+      clearInterval(timer);
     }, 5000);
   }
 
-} 
+}
+

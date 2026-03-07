@@ -1,39 +1,44 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import * as firebase from 'firebase';
-import { CategoriesPage } from '../pages/categories/categories';
+import { Platform, NavController } from '@ionic/angular';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { DatabaseProvider } from '../providers/database/database';
-import {ConfigurationsProvider} from "../providers/configurations/configurations";
-import {BehaviorSubject} from "rxjs";
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
+  standalone: false,
+  selector: 'app-root',
   templateUrl: 'app.html'
 })
-export class MyApp {
-  rootPage:any = 'SplashPage';
+export class AppComponent {
   stateBehaviourSubject = new BehaviorSubject(false);
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,public pulsedbDatabase:DatabaseProvider) {
-    firebase.initializeApp(ConfigurationsProvider.FirebaseDatabase);
-    
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleLightContent();
-      splashScreen.hide();
-    });
+  constructor(
+    private platform: Platform,
+    private pulsedbDatabase: DatabaseProvider,
+    private navCtrl: NavController
+  ) {
+    this.initializeApp();
+  }
 
-    pulsedbDatabase.checkstate().then((data:number)=>{
-      if (data == 1){
-        this.rootPage = 'CategoriesPage';
+  async initializeApp() {
+    await this.platform.ready();
+    try {
+      await StatusBar.setStyle({ style: Style.Light });
+      await SplashScreen.hide();
+    } catch (e) {
+      // Not running on a native device
+    }
+
+    this.pulsedbDatabase.checkstate().then((data: number) => {
+      if (data === 1) {
+        this.navCtrl.navigateRoot(['/categories']);
         this.stateBehaviourSubject.next(true);
-      }
-      else {
-        this.rootPage = 'StartPage';
+      } else {
+        this.navCtrl.navigateRoot(['/start']);
         this.stateBehaviourSubject.next(false);
       }
-     })
+    });
   }
 }
+

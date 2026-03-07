@@ -1,23 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {NgForm, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {AlertController, LoadingController, ToastController} from 'ionic-angular';
-import {DatabaseProvider} from '../../providers/database/database';
-import {Camera, CameraOptions} from '@ionic-native/camera';
-import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
-import {debounceTime} from "rxjs/operators";
-import {CitySearchResult} from "../../providers/models/models";
-import {BehaviorSubject} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController, LoadingController, ToastController, AlertController } from '@ionic/angular';
+import { DatabaseProvider } from '../../providers/database/database';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ConfigurationsProvider, StringsAndMessages } from '../../providers/configurations/configurations';
+import { debounceTime } from 'rxjs/operators';
+import { CitySearchResult } from '../../providers/models/models';
+import { BehaviorSubject } from 'rxjs';
 
-/**
- * Generated class for the EditUserProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-edit-user-profile',
   templateUrl: 'edit-user-profile.html'
 })
@@ -59,13 +51,11 @@ export class EditUserProfilePage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    public formBuilder: FormBuilder,
-    public camera: Camera) {
+    public formBuilder: FormBuilder) {
     this.createForm();
   }
 
@@ -183,19 +173,19 @@ export class EditUserProfilePage implements OnInit {
     console.log(this.searchbar);
   }
 
-  submit() {
+  async submit() {
     console.log({uhOh: this.formGroup});
 
       const location = this.formGroup.get('location').value || '';
       const bio = this.formGroup.get('bio').value || '';
 
       if (this.formGroup.status === 'VALID') {
-      let loading = this.loadingCtrl.create({
+      const loading = await this.loadingCtrl.create({
         spinner: 'bubbles',
-        content: 'Loading....',
+        message: 'Loading....',
         duration: 1000
       });
-      loading.present();
+      await loading.present();
 
       this.upsucc = 'true';
       this.PulsedbDatabase
@@ -205,40 +195,35 @@ export class EditUserProfilePage implements OnInit {
           location,
           bio,
           this.img
-        ).then((data) => {
-        loading.dismiss()
+        ).then(async (data) => {
+        await loading.dismiss();
         console.log(data);
         this.upsucc = 'false';
-        this.navCtrl.pop();
+        this.navCtrl.back();
       });
-    }else {
+    } else {
       console.log('sumthing went wong');
-      const toast = this.toastCtrl.create({
+      const toast = await this.toastCtrl.create({
         message: this.strings.INVALID_FORM,
         duration: 1500
       });
-
-      toast.present();
+      await toast.present();
     }
 
   }
 
 
-  uploadImage() {
-    const options: CameraOptions = {
-      quality: 70,
-      destinationType: this.camera.DestinationType.DATA_URL,
-
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      saveToPhotoAlbum: false
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-
-      this.img = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
+  async uploadImage() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 70,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Photos
+      });
+      this.img = 'data:image/jpeg;base64,' + image.base64String;
+    } catch (err) {
       console.log(err);
-    });
+    }
   }
 
 

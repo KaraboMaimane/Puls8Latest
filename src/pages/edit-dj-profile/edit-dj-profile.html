@@ -68,9 +68,9 @@
                       Gender
                   </ion-label>
                   <ion-select formControlName="gender" multiple="false">
-                      <ion-option value="None">None</ion-option>
-                      <ion-option value="Female">Female</ion-option>
-                      <ion-option value="Male">Male</ion-option>
+                      <ion-select-option value="None">None</ion-select-option>
+                      <ion-select-option value="Female">Female</ion-select-option>
+                      <ion-select-option value="Male">Male</ion-select-option>
                   </ion-select>
               </ion-item>
 
@@ -85,15 +85,15 @@
                     multiple="false"
                     interface="popover">
 
-                      <ion-option value="House">House</ion-option>
-                      <ion-option value="Hip-Hop">Hip-Hop</ion-option>
-                      <ion-option value="Rap">Rap</ion-option>
-                      <ion-option value="Commercial house">Commercial house</ion-option>
-                      <ion-option value="RnB">R`nB</ion-option>
-                      <ion-option value="Deep House">Deep House</ion-option>
-                      <ion-option value="Kwaito">Kwaito</ion-option>
-                      <ion-option value="Afro Pop">Afro Pop</ion-option>
-                      <ion-option value="Soul">Soul</ion-option>
+                      <ion-select-option value="House">House</ion-select-option>
+                      <ion-select-option value="Hip-Hop">Hip-Hop</ion-select-option>
+                      <ion-select-option value="Rap">Rap</ion-select-option>
+                      <ion-select-option value="Commercial house">Commercial house</ion-select-option>
+                      <ion-select-option value="RnB">R`nB</ion-select-option>
+                      <ion-select-option value="Deep House">Deep House</ion-select-option>
+                      <ion-select-option value="Kwaito">Kwaito</ion-select-option>
+                      <ion-select-option value="Afro Pop">Afro Pop</ion-select-option>
+                      <ion-select-option value="Soul">Soul</ion-select-option>
 
                   </ion-select>
               </ion-item>
@@ -123,9 +123,9 @@
                   <ion-select
                     formControlName="payment"
                     multiple="false">
-                      <ion-option value="HR">Hour</ion-option>
-                      <ion-option value="D">Day</ion-option>
-                      <!-- <ion-option value="H/hf">Half Hour</ion-option> -->
+                      <ion-select-option value="HR">Hour</ion-select-option>
+                      <ion-select-option value="D">Day</ion-select-option>
+                      <!-- <ion-select-option value="H/hf">Half Hour</ion-select-option> -->
 
                   </ion-select>
               </ion-item>
@@ -152,8 +152,8 @@
                 <ion-label color="light">
                   <ion-icon ios="ios-search" md="md-search"></ion-icon>
                 </ion-label>
-                <ion-select formControlName="location" multiple="false">
-                  <ion-option *ngFor="let location of locationList" (click)="setLocation(location.title)">{{location.title}}</ion-option>
+                <ion-select formControlName="location" multiple="false" (ionChange)="setLocation($event.detail.value)">
+                  <ion-select-option *ngFor="let location of locationList" [value]="location.title">{{location.title}}</ion-select-option>
                 </ion-select>
               </ion-item>
             </ng-container>

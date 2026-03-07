@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { DatabaseProvider } from '../../providers/database/database';
 
-/**
- * Generated class for the ViewChatRequestPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-view-chat-request',
   templateUrl: 'view-chat-request.html',
 })
@@ -23,33 +17,36 @@ export class ViewChatRequestPage {
   email: any;
   time: any;
   image: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public database: DatabaseProvider) {
+
+  constructor(
+    public navCtrl: NavController,
+    private router: Router,
+    public database: DatabaseProvider
+  ) {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state || window.history.state;
+    const profile = state?.['userObj'];
+    const djkey = state?.['djObj'];
+    if (profile) {
+      this.djKey = djkey;
+      this.image = profile.userImage;
+      this.time = profile.time;
+      this.email = profile.userEmail;
+      this.name = profile.username;
+      this.date = profile.date;
+      this.userKey = profile.userKey;
+    }
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewChatRequestPage');
-    let profile = this.navParams.get("userObj")
-    let djkey = this.navParams.get("djObj")
-    console.log(profile)
-    console.log(djkey)
-    this.djKey = djkey
-    let userProfile = profile;
-    this.image = userProfile.userImage;
-    this.time = userProfile.time;
-    this.email = userProfile.userEmail;
-    this.name = userProfile.username;
-    this.date = userProfile.date;
-    this.userKey = userProfile.userKey;
   }
 
-
-  chatroom(){
-    // this.database.StartChat(this.userKey,this.djKey,this.name,this.userKey,this.email,this.date,this.time).then((data:any)=>{
-    //   console.log("chat started",data)
-    let userProfile2 = this.navParams.get("userObj")
-    let djProfile = this.navParams.get("djObj")
-    console.log(userProfile2 + "/" + djProfile)
-      this.navCtrl.push('ChatroomPage',{userKey: userProfile2,djKey: djProfile})
-    // })
+  chatroom() {
+    const state = window.history.state;
+    const userProfile2 = state?.['userObj'];
+    const djProfile = state?.['djObj'];
+    console.log(userProfile2 + '/' + djProfile);
+    this.navCtrl.navigateForward(['/chatroom'], { state: { userKey: userProfile2, djKey: djProfile } });
   }
 }

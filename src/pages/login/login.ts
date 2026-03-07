@@ -1,32 +1,16 @@
-import {Component, OnInit} from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  AlertController
-} from "ionic-angular";
-import {FormBuilder, NgForm, Validators, FormGroup} from "@angular/forms";
-import {DatabaseProvider} from "../../providers/database/database";
-import firebase from "firebase";
-import {LoadingController} from "ionic-angular";
-import swal from 'sweetalert2';
-import {ConfigurationsProvider, Pages, StringsAndMessages} from "../../providers/configurations/configurations";
-import {RegistrationData} from "../../providers/models/models";
+import { Component, OnInit } from '@angular/core';
+import { NavController, AlertController } from '@ionic/angular';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { DatabaseProvider } from '../../providers/database/database';
+import { ConfigurationsProvider, StringsAndMessages } from '../../providers/configurations/configurations';
+import { RegistrationData } from '../../providers/models/models';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
-
-  selector: "page-login",
-  templateUrl: "login.html"
+  standalone: false,
+  selector: 'page-login',
+  templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   email;
   password;
   logloader: string;
@@ -39,10 +23,8 @@ export class LoginPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private alertCtrl: AlertController,
     private PulsedbDatabase: DatabaseProvider,
-    public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder
   ) {
     this.createForm();
@@ -63,30 +45,29 @@ export class LoginPage {
     this.formGroup = this.formBuilder.group({
       'email': ['', [Validators.required, Validators.pattern(emailRegex)]],
       'password': ['', [Validators.required, Validators.pattern(passwordRegex)]]
-    })
+    });
   }
 
   ionViewDidLoad() {
-    console.log("ionViewDidLoad LoginPage");
+    console.log('ionViewDidLoad LoginPage');
   }
 
   login() {
-    let userLogin = new RegistrationData();
+    const userLogin = new RegistrationData();
 
     if (this.formGroup.status === 'VALID') {
-
       userLogin.email = this.formGroup.get('email').value;
       userLogin.password = this.formGroup.get('password').value;
 
       this.PulsedbDatabase.login(userLogin.email, userLogin.password).then((data) => {
+        userLogin.uid = this.PulsedbDatabase.mockCurrentUser
+          ? this.PulsedbDatabase.mockCurrentUser.uid
+          : 'dummy-current-user-uid';
 
-        userLogin.uid = firebase.auth().currentUser.uid;
-
-        if (data.user.emailVerified == true) {
+        if (data.user.emailVerified === true) {
           this.logloader = 'false';
           this.onSuccessfulLogin = 'true';
-
-          this.navCtrl.setRoot('CategoriesPage');
+          this.navCtrl.navigateRoot(['/categories']);
         } else {
           this.message = 'You are not verified';
           this.logloader = 'false';
@@ -96,45 +77,40 @@ export class LoginPage {
         this.message = error.message;
         this.logloader = 'false';
         this.onLoginFailure = 'true';
-      })
-    } else {
-      this.onLoginWarning;
+      });
     }
   }
 
-
-  cancelmodal() {
-    // this.navCtrl.setRoot('CategoriesPage');      
-  }
-
-  passwordReset() {
-    swal.fire({
-      title: 'Enter your email address',
-      input: 'email',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (value) {
-          console.log(value)
-          this.PulsedbDatabase.resetPassword(value).then((email) => {
-            console.log(email);
-
-          }).catch((error) => {
-            error.message
-          })
+  async passwordReset() {
+    const alert = await this.alertCtrl.create({
+      header: 'Reset Password',
+      inputs: [
+        {
+          name: 'email',
+          type: 'email',
+          placeholder: 'Enter your email address'
         }
-        return !value && 'You need to write something!';
-
-      }
-
-    })
+      ],
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Send',
+          handler: (data) => {
+            if (data.email) {
+              this.PulsedbDatabase.resetPassword(data.email);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   nextpage(page: string) {
-    this.navCtrl.setRoot(page);
+    this.navCtrl.navigateRoot(['/' + page.replace('Page', '').toLowerCase()]);
   }
 
   GoToSignup() {
-    this.navCtrl.push(Pages.PAGE_REGISTER);
+    this.navCtrl.navigateForward(['/register']);
   }
-
 }

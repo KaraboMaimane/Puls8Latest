@@ -1,18 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController } from '@ionic/angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
 import { NgForm } from '@angular/forms';
 
-/**
- * Generated class for the UploadPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+	standalone: false,
 	selector: 'page-upload',
 	templateUrl: 'upload.html'
 })
@@ -22,14 +14,14 @@ export class UploadPage implements OnInit {
 	trackName;
 	trackLink;
 	arrProfile = new Array();
-
 	name;
 	surname;
 	files: number;
 	filename: any;
 	loader: string;
 	succtoast: string;
-	constructor(public navCtrl: NavController, public navParams: NavParams, public PulsedbDatabase: DatabaseProvider) {}
+
+	constructor(public navCtrl: NavController, public PulsedbDatabase: DatabaseProvider) {}
 
 	ionViewDidLoad() {}
 
@@ -41,9 +33,10 @@ export class UploadPage implements OnInit {
 		this.succtoast = 'true';
 		let timer = setInterval(() => {
 			clearInterval(timer);
-			this.navCtrl.pop();
+			this.navCtrl.back();
 			this.succtoast = 'false';
 		}, 2000);
 		this.PulsedbDatabase.uploadMusic(form.value.trackName, form.value.trackLink).then((data) => {});
 	}
 }
+

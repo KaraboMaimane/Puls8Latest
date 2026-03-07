@@ -1,21 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, ActionSheetController } from '@ionic/angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import firebase from 'firebase';
 
-/**
- * Generated class for the UserprofilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
+  standalone: false,
   selector: 'page-userprofile',
   templateUrl: 'userprofile.html',
 })
-export class UserprofilePage implements OnInit{
+export class UserprofilePage implements OnInit {
 
   commentsArray = [];
 	inboxArray = [];
@@ -45,12 +37,10 @@ export class UserprofilePage implements OnInit{
 	location: any;
 	constructor(
 		public navCtrl: NavController,
-		public navParams: NavParams,
 		public actionSheetCtrl: ActionSheetController,
-		public PulsedbDatabase: DatabaseProvider,
-		public modalCtrl: ModalController
+		public PulsedbDatabase: DatabaseProvider
 	) {
-		this.ngOnInit()
+		this.ngOnInit();
 	}
 
 
@@ -109,8 +99,8 @@ export class UserprofilePage implements OnInit{
 			// }
 		});
 	}
-	edit(page: string) {
-		this.navCtrl.push('EditUserProfilePage');
+	edit(page?: string) {
+		this.navCtrl.navigateForward(['/edit-user-profile']);
 	}
 	ionViewDidLoad() {
 		this.PulsedbDatabase.getProfile().then((data:any)=>{
@@ -133,23 +123,23 @@ export class UserprofilePage implements OnInit{
 		let dj = this.userKey;
 		console.log(dj);
 		let userInfo = i;
-		this.navCtrl.push('ViewChatRequestPage', { userObj: userInfo, djObj: dj });
+		this.navCtrl.navigateForward(['/view-chat-request'], { state: { userObj: userInfo, djObj: dj } });
 	}
 
-	viewMessage(k){
-		console.log(k)
-		let djInfo = k
-		this.navCtrl.push('ChatroomPage',{ objKey: djInfo})
+	viewMessage(k) {
+		console.log(k);
+		let djInfo = k;
+		this.navCtrl.navigateForward(['/chatroom'], { state: { objKey: djInfo } });
 	}
 
 	nextpage(page: string) {
-		this.navCtrl.push(page);
+		this.navCtrl.navigateForward(['/' + page.replace('Page', '').toLowerCase()]);
 	}
 
 	logout() {
 		this.PulsedbDatabase.logout().then(
 			() => {
-				this.navCtrl.setRoot('LoginPage');
+				this.navCtrl.navigateRoot(['/login']);
 			},
 			(error) => {
 				console.log(error.message);
@@ -158,13 +148,9 @@ export class UserprofilePage implements OnInit{
 	}
 
 	upload() {
-		this.navCtrl.push('TrackUploadPage');
+		this.navCtrl.navigateForward(['/track-upload']);
 	}
 	changeRole() {
-		// this.navCtrl.pop().then(()=>{
-		this.navCtrl.push('InstructionsPage');
-		// })
-		
+		this.navCtrl.navigateForward(['/instructions']);
 	}
-
 }

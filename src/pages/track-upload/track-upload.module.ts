@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { TrackUploadPage } from './track-upload';
 
 @NgModule({
-  declarations: [
-    TrackUploadPage,
-  ],
+  declarations: [TrackUploadPage],
   imports: [
-    IonicPageModule.forChild(TrackUploadPage),
-  ],
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild([{ path: '', component: TrackUploadPage }])
+  ]
 })
 export class TrackUploadPageModule {}

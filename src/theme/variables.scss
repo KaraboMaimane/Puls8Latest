@@ -1,18 +1,4 @@
-// Ionic Variables and Theming. For more info, please see:
-// http://ionicframework.com/docs/theming/
-
-// Font path is used to include ionicons,
-// roboto, and noto sans fonts
-$font-path: "../assets/fonts";
-
-
-// The app direction is used to include
-// rtl styles in your app. For more info, please see:
-// http://ionicframework.com/docs/theming/rtl-support/
-$app-direction: ltr;
-
-
-@import "ionic.globals";
+// Ionic Variables and Theming.
 
 
 // Shared Variables
@@ -33,16 +19,7 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-$colors: (
-  primary:    #EFD268,
-  secondary: #794DA1,
-  danger:     #f53d3d,
-  light:      #AB8E21,
-  white:        #eee,
-  dark:       #222,
-  transparent: transparent
-);
-
+// Custom Sass color variables
 $color-grey-light: #eee;
 $color-grey-dark: #666;
 $color-dark: #131618;
@@ -504,23 +481,6 @@ $chat-bubble:(
       }
     }
 
-    .scroll-content{
+    .scroll-content {
         overflow: hidden !important;
     }
-
-@import "ionic.theme.default";
-
-
-// Ionicons
-// --------------------------------------------------
-// The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/ionicons/
-
-@import "ionic.ionicons";
-
-
-// Fonts
-// --------------------------------------------------
-
-@import "roboto";
-@import "noto-sans";

@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, ActionSheetController } from '@ionic/angular';
 import { DatabaseProvider } from '../../providers/database/database';
-/**
- * Generated class for the DjProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-@IonicPage()
 @Component({
+	standalone: false,
 	selector: 'page-dj-profile',
 	templateUrl: 'dj-profile.html',
 })
@@ -39,10 +33,8 @@ export class DjProfilePage implements OnInit {
 	state;
 	profile = 'infor'
 	constructor(public navCtrl: NavController,
-		public navParams: NavParams,
 		public actionSheetCtrl: ActionSheetController,
-		public PulsedbDatabase: DatabaseProvider,
-		public modalCtrl: ModalController) {
+		public PulsedbDatabase: DatabaseProvider) {
 	}
 
 
@@ -112,15 +104,15 @@ export class DjProfilePage implements OnInit {
 		let dj = this.userKey;
 		console.log(dj);
 		let userInfo = i;
-		this.navCtrl.push('ViewChatRequestPage', { userObj: userInfo, djObj: dj });
+		this.navCtrl.navigateForward(['/view-chat-request'], { state: { userObj: userInfo, djObj: dj } });
 	}
 	edit() {
-		this.navCtrl.push('EditDjProfilePage')
+		this.navCtrl.navigateForward(['/edit-dj-profile']);
 	}
 	logout() {
 		this.PulsedbDatabase.logout().then(
 			() => {
-				this.navCtrl.setRoot('LoginPage');
+				this.navCtrl.navigateRoot(['/login']);
 			},
 			(error) => {
 				console.log(error.message);
@@ -128,8 +120,8 @@ export class DjProfilePage implements OnInit {
 		);
 	}
 
-	upload(){
-		this.navCtrl.push('UploadPage');
+	upload() {
+		this.navCtrl.navigateForward(['/upload']);
 	}
 
 	openLink(link){

@@ -1,22 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { DatabaseProvider } from '../../providers/database/database';
-import { AlertController,ToastController } from 'ionic-angular';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import { Camera, CameraOptions } from '@ionic-native/camera';
-import {debounceTime} from "rxjs/operators";
-import {CitySearchResult} from "../../providers/models/models";
-import {BehaviorSubject} from "rxjs";
-import {ConfigurationsProvider} from "../../providers/configurations/configurations";
-/**
- * Generated class for the EditDjProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { debounceTime } from 'rxjs/operators';
+import { CitySearchResult } from '../../providers/models/models';
+import { BehaviorSubject } from 'rxjs';
+import { ConfigurationsProvider } from '../../providers/configurations/configurations';
 
-@IonicPage()
 @Component({
+	standalone: false,
 	selector: 'page-edit-dj-profile',
 	templateUrl: 'edit-dj-profile.html'
 })
@@ -57,11 +50,9 @@ export class EditDjProfilePage {
 
   constructor(
 	  public navCtrl: NavController,
-    public navParams: NavParams,
     public PulsedbDatabase: DatabaseProvider,
     public loadingCtrl: LoadingController,
-    public alertCtrl :AlertController,
-    public camera:Camera,
+    public alertCtrl: AlertController,
     public formBuilder: FormBuilder,
   ) {
     this.createForm();
@@ -126,22 +117,18 @@ export class EditDjProfilePage {
     this.generateAutocomplete();
   }
 	
-	uploadImage() {
-		const options: CameraOptions = {
-		 quality: 70,
-		 destinationType: this.camera.DestinationType.DATA_URL,
-	
-		 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		 saveToPhotoAlbum:false
-	 }
-	
-	 this.camera.getPicture(options).then((imageData) => {
-	
-		this.img = 'data:image/jpeg;base64,' + imageData;
-	 }, (err) => {
-	 console.log(err);
-	 });
+	async uploadImage() {
+		try {
+			const image = await Camera.getPhoto({
+				quality: 70,
+				resultType: CameraResultType.Base64,
+				source: CameraSource.Photos
+			});
+			this.img = 'data:image/jpeg;base64,' + image.base64String;
+		} catch (err) {
+			console.log(err);
 		}
+	}
 
 		initializeItems() {
 			this.items = [
@@ -193,13 +180,13 @@ export class EditDjProfilePage {
 			}
 			console.log(this.searchbar);
 		}
-	submit() {
-		let loading = this.loadingCtrl.create({
+	async submit() {
+		const loading = await this.loadingCtrl.create({
 			spinner: 'bubbles',
-			content: 'Loading....',
+			message: 'Loading....',
 			duration: 1000
 		});
-		loading.present();
+		await loading.present();
 		this.loader = 'true';
 		// console.log({formGroupPostData: 'Here is our post data: '},
 		//   this.formGroup.get('fullname').value,
@@ -228,8 +215,8 @@ export class EditDjProfilePage {
 			)
 			.then((data) => {
 				console.log(data);
-				loading.dismiss()
-				this.navCtrl.pop();
+				loading.dismiss();
+				this.navCtrl.back();
 				this.loader = 'false';
 			});
   }

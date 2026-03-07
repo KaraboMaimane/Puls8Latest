@@ -1,21 +1,14 @@
-import {Component, OnInit} from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  LoadingController,
-  AlertController
-} from "ionic-angular";
-import {DatabaseProvider} from "../../providers/database/database";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import firebase from "firebase";
-import {ConfigurationsProvider, StringsAndMessages} from "../../providers/configurations/configurations";
-import {RegistrationData, User} from "../../providers/models/models";
+import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { DatabaseProvider } from '../../providers/database/database';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfigurationsProvider, StringsAndMessages } from '../../providers/configurations/configurations';
+import { RegistrationData } from '../../providers/models/models';
 
-@IonicPage()
 @Component({
-  selector: "page-register",
-  templateUrl: "register.html"
+  standalone: false,
+  selector: 'page-register',
+  templateUrl: 'register.html'
 })
 export class RegisterPage implements OnInit {
   role: any;
@@ -40,12 +33,10 @@ export class RegisterPage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public PulsedbDatabase: DatabaseProvider,
-    public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
     public formBuilder: FormBuilder
   ) {
+    this.role = window.history.state?.role;
     this.createForm();
   }
 
@@ -83,23 +74,9 @@ export class RegisterPage implements OnInit {
       console.log({registerUser: newUser, formgroup: this.formGroup});
 
       this.PulsedbDatabase.register(newUser.fullname, newUser.email, newUser.password).then((data) => {
-        let user = firebase.auth().currentUser;
-
-
-        user.sendEmailVerification().then((data) => {
-          firebase.database().ref("Registration/" + user.uid).push({
-            fullname: newUser.fullname,
-            email: newUser.email,
-            role: "Audience",
-            userType: "user",
-            img: 'https://static1.squarespace.com/static/5adeaa0ff8370a5de0e90824/t/5b976ea440ec9af58bd0860b/1536650919208/blank-avatar.png?format=300w',
-            key: user.uid
-          });
-          console.log(data);
-          this.loader = 'false';
-          this.onRegisterSuccess = 'true';
-        })
-
+        // Dummy: skip email verification and DB write, just show success
+        this.loader = 'false';
+        this.onRegisterSuccess = 'true';
       }).catch((error) => {
         console.log(error);
         this.loader = 'false';
@@ -113,8 +90,6 @@ export class RegisterPage implements OnInit {
   }
 
   nextpage(page: string) {
-    this.navCtrl.setRoot(page)
+    this.navCtrl.navigateRoot(['/' + page.replace('Page', '').toLowerCase()]);
   }
-
-
 }

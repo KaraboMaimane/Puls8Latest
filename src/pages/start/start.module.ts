@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { StartPage } from './start';
 
 @NgModule({
-  declarations: [
-    StartPage,
-  ],
+  declarations: [StartPage],
   imports: [
-    IonicPageModule.forChild(StartPage),
-  ],
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild([{ path: '', component: StartPage }])
+  ]
 })
 export class StartPageModule {}
